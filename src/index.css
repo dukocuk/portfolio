@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---- Theme tokens. Dark is the default (:root). Adding `.light` to <html>
+   flips every token. Values are space-separated RGB channels so Tailwind's
+   `rgb(var(--token) / <alpha-value>)` works. ---- */
+:root {
+  --c-base: 9 13 18;         /* #090D12 deep slate near-black */
+  --c-surface: 16 21 30;     /* #10151E */
+  --c-surface-2: 22 29 41;   /* #161D29 */
+  --c-border: 33 42 56;      /* #212A38 */
+  --c-text: 232 237 243;     /* #E8EDF3 */
+  --c-muted: 139 151 168;    /* #8B97A8 */
+  --c-accent: 20 184 166;    /* #14B8A6 teal */
+  --c-accent-2: 34 211 238;  /* #22D3EE cyan */
+}
+
+.light {
+  --c-base: 255 255 255;     /* #FFFFFF */
+  --c-surface: 244 247 249;  /* #F4F7F9 */
+  --c-surface-2: 235 240 244;/* #EBF0F4 */
+  --c-border: 214 222 229;   /* #D6DEE5 */
+  --c-text: 9 13 18;         /* #090D12 */
+  --c-muted: 82 96 112;      /* #526070 (AA contrast on light surfaces) */
+  --c-accent: 13 148 136;    /* #0D9488 teal-600 for AA on white */
+  --c-accent-2: 14 116 144;  /* #0E7490 cyan-700 */
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* offset for sticky navbar on anchor jumps */
+  }
+  body {
+    @apply bg-base text-text font-sans antialiased;
+  }
+  /* Visible focus for keyboard users */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-base rounded-sm;
+  }
+  ::selection {
+    @apply bg-accent/30;
+  }
+}
+
+@layer components {
+  .text-gradient {
+    @apply bg-accent-gradient bg-clip-text text-transparent;
+  }
+  /* Fluid display heading used for the hero. Pairs Space Grotesk with a
+     viewport-aware size so it stays bold on mobile without overflowing. */
+  .display-hero {
+    font-family: theme('fontFamily.display');
+    font-size: clamp(2.75rem, 8vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+  /* Subtle texture to add depth over flat surfaces without SVG filters. */
+  .grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.12;
+    background-image:
+      linear-gradient(90deg, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(180deg, rgb(255 255 255 / 0.035) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+}
+
+/* Respect reduced-motion: kill scroll-smooth and CSS-driven motion. Framer
+   Motion components branch on useReducedMotion() separately. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
