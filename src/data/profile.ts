@@ -24,5 +24,6 @@ export const navItems = [
   { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
   { id: 'services', label: 'Services' },
+  { id: 'testimonials', label: 'Testimonials' },
   { id: 'contact', label: 'Contact' },
 ] as const;

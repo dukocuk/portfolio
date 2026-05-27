@@ -41,8 +41,6 @@ index.html      SEO title, meta description, Open Graph/Twitter tags, theme boot
 - [ ] **Project screenshots** — replace the gradient placeholders: put images in `public/`
       and set `image` (and update `imageAlt`) for each project in `src/data/projects.ts`.
       Look for the `[Add project screenshot here]` placeholders.
-- [ ] **Measurable results** — replace any `[Add measurable result here]` text once you
-      decide what to disclose. (Nothing was invented — these are intentional blanks.)
 - [ ] **Accent color** — change `--c-accent` / `--c-accent-2` (dark) and the `.light`
       overrides in `src/index.css`.
 - [ ] **OG image** — add a 1200×630 `og-image.png` to `public/` (referenced in `index.html`).
