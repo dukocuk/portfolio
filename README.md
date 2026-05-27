@@ -1,4 +1,4 @@
-# Duran Köse — Portfolio
+# Portfolio
 
 A premium personal-brand portfolio built with **Vite + React + TypeScript + Tailwind CSS**.
 Dark-first design with a light-mode toggle, indigo→violet accent, accessible and responsive.
