@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { profile } from "../data/profile";
 import { Section } from "./Section";
-import { Button } from "./ui/Button";
 import { Card } from "./ui/Card";
 
 // Per request: contact is email-only — no form and no social links.
