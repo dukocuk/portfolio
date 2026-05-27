@@ -17,8 +17,7 @@
     <!-- Fonts: preconnect for faster first paint -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <!-- TODO: set to your real domain once deployed -->
-    <link rel="canonical" href="https://durankose.dev/" />
+    <link rel="canonical" href="https://dukocuk.github.io/portfolio/" />
 
     <!-- ===== Open Graph ===== -->
     <meta property="og:type" content="website" />
@@ -27,9 +26,11 @@
       property="og:description"
       content="Full-stack engineering with enterprise discipline — projects in computer vision, IoT security, system integration, and mobile."
     />
-    <meta property="og:url" content="https://durankose.dev/" />
-    <!-- TODO: replace with a real 1200×630 preview image in /public -->
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="https://dukocuk.github.io/portfolio/" />
+    <meta property="og:image" content="https://dukocuk.github.io/portfolio/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Duran Köse — Software Engineer & Full-Stack Developer" />
     <meta property="og:locale" content="en_US" />
 
     <!-- ===== Twitter ===== -->
@@ -39,7 +40,29 @@
       name="twitter:description"
       content="Full-stack engineering with enterprise discipline — projects in computer vision, IoT security, system integration, and mobile."
     />
-    <meta name="twitter:image" content="/og-image.png" />
+    <meta name="twitter:image" content="https://dukocuk.github.io/portfolio/og-image.png" />
+    <meta name="twitter:image:alt" content="Duran Köse — Software Engineer & Full-Stack Developer" />
+
+    <!-- ===== Structured data ===== -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Duran Köse",
+        "jobTitle": "Software Engineer / Full-Stack Developer",
+        "url": "https://dukocuk.github.io/portfolio/",
+        "email": "mailto:duran.kse@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Taastrup",
+          "addressCountry": "DK"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Technical University of Denmark (DTU)"
+        }
+      }
+    </script>
 
     <!-- Apply saved/system theme before paint to avoid a flash of the wrong theme -->
     <script>
