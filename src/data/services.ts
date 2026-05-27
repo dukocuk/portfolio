@@ -26,7 +26,7 @@ export const services: Service[] = [
     body: 'Tests, systematic debugging, and clear documentation that keep solutions stable and maintainable over time.',
   },
   {
-    title: 'Technical Communication & Teaching',
+    title: 'Technical Communication',
     body: 'Explaining technical decisions and systems clearly to technical and non-technical audiences, backed by years of teaching at DTU.',
   },
 ];
