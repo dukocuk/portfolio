@@ -50,6 +50,22 @@
   .text-gradient {
     @apply bg-accent-gradient bg-clip-text text-transparent;
   }
+  /* Finite one-time sweep for accent words. Wider gradient + animated
+     background-position; the light --c-text stop is the moving highlight.
+     Pair with .text-gradient so reduced-motion users keep the static look. */
+  .text-shimmer {
+    background-image: linear-gradient(
+      110deg,
+      rgb(var(--c-accent)) 0%,
+      rgb(var(--c-accent-2)) 25%,
+      rgb(var(--c-text)) 50%,
+      rgb(var(--c-accent-2)) 75%,
+      rgb(var(--c-accent)) 100%
+    );
+    background-size: 200% 100%;
+    @apply bg-clip-text text-transparent;
+    animation: theme('animation.shimmer');
+  }
   /* Fluid display heading used for the hero. Pairs Space Grotesk with a
      viewport-aware size so it stays bold on mobile without overflowing. */
   .display-hero {
@@ -73,6 +89,14 @@
   }
 }
 
+/* Defined here (not just in the Tailwind config) because the keyframes are
+   referenced via theme() rather than an animate-* class, so Tailwind won't
+   emit them on its own. */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: 0% 0; }
+}
+
 /* Respect reduced-motion: kill scroll-smooth and CSS-driven motion. Framer
    Motion components branch on useReducedMotion() separately. */
 @media (prefers-reduced-motion: reduce) {
@@ -85,5 +109,11 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+  /* No sweep: fall back to the static accent gradient. */
+  .text-shimmer {
+    background-image: linear-gradient(135deg, rgb(var(--c-accent)), rgb(var(--c-accent-2)));
+    background-size: auto;
+    animation: none;
   }
 }

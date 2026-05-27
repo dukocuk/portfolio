@@ -35,6 +35,7 @@ export default {
       },
       animation: {
         'fade-up': 'fade-up 0.6s ease-out forwards',
+        shimmer: 'shimmer 1.4s ease-out 0.9s 1 both',
       },
     },
   },

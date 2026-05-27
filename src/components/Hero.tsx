@@ -79,7 +79,7 @@ export function Hero() {
               ))}
               <motion.span
                 variants={word}
-                className="mr-[0.25em] inline-block text-gradient"
+                className="mr-[0.25em] inline-block text-gradient text-shimmer"
               >
                 {accent.join(" ")}
               </motion.span>
