@@ -12,10 +12,10 @@ export const testimonialsContent: Record<Lang, Testimonial[]> = {
     {
       quote:
         'Han arbejder grundigt og samvittighedsfuldt. Han tager selv initiativ til at finde forbedringer og løsninger på problemer.',
-      author: 'Jacob Nordfalk, Software Developer and Lecturer, Technical University of Denmark',
+      author: 'Jacob Nordfalk, Programudvikler og Lektor, Danmarks Tekniske Universitet',
     },
     {
-      quote: 'Duran er nysgerrig af natur, hårdtarbejdende og lærevillig.',
+      quote: 'Duran er nysgerrig af natur og jeg oplever ham som arbejdsom og videbegærlig.',
       author: 'Kristian Alban, Team Manager, Netcompany A/S',
     },
     {
@@ -31,7 +31,7 @@ export const testimonialsContent: Record<Lang, Testimonial[]> = {
       author: 'Jacob Nordfalk, Software Developer and Lecturer, Technical University of Denmark',
     },
     {
-      quote: 'Duran is naturally curious, hardworking, and eager to learn.',
+      quote: 'Duran is naturally curious, and I find him to be hardworking and eager to learn.',
       author: 'Kristian Alban, Team Manager, Netcompany A/S',
     },
     {
