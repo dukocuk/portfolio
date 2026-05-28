@@ -1,8 +1,12 @@
-import { profile } from '../data/profile';
+import { profileContent } from '../data/profile';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 // No social links per request.
 export function Footer() {
   const year = new Date().getFullYear();
+  const { lang } = useLanguage();
+  const profile = profileContent[lang];
   return (
     <footer className="border-t border-border py-10">
       <div className="container flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
@@ -14,7 +18,7 @@ export function Footer() {
         </div>
         <div className="flex flex-col items-start gap-3 sm:items-end">
           <a href="#home" className="text-sm font-medium text-muted transition-colors hover:text-accent">
-            Back to top ↑
+            {uiStrings[lang].footer.backToTop}
           </a>
           <p className="text-xs text-muted">© {year} Duran Köse</p>
         </div>

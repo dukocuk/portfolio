@@ -1,13 +1,18 @@
 import { motion, useReducedMotion } from 'framer-motion';
-import { experience } from '../data/experience';
+import { experienceContent } from '../data/experience';
 import { Section } from './Section';
 import { staggerContainer, staggerItem, viewportOnce } from '../lib/motion';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Timeline() {
   const reduced = useReducedMotion();
+  const { lang } = useLanguage();
+  const experience = experienceContent[lang];
+  const ui = uiStrings[lang].sections.experience;
 
   return (
-    <Section id="experience" index="04" eyebrow="Experience" title="Professional timeline">
+    <Section id="experience" index="04" eyebrow={ui.eyebrow} title={ui.title}>
       <div className="relative pl-8">
         {/* Accent line that draws in on scroll. */}
         <motion.span

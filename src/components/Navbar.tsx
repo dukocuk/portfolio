@@ -3,13 +3,18 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { navItems } from '../data/profile';
 import { useScrollSpy } from '../hooks/useScrollSpy';
 import { ThemeToggle } from './ui/ThemeToggle';
+import { LanguageToggle } from './ui/LanguageToggle';
 import { ScrollProgress } from './ui/ScrollProgress';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 const sectionIds = navItems.map((n) => n.id);
 
 export function Navbar() {
   const activeId = useScrollSpy(sectionIds);
   const [open, setOpen] = useState(false);
+  const { lang } = useLanguage();
+  const ui = uiStrings[lang];
 
   // Close the mobile menu on Escape.
   useEffect(() => {
@@ -46,7 +51,7 @@ export function Navbar() {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                  {item.label}
+                  {ui.nav[item.id]}
                 </a>
               </li>
             );
@@ -54,6 +59,7 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           {/* Mobile menu toggle */}
           <button
@@ -61,7 +67,7 @@ export function Navbar() {
             className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border text-text md:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? ui.aria.closeMenu : ui.aria.openMenu}
             onClick={() => setOpen((o) => !o)}
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
@@ -92,7 +98,7 @@ export function Navbar() {
                     activeId === item.id ? 'text-accent' : 'text-muted hover:text-text'
                   }`}
                 >
-                  {item.label}
+                  {ui.nav[item.id]}
                 </a>
               </li>
             ))}

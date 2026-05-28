@@ -3,11 +3,15 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { Project } from '../data/projects';
 import { Tag } from './ui/Tag';
 import { ProjectHeader } from './ui/ProjectVisual';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
   const [open, setOpen] = useState(false);
   const reduced = useReducedMotion();
   const panelId = useId();
+  const { lang } = useLanguage();
+  const ui = uiStrings[lang].projectCard;
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-black/20">
@@ -40,7 +44,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
           aria-controls={panelId}
           className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:opacity-80"
         >
-          {open ? 'Hide case study' : 'Read case study'}
+          {open ? ui.hide : ui.read}
           <svg
             width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"

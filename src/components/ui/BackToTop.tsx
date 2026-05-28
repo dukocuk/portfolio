@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { uiStrings } from '../../i18n/ui';
 
 export function BackToTop() {
   const [visible, setVisible] = useState(false);
+  const { lang } = useLanguage();
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 600);
@@ -16,7 +19,7 @@ export function BackToTop() {
       {visible && (
         <motion.a
           href="#home"
-          aria-label="Back to top"
+          aria-label={uiStrings[lang].aria.backToTop}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.6 }}

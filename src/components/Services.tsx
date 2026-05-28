@@ -1,16 +1,21 @@
-import { services } from '../data/services';
+import { servicesContent } from '../data/services';
 import { Section } from './Section';
 import { Card } from './ui/Card';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Services() {
+  const { lang } = useLanguage();
+  const services = servicesContent[lang];
+  const ui = uiStrings[lang].sections.services;
   return (
     <Section
       id="services"
       index="06"
-      eyebrow="Services"
-      title="What I can help with"
-      intro="Areas where I deliver concrete value — across development, integration, security, and enterprise systems."
+      eyebrow={ui.eyebrow}
+      title={ui.title}
+      intro={ui.intro}
     >
       <StaggerGroup className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {services.map((s, i) => (

@@ -1,10 +1,15 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { profile } from "../data/profile";
+import { profileContent } from "../data/profile";
 import { Button } from "./ui/Button";
 import { GradientMesh } from "./ui/GradientMesh";
+import { useLanguage } from "../i18n/LanguageContext";
+import { uiStrings } from "../i18n/ui";
 
 export function Hero() {
   const reduced = useReducedMotion();
+  const { lang } = useLanguage();
+  const profile = profileContent[lang];
+  const ui = uiStrings[lang];
 
   // Headline: keep the last two words on the accent gradient, like before.
   const words = profile.headline.split(" ");
@@ -91,10 +96,10 @@ export function Hero() {
 
             <div className="mt-9 flex flex-wrap gap-3">
               <Button href="#projects" variant="primary">
-                View Projects
+                {ui.hero.viewProjects}
               </Button>
               <Button href="#contact" variant="ghost">
-                Contact Me
+                {ui.hero.contactMe}
               </Button>
             </div>
           </motion.div>

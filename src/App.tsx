@@ -12,8 +12,11 @@ import { Philosophy } from './components/Philosophy';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/ui/BackToTop';
+import { useLanguage } from './i18n/LanguageContext';
+import { uiStrings } from './i18n/ui';
 
 function App() {
+  const { lang } = useLanguage();
   return (
     <>
       {/* Skip link for keyboard / screen-reader users */}
@@ -21,7 +24,7 @@ function App() {
         href="#home"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-white"
       >
-        Skip to content
+        {uiStrings[lang].skipLink}
       </a>
 
       <Navbar />

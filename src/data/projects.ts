@@ -1,8 +1,11 @@
 // ============================================================
-// FEATURED PROJECTS / CASE STUDIES.
-// No code/repo/demo links per request. Replace [bracketed] placeholders
-// and add real screenshots where indicated. Do not invent results.
+// FEATURED PROJECTS / CASE STUDIES. Localized: Danish (default) + English.
+// No code/repo/demo links per request.
+// id / icon / image / tech are neutral and identical across locales;
+// title / type / summary / imageAlt / sections are translated.
 // ============================================================
+
+import type { Lang } from '../i18n/config';
 
 export type CaseSection = { heading: string; body: string | string[] };
 
@@ -16,13 +19,196 @@ export type Project = {
   icon: ProjectIcon;
   summary: string;
   tech: string[];
-  // [Add project screenshot here] — drop an image in /public and set its path.
   image: null | string;
   imageAlt: string;
   sections: CaseSection[];
 };
 
-export const projects: Project[] = [
+const da: Project[] = [
+  {
+    id: 'vild-pluk',
+    title: 'Vild Pluk — kort over vilde frugter til sankning i Danmark',
+    type: 'Personligt projekt · Full-Stack · Mobil · GraphQL',
+    icon: 'fullstack',
+    summary:
+      'En fællesskabsdrevet sanke-app til Danmark — en Flutter-mobilapp understøttet af et GraphQL-API med geospatial søgning, realtids-fællesskabsfunktioner og gamification.',
+    image: null,
+    imageAlt: 'Placeholder-mockup af Vild Pluk-sankekortet, der viser frugtsteder i hele Danmark',
+    tech: ['Flutter', 'Dart', 'Riverpod', 'GraphQL', 'Node.js', 'TypeScript', 'Apollo Server', 'PostgreSQL', 'PostGIS', 'Prisma'],
+    sections: [
+      { heading: 'Problem', body: 'I Danmark er retten til at sanke bred, men at vide, hvor vilde frugter faktisk gror, er en anden sag. Den viden lever i folks hoveder, private notesbøger og spredte Facebook-grupper — uformel, let at miste og sjældent knyttet til en præcis placering. Et sted, én person finder om efteråret, er glemt næste sæson, og nytilkomne har intet pålideligt udgangspunkt og ingen fælles, kortbaseret måde at opdage steder i nærheden, se hvad der er i sæson eller bidrage med egne fund.' },
+      { heading: 'Mål', body: 'Byg en mobilapp, der lader et fællesskab kortlægge, opdage og diskutere steder til sankning af vilde frugter, med placeringsbaseret søgning og incitamenter til at bidrage.' },
+      { heading: 'Teknisk tilgang', body: [
+        'Byggede en cross-platform Flutter-app (Riverpod-state management, GoRouter-navigation) med et interaktivt OpenStreetMap-kort og offline tile-caching.',
+        'Designede og implementerede et GraphQL-API i Node.js/TypeScript (Apollo Server + Express) over PostgreSQL med PostGIS-udvidelsen via Prisma.',
+        'Implementerede geospatiale “steder i nærheden”-forespørgsler med PostGIS ST_DWithin og et spatialt indeks til radius-søgning.',
+        'Tilføjede JWT-autentificering (email/password + Google OAuth) og billedupload til stedfotos.',
+      ] },
+      { heading: 'Min rolle', body: 'Eneudvikler — designede og byggede hele stakken: Flutter-klienten, GraphQL-backenden, databaseskemaet, autentificeringen og deployment.' },
+      { heading: 'Funktioner', body: [
+        'Interaktivt kort over sankesteder med tilføj/opdag, favoritter og OSRM turn-by-turn-ruteplanlægning.',
+        'Realtidskommentarer, statusopdateringer og upvotes på steder.',
+        'Gamification: et pointsystem, syv niveauer og et sæt achievement-badges med en leaderboard.',
+        'Offline kort-caching og lyst/mørkt tema.',
+      ] },
+      { heading: 'Teknologier & metoder', body: 'Flutter, Dart, Riverpod, GoRouter, flutter_map/OpenStreetMap; Node.js, TypeScript, Apollo GraphQL, Express, Prisma, PostgreSQL + PostGIS, JWT/OAuth-autentificering, Docker til lokal Postgres.' },
+      { heading: 'Udfordringer', body: 'At modellere og forespørge geospatiale data effektivt med PostGIS, holde kortet brugbart offline og designe et gamification-system, der belønner ægte fællesskabsbidrag.' },
+      { heading: 'Resultat', body: 'En fuldt fungerende GraphQL-backend og en feature-komplet Flutter-app, der dækker kortlægning, fællesskabsfunktioner og gamification.' },
+      { heading: 'Hvad det demonstrerer', body: 'End-to-end solo-produktlevering — mobil frontend, GraphQL-backend, geospatiale data, autentificering og gamification — leveret som ét sammenhængende system.' },
+    ],
+  },
+  {
+    id: 'budget-tracker',
+    title: 'Budget Tracker — offline-first budgettering med cloud-synkronisering',
+    type: 'Personligt projekt · Full-Stack · Offline-First · React',
+    icon: 'fullstack',
+    summary:
+      'En budget-app til at styre faste udgifter i DKK — offline-first med en PostgreSQL-database, der kører i browseren, automatisk Google Drive-synkronisering på tværs af enheder og budgetstyring over flere år.',
+    image: null,
+    imageAlt: 'Placeholder-mockup af Budget Tracker-dashboardet med udgiftsdiagrammer og årsbudgetter',
+    tech: ['React', 'TypeScript', 'Vite', 'PGlite', 'PostgreSQL', 'Google Drive API', 'OAuth 2.0', 'Recharts', 'Vitest'],
+    sections: [
+      { heading: 'Problem', body: 'At holde styr på faste udgifter over flere år er besværligt i regneark, og de fleste budgetværktøjer kræver konstant netforbindelse og gemmer data på tredjepartsservere.' },
+      { heading: 'Mål', body: 'Byg en budget-app, der fungerer helt offline, holder data under brugerens kontrol og alligevel synkroniserer problemfrit på tværs af enheder.' },
+      { heading: 'Teknisk tilgang', body: [
+        'Byggede en offline-first-arkitektur med PGlite — en fuld PostgreSQL-database, der kører i browseren — til øjeblikkelige læsninger og skrivninger uden ventetid.',
+        'Implementerede cloud-synkronisering til en enkelt JSON-fil i brugerens eget Google Drive, debounced efter ændringer og pollet på tværs af enheder, med en last-write-wins-konfliktstrategi.',
+        'Tilføjede Google OAuth 2.0-login, så hver brugers data holdes isoleret i deres eget Drive.',
+        'Designede et budgetperiodesystem over flere år med automatisk saldooverførsel, arkivering og sammenligning år for år.',
+      ] },
+      { heading: 'Min rolle', body: 'Eneudvikler — designede og byggede hele stakken: React-klienten, det offline databaselag, Google Drive-synkroniseringsmotoren, autentificeringen og testsuiten.' },
+      { heading: 'Funktioner', body: [
+        'Budgetter over flere år med saldooverførsel, arkiverede skrivebeskyttede år og årssammenligning.',
+        'Interaktive cirkel-, søjle- og kurvediagrammer; genbrugelige budgetskabeloner; søgning og filtrering.',
+        'CSV-import/-eksport med validering og fuld fortryd/gentag med tastaturgenveje.',
+        'Offline-first-drift med automatisk Google Drive-synkronisering; fuldt lokaliseret dansk brugerflade.',
+      ] },
+      { heading: 'Teknologier & metoder', body: 'React, TypeScript, Vite; PGlite (PostgreSQL i browseren); Google Drive API og OAuth 2.0 til synkronisering og autentificering; Recharts til visualisering; Vitest og Testing Library til en testsuite på 595+ tests.' },
+      { heading: 'Udfordringer', body: 'At forene offline-ændringer på tværs af enheder med en enkel, forudsigelig synkroniseringsmodel og holde browser-databasen performant, mens tilstanden bevares på tværs af sessioner.' },
+      { heading: 'Resultat', body: 'En feature-komplet, veltestet budget-app (595+ beståede tests), der dækker offline-lagring, cloud-synkronisering og budgettering over flere år.' },
+      { heading: 'Hvad det demonstrerer', body: 'Offline-first produkttænkning og end-to-end-levering — local-first data, brugerejet cloud-synkronisering, autentificering og en disciplineret automatiseret testsuite.' },
+    ],
+  },
+  {
+    id: 'thermal-anomaly',
+    title: 'Anomalidetektion i termiske overvågningsvideoer — syntetiske data til forebyggelse af drukneulykker',
+    type: 'MSc-speciale · Computer Vision · Anomalidetektion',
+    icon: 'vision',
+    summary:
+      'Et computer vision-forskningsprojekt, der detekterer drukne-relaterede anomalier i termisk overvågningsmateriale ved hjælp af convolutional autoencoders og CycleGAN-genererede syntetiske data for at forbedre anomalidetektion i scenarier fra Aalborg Havn.',
+    image: null,
+    imageAlt: 'Placeholder-visualisering af billeder fra termisk overvågningsvideo med fremhævede anomalier',
+    tech: ['Convolutional Autoencoder', 'CycleGAN', 'Synthetic Data', 'Thermal Surveillance', 'Anomaly Detection', 'Computer Vision', 'ROC-AUC / PR-AUC Evaluation', 'Deep Learning'],
+    sections: [
+      { heading: 'Problem', body: [
+        'Drukneulykker i Aalborg Havn er fortsat et alvorligt, uløst sikkerhedsproblem. Mellem 2001 og 2014 druknede 390 mennesker i Aalborg Havn, og ofre kan ofte ikke opdages eller reddes i tide.',
+        'Termisk overvågning rummer potentiale, men virkelige anomalidata er begrænsede, vanskelige at indsamle og inkonsistente på tværs af lys-, temperatur- og miljøforhold.',
+      ] },
+      { heading: 'Mål', body: 'Byg og evaluér en anomalidetektions-tilgang til termiske overvågningsvideoer, der kan identificere unormale hændelser — såsom en person eller mannequin i vandet — samtidig med at det undersøges, om syntetiske og CycleGAN-genererede billeder kan forbedre modellens performance.' },
+      { heading: 'Teknisk tilgang', body: [
+        'Udviklede en convolutional autoencoder trænet til at rekonstruere normale termiske overvågningsbilleder og brugte rekonstruktionsfejlen til at detektere unormale scener.',
+        'Skabte flere eksperimentelle konfigurationer med rigtige termiske billeder, syntetiske normale data og anomalidata, mannequin-anomalidata og CycleGAN-genererede style-transfer-billeder.',
+        'Brugte CycleGAN til at overføre visuel stil mellem syntetiske og rigtige termiske domæner, med to generatorer og to diskriminatorer trænet med adversarial loss og forward/backward cycle-consistency loss.',
+        'Evaluerede modellens performance på tværs af flere trænings- og testopsætninger med ROC-AUC, precision-recall-kurver, confusion matrices, catplots og sammenligninger af originale og rekonstruerede billeder.',
+      ] },
+      { heading: 'Min rolle', body: 'Specialeforsker og udvikler — designede anomalidetektions-pipelinen, klargjorde datasæt, trænede og evaluerede convolutional autoencoder-modeller, eksperimenterede med CycleGAN-genererede data og analyserede afvejningerne mellem rigtige, syntetiske og style-transfer-termiske billeder.' },
+      { heading: 'Funktioner', body: [
+        'Anomalidetektion i termisk video med rekonstruktionsbaseret deep learning.',
+        'Flere datasæt-konfigurationer, der kombinerer rigtige normale data, syntetiske normale data, syntetiske anomalier, varme-temperatur-billeder, dagslysbilleder, mannequin-anomalier og CycleGAN-genererede billeder.',
+        'CycleGAN style-transfer-eksperimenter til at generere mere realistiske syntetiske termiske billeder.',
+        'Modelsammenligning med ROC-AUC, precision-recall-metrikker, confusion matrices og rekonstruktionsvisualiseringer.',
+        'Fokuseret anvendelseskontekst: druknedetektion og havnesikkerhed.',
+      ] },
+      { heading: 'Teknologier & metoder', body: 'Convolutional autoencoder til anomalidetektion; CycleGAN til style transfer fra syntetiske til rigtige termiske billeder; adversarial learning; cycle-consistency loss; klassifikation baseret på rekonstruktionsfejl; ROC-AUC- og precision-recall-evaluering; termiske overvågningsdatasæt; eksperimenter med rigtige og syntetiske billeder.' },
+      { heading: 'Udfordringer', body: [
+        'Virkelige anomalidata var begrænsede, hvilket gjorde det svært at træne og evaluere modeller under realistiske forhold.',
+        'Rent syntetiske træningsdata gav stærke resultater i kontrollerede opsætninger, men repræsenterede ikke fuldt ud den virkelige overvågnings kompleksitet.',
+        'At kombinere syntetiske og rigtige data forbedrede ikke altid klassifikations-performancen, hvilket viste, at kvaliteten af de syntetiske data og domæne-alignment var afgørende.',
+        'CycleGAN-genererede billeder krævede omhyggelig filtrering, da dårligt genererede billeder kunne reducere modellens pålidelighed i stedet for at forbedre den.',
+      ] },
+      { heading: 'Resultat', body: [
+        'Flere modelkonfigurationer blev testet, hvor det stærkeste ROC-AUC-resultat nåede 0,9881, når træningen inkluderede rigtige normale data og dagslysbilleder.',
+        'Eksperimenterne viste, at træning baseret på rigtige data generelt klarede sig bedre end simple kombinationer af rigtige og syntetiske data, mens CycleGAN havde potentiale, men krævede bedre billedkvalitet og mere omhyggeligt designede konfigurationer.',
+      ] },
+      { heading: 'Hvad det demonstrerer', body: 'Anvendt machine learning-forskning med et reelt sikkerhedsmål — anomalidetektion, termisk computer vision, generering af syntetiske data, modelevaluering og kritisk analyse af, hvornår syntetiske data hjælper eller skader performancen.' },
+    ],
+  },
+  {
+    id: 'iot-auth',
+    title: 'Autentificering i cloud-baserede IoT-systemer — sikker adgang til enhedsdata',
+    type: 'Bachelorprojekt · Sikkerhed · Cloud · IoT',
+    icon: 'security',
+    summary:
+      'Et cloud-baseret IoT-autentificerings- og autorisationssystem designet til at forenkle adgangen til sensordata, centralisere enhedsstyring og give brugere sikker adgang til kun de data, de har tilladelse til at se.',
+    image: null,
+    imageAlt: 'Placeholder-diagram af cloud-baserede IoT-enheder, der forbinder gennem et autentificeringslag',
+    tech: ['Node.js', 'OAuth 2.0', 'MongoDB', 'GraphQL', 'React', 'IoT', 'The Things Network', 'Authentication & Authorization'],
+    sections: [
+      { heading: 'Problem', body: [
+        'IoT-platforme som The Things Network kan allerede håndtere enheder og data, men de kræver ofte teknisk viden fra brugeren.',
+        'For ikke-tekniske brugere — såsom landmænd, der blot skal se fugtigheds- og temperaturdata fra flere enheder — kan det at oprette konti, styre enheder, håndtere applikationer og navigere direkte i TTN være overvældende.',
+      ] },
+      { heading: 'Mål', body: [
+        'Byg en privat server, der autentificerer og autoriserer brugere og gør adgang til IoT-data enklere, mere sikker og lettere at administrere.',
+        'Systemet skal lade almindelige brugere se kun deres egne enhedsdata, mens systemvedligeholdere kan administrere brugere, enheder og data på tværs af platformen.',
+      ] },
+      { heading: 'Teknisk tilgang', body: [
+        'Designede et privat serverlag mellem brugere og The Things Network for at centralisere autentificering, autorisation og adgang til enhedsdata.',
+        'Planlagde OAuth 2.0-autentificering, hvor brugere bytter gyldige credentials til access tokens, med forskellige tilladelsesniveauer for almindelige brugere og systemvedligeholdere.',
+        'Foreslog Node.js som backend-runtime for at understøtte skalerbar server-side JavaScript-udvikling og reducere fremtidige performance-flaskehalse.',
+        'Brugte MongoDB som en fleksibel NoSQL-database til at lagre dynamiske IoT-enhedsregistreringer, da forskellige enheder kan producere forskellige felter og datastrukturer.',
+        'Designede GraphQL som API-laget for at reducere over-fetching og erstatte mange traditionelle REST-endpoints med ét enkelt søgbart endpoint.',
+        'Planlagde en React-baseret webklient, så brugere kan logge ind og kun se de IoT-data, der er relevante for dem, gennem en enkel browser-grænseflade.',
+      ] },
+      { heading: 'Min rolle', body: 'Systemdesigner og udvikler — definerede arkitekturen for autentificering, autorisation, datalagring, API-design og den brugervendte webklient til en cloud-baseret IoT-dataplatform.' },
+      { heading: 'Funktioner', body: [
+        'Brugerautentificering via OAuth 2.0.',
+        'Rollebaseret autorisation for almindelige brugere og systemvedligeholdere.',
+        'Centraliseret adgang til IoT-data gennem en privat server.',
+        'MongoDB-baseret lagring til fleksible enhedsregistreringer med dynamiske skemaer.',
+        'GraphQL-endpoint til effektive klientforespørgsler og reduceret over-fetching.',
+        'React-webklient til enkel login og datavisualisering.',
+        'Mulig automatisering af TTN-enhedsregistrering og kobling mellem bruger og enhed.',
+      ] },
+      { heading: 'Teknologier & metoder', body: 'Node.js til backend-udvikling; OAuth 2.0 til sikker autentificering; MongoDB til NoSQL-datalagring; GraphQL til effektive API-forespørgsler; React til webklienten; The Things Network til IoT-enhedsforbindelse og sensordata.' },
+      { heading: 'Udfordringer', body: [
+        'Den største udfordring var at reducere den tekniske kompleksitet for slutbrugere, samtidig med at sikker adgangskontrol blev bevaret.',
+        'En anden udfordring var at designe en datamodel, der var fleksibel nok til forskellige IoT-enheder, da sensorregistreringer ikke nødvendigvis følger ét fast skema.',
+        'Systemet havde også brug for et renere alternativ til direkte TTN-adgang, så vedligeholdere kunne styre brugere, tilladelser og enhedsdata fra ét centraliseret lag.',
+      ] },
+      { heading: 'Resultat', body: [
+        'Projektet foreslog en sikker og skalerbar arkitektur til cloud-baseret IoT-autentificering, hvor brugere kan tilgå sensordata gennem en forenklet webklient i stedet for at administrere enheder direkte i TTN.',
+        'Designet forbedrer brugervenligheden for ikke-tekniske brugere og giver samtidig systemvedligeholdere stærkere kontrol over autentificering, autorisation og styring af enhedsdata.',
+      ] },
+      { heading: 'Hvad det demonstrerer', body: 'Backend-arkitektur, design af cloud-baserede IoT-systemer, autentificering og autorisation, API-design, NoSQL-datamodellering og brugercentreret tænkning til at forenkle tekniske platforme.' },
+    ],
+  },
+  {
+    id: 'mobile-xamarin',
+    title: 'Cross-platform mobilapplikationsudvikling',
+    type: 'Professionel erfaring · Accenture',
+    icon: 'mobile',
+    summary:
+      'Videreudviklede en cross-platform app til kilometerregistrering for en kunde — en C#/Xamarin-mobilapp med et interaktivt kort og navigation, understøttet af en ASP.NET Core-backend, leveret i agile sprints.',
+    image: null,
+    imageAlt: 'Placeholder-mockup af en cross-platform mobilapplikation på telefon og tablet',
+    tech: ['C#', 'Xamarin', 'ASP.NET Core', 'REST API', 'Maps & Navigation', 'Agile'],
+    sections: [
+      { heading: 'Kontekst', body: 'Arbejdede som applikationsudvikler hos Accenture og videreudviklede en cross-platform mobilapp for en kunde. Appen lod medarbejdere registrere de kilometer, de kørte under kundebesøg, og kombinerede et interaktivt kort med navigation i frontenden med en ASP.NET Core-backend.' },
+      { heading: 'Ansvarsområder', body: [
+        'Byggede mobile features med C# og Xamarin, herunder et interaktivt kort med navigation til registrering af kørte afstande.',
+        'Udviklede og vedligeholdt ASP.NET Core-backenden og de REST-API’er, der drev appen.',
+        'Fejlfandt problemer, optimerede performance og bidrog inden for agil levering.',
+      ] },
+      { heading: 'Teknisk stak', body: 'C# og Xamarin på klienten; en ASP.NET Core-backend, der eksponerer REST-API’er; interaktive kort med navigation; samt almindelige værktøjer til mobil fejlfinding og profilering.' },
+      { heading: 'Samarbejde', body: 'Arbejdede sammen med design- og backend-teams om at afstemme UI-adfærd, datakontrakter og levering inden for sprint-cyklusser.' },
+      { heading: 'Test & optimering', body: 'Fejlfinding, performance-optimering og test for at holde applikationerne stabile på tværs af enheder.' },
+      { heading: 'Hvad det demonstrerer', body: 'Full-stack-levering af en rigtig kunde-app — en cross-platform mobil frontend og en ASP.NET Core-backend — i et professionelt agilt team.' },
+    ],
+  },
+];
+
+const en: Project[] = [
   {
     id: 'vild-pluk',
     title: 'Vild Pluk — Wild Fruit Foraging Map for Denmark',
@@ -229,3 +415,5 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export const projectsContent: Record<Lang, Project[]> = { da, en };

@@ -1,13 +1,17 @@
-import { snapshots } from '../data/about';
+import { snapshotsContent } from '../data/about';
 import { Card } from './ui/Card';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Snapshot() {
+  const { lang } = useLanguage();
+  const snapshots = snapshotsContent[lang];
   return (
     <section id="snapshot" aria-labelledby="snapshot-heading" className="pb-8">
       <div className="container">
         <h2 id="snapshot-heading" className="sr-only">
-          Professional snapshot
+          {uiStrings[lang].sections.snapshot.srHeading}
         </h2>
         <StaggerGroup className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {snapshots.map((s, i) => {

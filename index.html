@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="da">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <!-- ===== SEO ===== -->
-    <title>Duran Köse — Software Engineer & Full-Stack Developer | MSc DTU</title>
+    <title>Duran Köse — Softwareingeniør & Full-Stack-udvikler | MSc DTU</title>
     <meta
       name="description"
-      content="MSc Software Technology engineer (DTU) working across full-stack, mobile, enterprise/SAP systems, authentication, and integration. Based in Taastrup, Denmark."
+      content="Softwareingeniør med MSc i Software Technology (DTU) — arbejder med full-stack, mobil, enterprise/SAP-systemer, autentificering og integration. Bosat i Taastrup, Danmark."
     />
     <meta name="author" content="Duran Köse" />
     <meta name="theme-color" content="#090D12" />
@@ -21,27 +21,27 @@
 
     <!-- ===== Open Graph ===== -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Duran Köse — Software Engineer & SAP/Enterprise Consultant" />
+    <meta property="og:title" content="Duran Köse — Softwareingeniør & SAP-/Enterprise-konsulent" />
     <meta
       property="og:description"
-      content="Full-stack engineering with enterprise discipline — projects in computer vision, IoT security, system integration, and mobile."
+      content="Full-stack-udvikling med enterprise-disciplin — projekter inden for computer vision, IoT-sikkerhed, systemintegration og mobil."
     />
     <meta property="og:url" content="https://dukocuk.github.io/portfolio/" />
     <meta property="og:image" content="https://dukocuk.github.io/portfolio/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="Duran Köse — Software Engineer & Full-Stack Developer" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:image:alt" content="Duran Köse — Softwareingeniør & Full-Stack-udvikler" />
+    <meta property="og:locale" content="da_DK" />
 
     <!-- ===== Twitter ===== -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Duran Köse — Software Engineer & SAP/Enterprise Consultant" />
+    <meta name="twitter:title" content="Duran Köse — Softwareingeniør & SAP-/Enterprise-konsulent" />
     <meta
       name="twitter:description"
-      content="Full-stack engineering with enterprise discipline — projects in computer vision, IoT security, system integration, and mobile."
+      content="Full-stack-udvikling med enterprise-disciplin — projekter inden for computer vision, IoT-sikkerhed, systemintegration og mobil."
     />
     <meta name="twitter:image" content="https://dukocuk.github.io/portfolio/og-image.png" />
-    <meta name="twitter:image:alt" content="Duran Köse — Software Engineer & Full-Stack Developer" />
+    <meta name="twitter:image:alt" content="Duran Köse — Softwareingeniør & Full-Stack-udvikler" />
 
     <!-- ===== Structured data ===== -->
     <script type="application/ld+json">
@@ -74,6 +74,16 @@
             window.matchMedia('(prefers-color-scheme: light)').matches;
           var theme = saved || (prefersLight ? 'light' : 'dark');
           if (theme === 'light') document.documentElement.classList.add('light');
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Apply saved language before paint so <html lang> matches the chosen language -->
+    <script>
+      (function () {
+        try {
+          var lang = localStorage.getItem('lang');
+          if (lang === 'da' || lang === 'en') document.documentElement.lang = lang;
         } catch (e) {}
       })();
     </script>

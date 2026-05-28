@@ -1,16 +1,21 @@
-import { projects } from '../data/projects';
+import { projectsContent } from '../data/projects';
 import { ProjectCard } from './ProjectCard';
 import { Section } from './Section';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Projects() {
+  const { lang } = useLanguage();
+  const projects = projectsContent[lang];
+  const ui = uiStrings[lang].sections.projects;
   return (
     <Section
       id="projects"
       index="02"
-      eyebrow="Featured Projects"
-      title="Selected case studies"
-      intro="Academic and professional work, framed as case studies. Each expands into problem, approach, role, and what it demonstrates."
+      eyebrow={ui.eyebrow}
+      title={ui.title}
+      intro={ui.intro}
     >
       <StaggerGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {projects.map((p, i) => (

@@ -1,11 +1,16 @@
-import { education } from '../data/education';
+import { educationContent } from '../data/education';
 import { Section } from './Section';
 import { Card } from './ui/Card';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Education() {
+  const { lang } = useLanguage();
+  const education = educationContent[lang];
+  const ui = uiStrings[lang].sections.education;
   return (
-    <Section id="education" index="05" eyebrow="Education" title="Academic foundation">
+    <Section id="education" index="05" eyebrow={ui.eyebrow} title={ui.title}>
       <StaggerGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {education.map((e) => (
           <StaggerItem key={e.degree}>

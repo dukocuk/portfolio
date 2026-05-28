@@ -1,11 +1,16 @@
-import { philosophy } from '../data/about';
+import { philosophyContent } from '../data/about';
 import { Section } from './Section';
 import { Card } from './ui/Card';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Philosophy() {
+  const { lang } = useLanguage();
+  const philosophy = philosophyContent[lang];
+  const ui = uiStrings[lang].sections.philosophy;
   return (
-    <Section id="philosophy" index="07" eyebrow="Work Philosophy" title="How I work">
+    <Section id="philosophy" index="07" eyebrow={ui.eyebrow} title={ui.title}>
       <StaggerGroup className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {philosophy.points.map((p, i) =>
           i === 0 ? (

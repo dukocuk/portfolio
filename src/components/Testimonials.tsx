@@ -1,16 +1,21 @@
-import { testimonials } from '../data/testimonials';
+import { testimonialsContent } from '../data/testimonials';
 import { Section } from './Section';
 import { Card } from './ui/Card';
 import { StaggerGroup, StaggerItem } from './ui/Stagger';
+import { useLanguage } from '../i18n/LanguageContext';
+import { uiStrings } from '../i18n/ui';
 
 export function Testimonials() {
+  const { lang } = useLanguage();
+  const testimonials = testimonialsContent[lang];
+  const ui = uiStrings[lang].sections.testimonials;
   return (
     <Section
       id="testimonials"
       index="07"
-      eyebrow="Testimonials"
-      title="What others say"
-      intro="A few words from colleagues, mentors, and the teams I've worked with."
+      eyebrow={ui.eyebrow}
+      title={ui.title}
+      intro={ui.intro}
     >
       <StaggerGroup className="grid gap-4 sm:grid-cols-2">
         {testimonials.map((t, i) => (
