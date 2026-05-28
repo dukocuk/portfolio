@@ -436,7 +436,7 @@ sections: [
 },
 {
   "id": "smartboiz",
-  "title": "SmartBoiz / SugarCoded - Gør kodning mere attraktiv end joystick-leg",
+  "title": "SmartGurlz - Gør kodning mere attraktiv end joystick-leg",
   "type": "Personligt projekt · UX-research · Læringsteknologi",
   "icon": "mobile",
   "summary": "Et børnecentreret redesignkoncept for SmartGurlz/Siggy-appen, hvor programmering bliver den primære og mest attraktive måde at lege med produktet på. Projektet kombinerer feltobservationer, interviewspørgsmål til børn og forældre, en forenklet brugerflade, en interaktiv kodningsvejledning og gamification, så børn kan lære kodning gennem legende interaktion med robotten.",
@@ -1005,7 +1005,7 @@ const en: Project[] = [
   },
   {
   "id": "smartboiz",
-  "title": "SmartBoiz / SugarCoded — Making Coding More Appealing Than Joystick Play",
+  "title": "SmartGurlz — Making Coding More Appealing Than Joystick Play",
   "type": "Personal Project · UX Research · Educational Technology",
   "icon": "mobile",
   "summary": "A child-centered redesign concept for the SmartGurlz/Siggy app that makes programming the main attraction instead of a hidden secondary feature. The project combines field observations, child and parent interview prompts, a simplified interface, an interactive coding tutorial, and gamification to help children learn coding through playful robot interaction.",
