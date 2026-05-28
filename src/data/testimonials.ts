@@ -21,7 +21,7 @@ export const testimonialsContent: Record<Lang, Testimonial[]> = {
     {
       quote:
         'Duran bidrog væsentligt til projektets succes ved at arbejde selvstændigt, samarbejde tæt med backend-teamet og kommunikere effektivt med kunden.',
-      author: 'Accenture A/S, Denmark',
+      author: 'Accenture A/S, Danmark',
     },
   ],
   en: [

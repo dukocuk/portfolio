@@ -19,7 +19,7 @@ export function Testimonials() {
     >
       <StaggerGroup className="grid gap-4 sm:grid-cols-2">
         {testimonials.map((t, i) => (
-          <StaggerItem key={`${t.author}-${i}`}>
+          <StaggerItem key={i}>
             <Card hover className="flex h-full flex-col">
               <figure className="flex h-full flex-col border-l-2 border-accent/40 pl-4">
                 <blockquote className="flex-1 text-lg leading-relaxed text-muted">
