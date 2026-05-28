@@ -379,7 +379,7 @@ const da: Project[] = [
   {
 id: 'copenhagen-industries',
 title: 'Copenhagen Industries — Bluetooth-styring af rekvisitvåben til filmproduktion',
-type: 'Studieprojekt · Android · Bluetooth · UX-design · Safety-Critical Interface',
+type: 'Personligt projekt · Android · Bluetooth · UX-design · Safety-Critical Interface',
 icon: 'mobile',
 summary:
 'En Android-applikation udviklet til Copenhagen Industries, der gør det muligt at forbinde til, overvåge og styre rekvisitvåben på et filmsæt via Bluetooth. Appen gør det muligt for special effects- eller stuntkoordinatorer at armere og desarmere våben, overvåge batteri-, oxygen- og propanniveauer samt justere skydeindstillinger direkte fra en mobil enhed.',
@@ -434,6 +434,101 @@ sections: [
 { heading: 'Hvad det demonstrerer', body: 'End-to-end Android-produktudvikling med fokus på Bluetooth-kommunikation, sikkerhedsorienteret UX, brugercentreret design, praktisk kundesamarbejde og systematisk test på rigtige enheder. Projektet demonstrerer evnen til at omsætte et konkret industriproblem til en funktionel mobil løsning, hvor både teknisk implementering og virkelige brugerflows blev tænkt ind fra starten.' },
 ],
 },
+{
+  "id": "smartboiz",
+  "title": "SmartBoiz / SugarCoded - Gør kodning mere attraktiv end joystick-leg",
+  "type": "Personligt projekt · UX-research · Læringsteknologi",
+  "icon": "mobile",
+  "summary": "Et børnecentreret redesignkoncept for SmartGurlz/Siggy-appen, hvor programmering bliver den primære og mest attraktive måde at lege med produktet på. Projektet kombinerer feltobservationer, interviewspørgsmål til børn og forældre, en forenklet brugerflade, en interaktiv kodningsvejledning og gamification, så børn kan lære kodning gennem legende interaktion med robotten.",
+  "tech": [
+    "UX-research",
+    "Feltstudie",
+    "Børnecentreret design",
+    "Læringsteknologi",
+    "Interaktiv tutorial",
+    "Gamification",
+    "Scratch-lignende kodeblokke",
+    "Mobilapp-prototyping",
+    "Interface redesign",
+    "Brugertest"
+  ],
+  "sections": [
+    {
+      "heading": "Problem",
+      "body": [
+        "SmartGurlz er attraktivt for forældre, fordi produktet lover, at børn kan lære at kode, men den eksisterende appoplevelse fik programmering til at virke som en sekundær funktion i forhold til fri kørsel med joystick.",
+        "Under test endte brugerne ofte med at ignorere kodningsdelen og kørte i stedet Siggy tilfældigt rundt med joystick eller brugte de mere simple værktøjer til at tegne en rute.",
+        "Børnene havde svært ved appens hovedmenu, fordi valgmulighederne primært var baseret på symboler uden tydelige labels. Derfor måtte de gætte sig frem til, hvad de forskellige aktiviteter betød."
+      ]
+    },
+    {
+      "heading": "Mål",
+      "body": "Redesigne appoplevelsen, så kodning bliver den mest tiltrækkende og forståelige måde at interagere med Siggy på, samtidig med at produktets legende appel for børn bevares."
+    },
+    {
+      "heading": "Researchtilgang",
+      "body": [
+        "Observerede børn, der brugte Siggy under et feltstudie på Ballerup Bibliotek, for at forstå om de foretrak joystick-styring frem for programmering, og om brugerfladen var let at navigere i.",
+        "Brugte interviewspørgsmål til børn om legevaner, samarbejde, legetøj, tabletbrug og yndlingsaktiviteter for at forstå, hvordan børn normalt leger og lærer.",
+        "Brugte interviewspørgsmål til forældre om valg af legetøj, læringspotentiale, undervisningslegetøj, digitale spil, fysisk legetøj og om legetøj bør kunne undervise barnet selvstændigt."
+      ]
+    },
+    {
+      "heading": "Løsning",
+      "body": [
+        "Introducere en interaktiv kodningstutorial med stemme og animation, som guider nye brugere gennem en simpel første mission.",
+        "Bruge farvekodede, Scratch-lignende kodeblokke, så børn straks oplever kodning som den centrale interaktion og ikke som en skjult avanceret funktion.",
+        "Forenkle brugerfladen i tydelige sektioner med klare valgmuligheder som Play, Drive og Story Time, så forvirringen fra abstrakte menuikoner reduceres.",
+        "Tilføje gamification gennem point, levels, belønninger, oplåselige kodeblokke og positiv feedback efter gennemførte kodningsudfordringer."
+      ]
+    },
+    {
+      "heading": "Min rolle",
+      "body": "Projektbidrager i en UX- og innovationsproces. Jeg var med til at identificere misforholdet mellem produktets læringsløfte og brugernes faktiske adfærd, støtte feltresearch, analysere brugerbehov og udvikle et prototypekoncept med fokus på tutorialbaseret kodning, gamification og tydeligere navigation."
+    },
+    {
+      "heading": "Funktioner",
+      "body": [
+        "Startskærm med en stor play-knap, der gør det let for børn at komme i gang med appen.",
+        "Guidet onboarding-mission, hvor børn lærer kodning gennem direkte interaktion med Siggy.",
+        "Drag-and-drop kodningsinterface med et tydeligt arbejdsområde og legende kommandonavne.",
+        "Tredelt navigationsstruktur, der adskiller kodning, kørsel og historiebaserede aktiviteter.",
+        "Belønningsskærm, der fejrer fremskridt og styrker barnets oplevelse af kodningssucces.",
+        "Lydguidet oplevelse, der fungerer godt med earbuds."
+      ]
+    },
+    {
+      "heading": "Designbeslutninger",
+      "body": [
+        "Kodning placeres visuelt og funktionelt foran joystick-leg, så den læringsmæssige værdi bliver sværere at overse.",
+        "Brugerfladen får tydeligere labels og færre tvetydige symboler, fordi børnene i testen havde svært ved at forstå menufunktioner ud fra ikoner alene.",
+        "Tutorialen starter med en lille kodningsmission i stedet for en passiv forklaring, fordi børnene havde brug for støtte til at komme i gang med programmering.",
+        "Belønninger og positiv feedback bruges til at få kodningsfremskridt til at føles lige så legende som fri kørsel."
+      ]
+    },
+    {
+      "heading": "Udfordringer",
+      "body": [
+        "Børnene søgte naturligt mod den nemmeste og mest umiddelbart legende interaktion, nemlig joystick-styring frem for programmering.",
+        "Den oprindelige apps abstrakte ikonbaserede navigation skabte forvirring og mindskede sandsynligheden for, at børn selv ville finde kodningsaktiviteten.",
+        "Programmeringsopgaverne skulle forenkles uden at fjerne følelsen af kreativitet og kontrol.",
+        "Redesignet skulle fungere for både børn, der ønsker legende interaktion, og forældre, der lægger vægt på læringspotentiale."
+      ]
+    },
+    {
+      "heading": "Resultat",
+      "body": [
+        "Det foreslåede prototypekoncept gentænker appen omkring tutorialstyret kodning, enklere navigation og spilbaserede belønninger.",
+        "Konceptet gør kodning synligt fra første interaktion og giver børn en guidet vej ind i programmering, før de falder tilbage til kun at bruge joystick."
+      ]
+    },
+    {
+      "heading": "Hvad projektet viser",
+      "body": "UX-research og produktinnovation inden for læringsteknologi til børn. Projektet viser, hvordan feltobservationer og interviewindsigter kan omsættes til en prototype, der bedre forbinder legende interaktion med læringsmål."
+    }
+  ]
+}
+
 ];
 
 const en: Project[] = [
@@ -810,7 +905,7 @@ const en: Project[] = [
   {
     id: "copenhagen-industries",
     title: "Copenhagen Industries — Bluetooth Control for Film Prop Weapons",
-    type: "Student Project · Android · Bluetooth · UX Design · Safety-Critical Interface",
+    type: "Personal Project · Android · Bluetooth · UX Design · Safety-Critical Interface",
     icon: "mobile",
     summary:
       "An Android application developed for Copenhagen Industries that allows users to connect to, monitor, and control prop weapons on a film set via Bluetooth. The app enables special effects or stunt coordinators to arm and disarm weapons, monitor battery, oxygen, and propane levels, and adjust firing settings directly from a mobile device.",
@@ -908,6 +1003,100 @@ const en: Project[] = [
       },
     ],
   },
+  {
+  "id": "smartboiz",
+  "title": "SmartBoiz / SugarCoded — Making Coding More Appealing Than Joystick Play",
+  "type": "Personal Project · UX Research · Educational Technology",
+  "icon": "mobile",
+  "summary": "A child-centered redesign concept for the SmartGurlz/Siggy app that makes programming the main attraction instead of a hidden secondary feature. The project combines field observations, child and parent interview prompts, a simplified interface, an interactive coding tutorial, and gamification to help children learn coding through playful robot interaction.",
+  "tech": [
+    "UX Research",
+    "Field Study",
+    "Child-Centered Design",
+    "Educational Technology",
+    "Interactive Tutorial",
+    "Gamification",
+    "Scratch-Style Coding Blocks",
+    "Mobile App Prototyping",
+    "Interface Redesign",
+    "User Testing"
+  ],
+  "sections": [
+    {
+      "heading": "Problem",
+      "body": [
+        "SmartGurlz is attractive to parents because it promises that children can learn how to code, but the existing app experience made programming feel secondary to free driving with the joystick.",
+        "During testing, users often ignored the coding part and instead drove Siggy randomly with the joystick or used simpler path-drawing tools.",
+        "Children struggled with the app's main menu because the options were symbol-based and not clearly labelled, forcing them to guess what each activity meant."
+      ]
+    },
+    {
+      "heading": "Goal",
+      "body": "Redesign the app experience so coding becomes the most appealing and understandable way to interact with Siggy, while preserving the playful qualities that make the product attractive to children."
+    },
+    {
+      "heading": "Research approach",
+      "body": [
+        "Observed children using Siggy during a field study at Ballerup public library to understand whether they preferred joystick control over programming and whether the interface was easy to navigate.",
+        "Used child interview questions about play habits, collaboration, toys, tablet use, and favorite activities to understand how children normally play and learn.",
+        "Used parent interview questions about toy selection, learning potential, educational toys, digital games, physical toys, and whether toys should teach children independently."
+      ]
+    },
+    {
+      "heading": "Solution",
+      "body": [
+        "Introduce an interactive coding tutorial with voice and animation that guides new users through a simple first mission.",
+        "Use color-coded, Scratch-style coding blocks so children can immediately see coding as the core interaction rather than an advanced hidden feature.",
+        "Simplify the interface into clear sections with obvious options such as Play, Drive, and Story Time, reducing confusion caused by abstract menu icons.",
+        "Add gamification through points, levels, rewards, unlockable coding blocks, and positive feedback after completed coding challenges."
+      ]
+    },
+    {
+      "heading": "My role",
+      "body": "Project contributor in a UX and innovation process — helped identify the mismatch between the product's educational promise and the actual user behavior, supported field research, analyzed user needs, and contributed to a prototype concept focused on tutorial-based coding, gamification, and clearer navigation."
+    },
+    {
+      "heading": "Features",
+      "body": [
+        "Start screen with a large play button to make entry into the app simple for children.",
+        "Guided onboarding mission that teaches coding through immediate interaction with Siggy.",
+        "Drag-and-drop block coding interface with a clear working area and playful command names.",
+        "Three-part navigation structure that separates coding, driving, and story-based activities.",
+        "Reward screen that celebrates progress and reinforces coding achievements.",
+        "Audio-guided experience intended to work well with earbuds."
+      ]
+    },
+    {
+      "heading": "Design decisions",
+      "body": [
+        "Coding is placed visually and functionally ahead of joystick play so the educational value is harder to ignore.",
+        "The interface uses clearer labels and fewer ambiguous symbols because children in testing had trouble deducing menu functions from icons alone.",
+        "The tutorial starts with a small coding mission instead of a passive explanation, because children needed support getting started with programming.",
+        "Rewards and positive feedback are used to make coding progress feel as playful as free driving."
+      ]
+    },
+    {
+      "heading": "Challenges",
+      "body": [
+        "Children naturally gravitated toward the easiest and most immediately playful interaction, which was joystick driving rather than programming.",
+        "The original app's abstract icon-based navigation caused confusion and reduced the chance that children would discover the coding activity on their own.",
+        "Programming tasks needed to be simplified without removing the feeling of creativity and control.",
+        "The redesign had to satisfy both children, who want playful interaction, and parents, who value educational potential."
+      ]
+    },
+    {
+      "heading": "Outcome",
+      "body": [
+        "The proposed prototype reframes the app around tutorial-led coding, simplified navigation, and game-like rewards.",
+        "The concept makes coding visible from the first interaction and gives children a guided path into programming before they fall back into joystick-only play."
+      ]
+    },
+    {
+      "heading": "What it demonstrates",
+      "body": "UX research and product innovation for children's educational technology — turning field observations and interview insights into a prototype that better aligns playful interaction with learning goals."
+    }
+  ]
+}
 ];
 
 for (const p of da)
