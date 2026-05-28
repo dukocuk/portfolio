@@ -32,9 +32,9 @@ export function Timeline() {
           whileInView={reduced ? undefined : 'visible'}
           viewport={viewportOnce}
         >
-          {experience.map((job) => (
+          {experience.map((job, i) => (
             <motion.li
-              key={`${job.org}-${job.period}`}
+              key={i}
               className="relative"
               variants={reduced ? undefined : staggerItem}
             >

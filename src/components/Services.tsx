@@ -19,7 +19,7 @@ export function Services() {
     >
       <StaggerGroup className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {services.map((s, i) => (
-          <StaggerItem key={s.title} className={i === 0 ? 'col-span-2' : ''}>
+          <StaggerItem key={i} className={i === 0 ? 'col-span-2' : ''}>
             <Card hover className="flex h-full flex-col">
               <h3 className="font-semibold">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{s.body}</p>

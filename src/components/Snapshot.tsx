@@ -17,7 +17,7 @@ export function Snapshot() {
           {snapshots.map((s, i) => {
             const wide = i === 0 || i === snapshots.length - 1;
             return (
-              <StaggerItem key={s.label} className={wide ? 'col-span-2' : ''}>
+              <StaggerItem key={i} className={wide ? 'col-span-2' : ''}>
                 <Card hover className="h-full">
                   <h3 className="font-semibold">{s.label}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-muted">{s.detail}</p>

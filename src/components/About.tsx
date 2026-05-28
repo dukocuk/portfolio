@@ -19,7 +19,7 @@ export function About() {
       <p className="mt-6 text-sm text-muted/60">
         <span className="font-medium text-muted">{ui.about.languagesLabel}</span>{' '}
         {languages.map((l, i) => (
-          <span key={l.name}>
+          <span key={i}>
             {l.name} <span className="text-muted/40">({l.level})</span>
             {i < languages.length - 1 && ' · '}
           </span>

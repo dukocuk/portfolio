@@ -65,8 +65,8 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
               className="overflow-hidden"
             >
               <div className="mt-5 space-y-4 border-t border-border pt-5">
-                {project.sections.map((s) => (
-                  <div key={s.heading}>
+                {project.sections.map((s, i) => (
+                  <div key={i}>
                     <dt className="text-sm font-semibold text-text">{s.heading}</dt>
                     <dd className="mt-1 text-sm leading-relaxed text-muted">
                       {Array.isArray(s.body) ? (

@@ -12,8 +12,8 @@ export function Education() {
   return (
     <Section id="education" index="05" eyebrow={ui.eyebrow} title={ui.title}>
       <StaggerGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
-        {education.map((e) => (
-          <StaggerItem key={e.degree}>
+        {education.map((e, i) => (
+          <StaggerItem key={i}>
             <Card hover className="h-full">
               <p className="text-sm font-semibold text-accent">{e.period}</p>
               <h3 className="mt-1 font-display text-lg font-bold">{e.degree}</h3>

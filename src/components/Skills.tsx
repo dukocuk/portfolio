@@ -20,8 +20,8 @@ export function Skills() {
       intro={ui.intro}
     >
       <StaggerGroup className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {skillGroups.map((group) => (
-          <StaggerItem key={group.category} className={group.skills.length >= 7 ? 'col-span-2' : ''}>
+        {skillGroups.map((group, i) => (
+          <StaggerItem key={i} className={group.skills.length >= 7 ? 'col-span-2' : ''}>
             <Card hover className="h-full">
               <h3 className="text-[11px] font-medium uppercase tracking-widest text-muted/50">
                 {group.category}
@@ -38,8 +38,8 @@ export function Skills() {
           <Card className="h-full">
             <h3 className="text-[11px] font-medium uppercase tracking-widest text-muted/50">{ui.languagesCard}</h3>
             <ul className="mt-3 flex flex-wrap gap-x-8 gap-y-2 text-sm">
-              {languages.map((l) => (
-                <li key={l.name} className="text-muted">
+              {languages.map((l, i) => (
+                <li key={i} className="text-muted">
                   <span className="font-medium text-text">{l.name}</span> — {l.level}
                 </li>
               ))}
