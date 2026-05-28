@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { ProjectImage } from '../../data/projects';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { uiStrings } from '../../i18n/ui';
+import { prefetchImage } from '../../lib/prefetchImage';
 
 type Props = {
   images: ProjectImage[];
@@ -81,6 +82,12 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
     };
   }, [open]);
 
+  useEffect(() => {
+    if (!open || total <= 1) return;
+    prefetchImage(images[(index + 1) % total]?.src);
+    prefetchImage(images[(index - 1 + total) % total]?.src);
+  }, [open, index, images, total]);
+
   const current = images[index];
 
   if (typeof document === 'undefined') return null;
@@ -97,7 +104,7 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
           animate={reduced ? {} : { opacity: 1 }}
           exit={reduced ? {} : { opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-sm p-4 sm:p-8"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 sm:p-8"
           onClick={(e) => {
             if (e.target === e.currentTarget) onClose();
           }}
@@ -154,6 +161,7 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
               key={current.src}
               src={current.src}
               alt={current.alt}
+              decoding="async"
               initial={reduced ? false : { opacity: 0, scale: 0.98 }}
               animate={reduced ? {} : { opacity: 1, scale: 1 }}
               transition={{ duration: 0.2 }}

@@ -7,6 +7,7 @@ import { ImageGallery } from './ui/ImageGallery';
 import { Lightbox } from './ui/Lightbox';
 import { useLanguage } from '../i18n/LanguageContext';
 import { uiStrings } from '../i18n/ui';
+import { prefetchImage } from '../lib/prefetchImage';
 
 export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,9 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
         <button
           type="button"
           onClick={() => setLightboxIndex(0)}
+          onPointerEnter={() => prefetchImage(images[0].src)}
+          onFocus={() => prefetchImage(images[0].src)}
+          onTouchStart={() => prefetchImage(images[0].src)}
           aria-label={`${lightboxUi.open}: ${images[0].alt}`}
           className="relative aspect-[16/9] w-full overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent"
         >
@@ -35,6 +39,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
             width={1600}
             height={900}
             loading="lazy"
+            decoding="async"
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
         </button>

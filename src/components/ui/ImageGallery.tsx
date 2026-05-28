@@ -1,6 +1,7 @@
 import type { ProjectImage } from '../../data/projects';
 import { useLanguage } from '../../i18n/LanguageContext';
 import { uiStrings } from '../../i18n/ui';
+import { prefetchImage } from '../../lib/prefetchImage';
 
 type Props = {
   images: ProjectImage[];
@@ -18,18 +19,26 @@ export function ImageGallery({ images, onOpen }: Props) {
       {visible.map((image, i) => {
         const isOverlayTile = i === 1 && hiddenCount > 0;
         const label = isOverlayTile ? ui.moreAria(hiddenCount) : `${ui.open}: ${image.alt}`;
+        const warm = () => {
+          prefetchImage(image.src);
+          if (isOverlayTile) prefetchImage(images[2]?.src);
+        };
         return (
           <li key={image.src} className="shrink-0">
             <button
               type="button"
               onClick={() => onOpen(i)}
+              onPointerEnter={warm}
+              onFocus={warm}
+              onTouchStart={warm}
               aria-label={label}
               className="group relative block aspect-[16/9] h-24 overflow-hidden rounded-lg border border-border bg-surface-2 transition-all hover:border-accent/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:h-28"
             >
               <img
-                src={image.src}
+                src={image.thumb}
                 alt={image.alt}
                 loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
               {isOverlayTile && (

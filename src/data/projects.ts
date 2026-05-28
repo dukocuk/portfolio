@@ -12,7 +12,7 @@ export type CaseSection = { heading: string; body: string | string[] };
 
 export type ProjectIcon = "vision" | "security" | "fullstack" | "mobile";
 
-export type ProjectImage = { src: string; alt: string };
+export type ProjectImage = { src: string; thumb: string; alt: string };
 
 export type Project = {
   id: string;
