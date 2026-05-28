@@ -1,15 +1,18 @@
 // ============================================================
 // FEATURED PROJECTS / CASE STUDIES. Localized: Danish (default) + English.
 // No code/repo/demo links per request.
-// id / icon / image / tech are neutral and identical across locales;
-// title / type / summary / imageAlt / sections are translated.
+// id / icon / tech are neutral and identical across locales;
+// title / type / summary / images / sections are translated.
 // ============================================================
 
 import type { Lang } from '../i18n/config';
+import { getCaseStudyImages } from '../lib/caseStudyImages';
 
 export type CaseSection = { heading: string; body: string | string[] };
 
 export type ProjectIcon = 'vision' | 'security' | 'fullstack' | 'mobile';
+
+export type ProjectImage = { src: string; alt: string };
 
 export type Project = {
   id: string;
@@ -19,8 +22,10 @@ export type Project = {
   icon: ProjectIcon;
   summary: string;
   tech: string[];
-  image: null | string;
-  imageAlt: string;
+  // Optional screenshots / mockups. When the project is featured (first card),
+  // the first image renders as a 16:9 hero. For all imaged cards, the full
+  // set appears as a thumbnail strip inside the expanded case-study panel.
+  images?: ProjectImage[];
   sections: CaseSection[];
 };
 
@@ -32,8 +37,6 @@ const da: Project[] = [
     icon: 'fullstack',
     summary:
       'En fællesskabsdrevet sanke-app til Danmark — en Flutter-mobilapp understøttet af et GraphQL-API med geospatial søgning, realtids-fællesskabsfunktioner og gamification.',
-    image: null,
-    imageAlt: 'Placeholder-mockup af Vild Pluk-sankekortet, der viser frugtsteder i hele Danmark',
     tech: ['Flutter', 'Dart', 'Riverpod', 'GraphQL', 'Node.js', 'TypeScript', 'Apollo Server', 'PostgreSQL', 'PostGIS', 'Prisma'],
     sections: [
       { heading: 'Problem', body: 'I Danmark er retten til at sanke bred, men at vide, hvor vilde frugter faktisk gror, er en anden sag. Den viden lever i folks hoveder, private notesbøger og spredte Facebook-grupper — uformel, let at miste og sjældent knyttet til en præcis placering. Et sted, én person finder om efteråret, er glemt næste sæson, og nytilkomne har intet pålideligt udgangspunkt og ingen fælles, kortbaseret måde at opdage steder i nærheden, se hvad der er i sæson eller bidrage med egne fund.' },
@@ -64,8 +67,6 @@ const da: Project[] = [
     icon: 'fullstack',
     summary:
       'En budget-app til at styre faste udgifter i DKK — offline-first med en PostgreSQL-database, der kører i browseren, automatisk Google Drive-synkronisering på tværs af enheder og budgetstyring over flere år.',
-    image: null,
-    imageAlt: 'Placeholder-mockup af Budget Tracker-dashboardet med udgiftsdiagrammer og årsbudgetter',
     tech: ['React', 'TypeScript', 'Vite', 'PGlite', 'PostgreSQL', 'Google Drive API', 'OAuth 2.0', 'Recharts', 'Vitest'],
     sections: [
       { heading: 'Problem', body: 'At holde styr på faste udgifter over flere år er besværligt i regneark, og de fleste budgetværktøjer kræver konstant netforbindelse og gemmer data på tredjepartsservere.' },
@@ -96,8 +97,6 @@ const da: Project[] = [
     icon: 'vision',
     summary:
       'Et computer vision-forskningsprojekt, der detekterer drukne-relaterede anomalier i termisk overvågningsmateriale ved hjælp af convolutional autoencoders og CycleGAN-genererede syntetiske data for at forbedre anomalidetektion i scenarier fra Aalborg Havn.',
-    image: null,
-    imageAlt: 'Placeholder-visualisering af billeder fra termisk overvågningsvideo med fremhævede anomalier',
     tech: ['Convolutional Autoencoder', 'CycleGAN', 'Synthetic Data', 'Thermal Surveillance', 'Anomaly Detection', 'Computer Vision', 'ROC-AUC / PR-AUC Evaluation', 'Deep Learning'],
     sections: [
       { heading: 'Problem', body: [
@@ -140,8 +139,6 @@ const da: Project[] = [
     icon: 'security',
     summary:
       'Et cloud-baseret IoT-autentificerings- og autorisationssystem designet til at forenkle adgangen til sensordata, centralisere enhedsstyring og give brugere sikker adgang til kun de data, de har tilladelse til at se.',
-    image: null,
-    imageAlt: 'Placeholder-diagram af cloud-baserede IoT-enheder, der forbinder gennem et autentificeringslag',
     tech: ['Node.js', 'OAuth 2.0', 'MongoDB', 'GraphQL', 'React', 'IoT', 'The Things Network', 'Authentication & Authorization'],
     sections: [
       { heading: 'Problem', body: [
@@ -190,8 +187,6 @@ const da: Project[] = [
     icon: 'mobile',
     summary:
       'Videreudviklede en cross-platform app til kilometerregistrering for en kunde — en C#/Xamarin-mobilapp med et interaktivt kort og navigation, understøttet af en ASP.NET Core-backend, leveret i agile sprints.',
-    image: null,
-    imageAlt: 'Placeholder-mockup af en cross-platform mobilapplikation på telefon og tablet',
     tech: ['C#', 'Xamarin', 'ASP.NET Core', 'REST API', 'Maps & Navigation', 'Agile'],
     sections: [
       { heading: 'Kontekst', body: 'Arbejdede som applikationsudvikler hos Accenture og videreudviklede en cross-platform mobilapp for en kunde. Appen lod medarbejdere registrere de kilometer, de kørte under kundebesøg, og kombinerede et interaktivt kort med navigation i frontenden med en ASP.NET Core-backend.' },
@@ -216,8 +211,6 @@ const en: Project[] = [
     icon: 'fullstack',
     summary:
       'A community-driven foraging app for Denmark — a Flutter mobile app backed by a GraphQL API with geospatial search, real-time community features, and gamification.',
-    image: null,
-    imageAlt: 'Placeholder mockup of the Vild Pluk foraging map showing fruit spots across Denmark',
     tech: ['Flutter', 'Dart', 'Riverpod', 'GraphQL', 'Node.js', 'TypeScript', 'Apollo Server', 'PostgreSQL', 'PostGIS', 'Prisma'],
     sections: [
       { heading: 'Problem', body: 'In Denmark, the legal right to forage is broad, but knowing where wild fruit actually grows is another matter. That knowledge lives in people\'s heads, private notebooks, and scattered Facebook groups — informal, easily lost, and rarely tied to a precise location. A spot one person finds in autumn is forgotten by the next season, and newcomers have no reliable starting point, with no shared, map-based way to discover spots nearby, see what\'s in season, or contribute their own finds.' },
@@ -248,8 +241,6 @@ const en: Project[] = [
     icon: 'fullstack',
     summary:
       'A budgeting app for managing fixed expenses in DKK — offline-first with a PostgreSQL database running in the browser, automatic Google Drive sync across devices, and multi-year budget management.',
-    image: null,
-    imageAlt: 'Placeholder mockup of the Budget Tracker dashboard with expense charts and yearly budgets',
     tech: ['React', 'TypeScript', 'Vite', 'PGlite', 'PostgreSQL', 'Google Drive API', 'OAuth 2.0', 'Recharts', 'Vitest'],
     sections: [
       { heading: 'Problem', body: 'Tracking fixed expenses across years is awkward in spreadsheets, and most budgeting tools require constant connectivity and store data on third-party servers.' },
@@ -280,8 +271,6 @@ const en: Project[] = [
     icon: 'vision',
     summary:
       'A computer-vision research project detecting drowning-related anomalies in thermal surveillance footage, using convolutional autoencoders and CycleGAN-generated synthetic data to improve anomaly detection in Aalborg harbor scenarios.',
-    image: null,
-    imageAlt: 'Placeholder visualization of thermal surveillance video frames with highlighted anomalies',
     tech: ['Convolutional Autoencoder', 'CycleGAN', 'Synthetic Data', 'Thermal Surveillance', 'Anomaly Detection', 'Computer Vision', 'ROC-AUC / PR-AUC Evaluation', 'Deep Learning'],
     sections: [
       { heading: 'Problem', body: [
@@ -324,8 +313,6 @@ const en: Project[] = [
     icon: 'security',
     summary:
       'A cloud-based IoT authentication and authorization system designed to simplify access to sensor data, centralize device management, and give users secure access to only the data they are permitted to view.',
-    image: null,
-    imageAlt: 'Placeholder diagram of cloud-based IoT devices connecting through an authentication layer',
     tech: ['Node.js', 'OAuth 2.0', 'MongoDB', 'GraphQL', 'React', 'IoT', 'The Things Network', 'Authentication & Authorization'],
     sections: [
       { heading: 'Problem', body: [
@@ -398,8 +385,6 @@ const en: Project[] = [
     icon: 'mobile',
     summary:
       'Further developed a cross-platform mileage-tracking app for a client — a C#/Xamarin mobile app with an interactive map and navigation, backed by an ASP.NET Core backend, delivered in Agile sprints.',
-    image: null,
-    imageAlt: 'Placeholder mockup of a cross-platform mobile application on phone and tablet',
     tech: ['C#', 'Xamarin', 'ASP.NET Core', 'REST API', 'Maps & Navigation', 'Agile'],
     sections: [
       { heading: 'Context', body: 'Worked as an application developer at Accenture, further developing a cross-platform mobile app for a client. The app let employees register the kilometres they drove during customer visits, combining an interactive map with navigation on the front end and an ASP.NET Core backend.' },
@@ -415,5 +400,8 @@ const en: Project[] = [
     ],
   },
 ];
+
+for (const p of da) p.images = getCaseStudyImages(p.id, (n) => `Skærmbillede ${n} fra ${p.title}`);
+for (const p of en) p.images = getCaseStudyImages(p.id, (n) => `Screenshot ${n} from ${p.title}`);
 
 export const projectsContent: Record<Lang, Project[]> = { da, en };

@@ -23,6 +23,14 @@ export type UIStrings = {
   };
   about: { languagesLabel: string };
   projectCard: { read: string; hide: string };
+  lightbox: {
+    open: string;
+    close: string;
+    previous: string;
+    next: string;
+    counter: (n: number, total: number) => string;
+    moreAria: (n: number) => string;
+  };
   contact: {
     emailLabel: string;
     availabilityLabel: string;
@@ -85,6 +93,14 @@ export const uiStrings: Record<Lang, UIStrings> = {
     },
     about: { languagesLabel: 'Sprog —' },
     projectCard: { read: 'Læs case-studie', hide: 'Skjul case-studie' },
+    lightbox: {
+      open: 'Åbn billede i fuld størrelse',
+      close: 'Luk',
+      previous: 'Forrige billede',
+      next: 'Næste billede',
+      counter: (n, total) => `${n} af ${total}`,
+      moreAria: (n) => `Vis ${n} flere billeder`,
+    },
     contact: {
       emailLabel: 'E-mail',
       availabilityLabel: 'Tilgængelighed',
@@ -156,6 +172,14 @@ export const uiStrings: Record<Lang, UIStrings> = {
     },
     about: { languagesLabel: 'Languages —' },
     projectCard: { read: 'Read case study', hide: 'Hide case study' },
+    lightbox: {
+      open: 'Open image at full size',
+      close: 'Close',
+      previous: 'Previous image',
+      next: 'Next image',
+      counter: (n, total) => `${n} of ${total}`,
+      moreAria: (n) => `Show ${n} more images`,
+    },
     contact: {
       emailLabel: 'Email',
       availabilityLabel: 'Availability',
