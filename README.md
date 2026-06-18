@@ -1,6 +1,4 @@
-# Duran Köse — Portfolio
-
-![Portfolio preview](public/og-image.png)
+# Portfolio
 
 MSc Software Technology · Software Engineer · Full-Stack Developer
 Full-stack engineering with enterprise discipline.
