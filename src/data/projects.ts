@@ -99,6 +99,88 @@ const da: Project[] = [
     ],
   },
   {
+    id: "clautv-ai",
+    title: "clautv-ai — AI-chat på Samsung Tizen-tv drevet af Claude API",
+    type: "Personligt projekt · Full-Stack · WebSocket · BYOK",
+    icon: "fullstack",
+    summary:
+      "Et privat projekt, der bringer Claude-baseret AI-chat ind på Samsung Tizen-tv'er via en BYOK-model (bring your own key) helt uden brugerkonti. Tv'et viser en QR-kode, telefonen scannes for at parre, og derefter fungerer telefonen som fjern-tastatur, mens tv'et streamer Claudes svar. Relayet videresender beskeder mellem tv og telefon uden nogensinde at se hverken API-nøgle eller chatindhold.",
+    tech: [
+      "React",
+      "Tizen",
+      "WebSocket",
+      "Claude API",
+      "Node.js",
+      "Vite",
+      "npm workspaces",
+      "Chromium M47 / ES5",
+      "core-js",
+      "QR-parring",
+      "BYOK",
+      "localStorage",
+      "Render.com",
+      "Vercel",
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "Moderne AI-chat lever på telefonen og i browseren, men sjældent på tv'et — og slet ikke på de Samsung Tizen-tv'er, der står i mange stuer. Den oplagte forhindring er input: at skrive en prompt med en tv-fjernbetjening er langsomt og frustrerende. Dertil kommer en gammel webplatform: ældre Tizen-tv'er kører en Chromium M47-browser fra 2015, hvor mange moderne web-API'er og CSS-funktioner ganske enkelt ikke findes. Endelig er der et privatlivshensyn: en AI-tv-app bør ikke kræve en konto eller sende brugerens API-nøgle og samtaler gennem en server, der kan læse dem med.",
+      },
+      {
+        heading: "Mål",
+        body: "Byg en AI-chat-applikation til Samsung Tizen-tv, hvor telefonen fungerer som tastatur, og hvor brugeren selv medbringer sin Claude API-nøgle (BYOK) helt uden konti. Løsningen skulle parre tv og telefon hurtigt via en QR-kode, levere streamede svar direkte fra Claude, og være designet, så ingen mellemliggende server fik adgang til hverken nøgle eller chatindhold. Samtidig skulle tv-appen kunne køre på den gamle Chromium M47-motor i Tizen 3.0.",
+      },
+      {
+        heading: "Teknisk tilgang",
+        body: [
+          "Byggede projektet som et npm-workspaces-monorepo med tre selvstændige enheder: en tv-app (React-SPA pakket som en Tizen .wgt), en companion-app (React-SPA, der kører i telefonens browser og bruges til indtastning af API-nøgle og som chat-tastatur) og et relay (en lille, tilstandsløs Node.js ws-server).",
+          "Designede dataflowet, så tv-appen kalder api.anthropic.com direkte fra browseren og streamer svaret, mens relayet kun udfører blind, rum-baseret videresendelse mellem tv og telefon — det læser kun rum og rolle på join-beskeden og ser aldrig API-nøgle eller chatindhold.",
+          "Implementerede parring via et 8-tegns sessionstoken, som tv'et genererer og viser som QR-kode; telefonen åbner companion-URL'en, begge tilslutter samme rum i relayet, og relayet udsender peer_joined, når begge er til stede. Rummet er begrænset til to klienter, beskeder maks. 5 MB (til base64-billeder) og holdes i live med 30-sekunders ping.",
+          "Definerede en UTF-8 JSON-baseret WebSocket-protokol med klare beskedtyper begge veje — bl.a. api_key, chat_message, image_message og input_preview fra telefon til tv samt context, key_accepted, key_rejected og message_queued fra tv til telefon.",
+          "Håndterede streaming via ReadableStream, hvor det er tilgængeligt, med automatisk fallback til en almindelig, ikke-streamende JSON-forespørgsel på M47, og med en hård 60-sekunders timeout. Tilstanden i tv-appen er samlet i ét useReducer-store, og samtaler persisteres i localStorage.",
+        ],
+      },
+      {
+        heading: "Min rolle",
+        body: "clautv-ai er udviklet som et personligt soloprojekt, hvor jeg stod for hele løsningen: arkitektur, dataflow, WebSocket-protokol, implementering af alle tre pakker, kompatibilitetsarbejdet mod den gamle Tizen-browser samt opsætning af build- og deploy-flowet.",
+      },
+      {
+        heading: "Funktioner",
+        body: [
+          "QR-parring mellem tv og telefon via et engangs-sessionstoken og rum-baseret relay.",
+          "Telefonen som fjern-tastatur, inkl. live-preview hvor hvert tastetryk opdaterer inputfeltet på tv'et.",
+          "BYOK — brugeren indtaster sin egen Claude API-nøgle på telefonen; ingen konti.",
+          "Streamede svar direkte fra Claude med fallback til ikke-streaming på ældre browsere.",
+          "Billedbeskeder, hvor base64-kodede billeder sendes fra telefonen og analyseres af Claude.",
+          "Modelvælger, så brugeren kan skifte mellem tilgængelige Claude-modeller.",
+          "Samtalehistorik gemt lokalt, hvor en ny chat opretter en post, og gamle samtaler kan genindlæses.",
+          "System-prompt-presets til at styre Claudes adfærd.",
+          "Robust fejlhåndtering, så en ugyldig nøgle viser en fejlbesked frem for at få appen til at gå ned.",
+        ],
+      },
+      {
+        heading: "Teknologier & metoder",
+        body: "React, Vite og npm-workspaces-monorepo, en Node.js ws-server som relay, WebSocket med en egendefineret JSON-protokol, Claude API kaldt direkte fra browseren (anthropic-dangerous-direct-browser-access), ReadableStream-streaming med feature-detection, localStorage-persistens og QR-baseret parring. Til den gamle Tizen-platform anvendtes @vitejs/plugin-legacy (chrome >= 47) plus terser og core-js-polyfills. Deployment er tænkt med relay på Render.com og companion på Vercel, mens tv-appen pakkes som en .wgt og sideloades. Arbejdsprocessen var struktureret i faser fra projektoprydning og lokal end-to-end-test til deploy af relay og companion, produktionsbuild og endelig Tizen-pakning.",
+      },
+      {
+        heading: "Udfordringer",
+        body: "Den største udfordring var Chromium M47-kompatibilitet i tv-appen. Koden måtte skrives i ES5-stil — var og function-expressions, Object.assign frem for object spread og uden optional chaining eller nullish coalescing — mens transpilering og polyfills blev overladt til plugin-legacy og core-js. CSS måtte holdes til Flexbox uden CSS Grid og uden CSS-custom-properties, med hårdkodede farver og størrelser. DOM-API'er, som core-js ikke polyfiller (fx AbortController og ReadableStream), kunne ikke antages til stede og måtte feature-detekteres og guardes — hvilket netop er årsagen til streaming-fallbacken. En anden, mere lumsk udfordring lå i værktøjskæden: VS Code Tizen-udvidelsen bygger den første mappe i workspacet og kræver config.xml i roden af den, så workspace-rækkefølgen måtte fastholdes, ellers gjorde \"Build Signed Package\" lydløst ingenting. Endelig giver Render-gratisniveauet en cold-start på relayet efter inaktivitet, hvilket den første WebSocket-forbindelse skal kunne tåle.",
+      },
+      {
+        heading: "Test",
+        body: "Løsningen blev verificeret gennem et struktureret lokalt end-to-end-testforløb af det fulde flow tv ↔ relay ↔ telefon på samme WiFi-netværk: parring via QR, indsendelse og accept af API-nøgle, afsendelse af chatbesked og svar fra Claude, live-preview ved tastetryk, vedhæftning og analyse af billede, modelskift, samtalehistorik samt fejltilstand ved ugyldig nøgle. Produktionsbuildet blev røgtestet via Vite preview for at bekræfte, at QR-koden indkoder den rigtige companion-URL. Et udestående testpunkt er validering på en fysisk Tizen 3.0-enhed (2017-tv), da kerneflowet indtil videre er afprøvet på en moderne Chromium-browser; netop dette er prioriteret højt, fordi det er den eneste måde at bekræfte, at det legacy-transpilerede bundle reelt kører på M47.",
+      },
+      {
+        heading: "Resultat",
+        body: "Resultatet blev en fungerende, deploybar AI-chat-løsning til Samsung Tizen-tv: et monorepo med tre selvstændige enheder, et privatlivsbevarende relay, der aldrig ser nøgle eller indhold, og et komplet parrings- og chatflow drevet af Claude API. Løsningen demonstrerer hele vejen fra QR-parring og BYOK-nøgleindtastning til streamede svar, billedanalyse, modelskift og lokal samtalehistorik — alt sammen kørende på en bevidst begrænset, ældre webplatform.",
+      },
+      {
+        heading: "Hvad det demonstrerer",
+        body: "End-to-end produktudvikling på en udfordrende, begrænset platform med fokus på legacy-browser-engineering (ES5/Chromium M47), monorepo-arkitektur, realtids-WebSocket-kommunikation og privatlivsbevidst design, hvor ingen server får adgang til brugerens nøgle eller data. Projektet viser evnen til at omsætte en konkret idé til en fungerende løsning, hvor både arkitektur, tekniske platformsbegrænsninger og reelle brugerflows er tænkt ind fra starten.",
+      },
+    ],
+  },
+  {
     id: "budget-tracker",
     title:
       "Budget Tracker — offline-first budgettering med cloud-synkronisering",
@@ -597,6 +679,88 @@ const en: Project[] = [
       {
         heading: "What it demonstrates",
         body: "End-to-end solo product delivery — mobile frontend, GraphQL backend, geospatial data, authentication, and gamification — shipped as a cohesive system.",
+      },
+    ],
+  },
+  {
+    id: "clautv-ai",
+    title: "clautv-ai — AI Chat on Samsung Tizen TVs Powered by the Claude API",
+    type: "Personal Project · Full-Stack · WebSocket · BYOK",
+    icon: "fullstack",
+    summary:
+      "A private project that brings Claude-based AI chat to Samsung Tizen TVs via a BYOK model (bring your own key), with no user accounts at all. The TV displays a QR code, the phone scans it to pair, and the phone then acts as a remote keyboard while the TV streams Claude's replies. The relay forwards messages between TV and phone without ever seeing the API key or chat content.",
+    tech: [
+      "React",
+      "Tizen",
+      "WebSocket",
+      "Claude API",
+      "Node.js",
+      "Vite",
+      "npm workspaces",
+      "Chromium M47 / ES5",
+      "core-js",
+      "QR Pairing",
+      "BYOK",
+      "localStorage",
+      "Render.com",
+      "Vercel",
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "Modern AI chat lives on the phone and in the browser, but rarely on the TV — and especially not on the Samsung Tizen TVs sitting in many living rooms. The obvious obstacle is input: typing a prompt with a TV remote is slow and frustrating. On top of that comes an old web platform: older Tizen TVs run a Chromium M47 browser from 2015, where many modern web APIs and CSS features simply don't exist. Finally, there's a privacy concern: an AI TV app shouldn't require an account or send the user's API key and conversations through a server that could read them.",
+      },
+      {
+        heading: "Goal",
+        body: "Build an AI chat application for Samsung Tizen TVs where the phone acts as a keyboard and the user brings their own Claude API key (BYOK), with no accounts at all. The solution needed to pair TV and phone quickly via a QR code, deliver streamed responses directly from Claude, and be designed so that no intermediary server ever got access to the key or chat content. At the same time, the TV app had to run on the old Chromium M47 engine in Tizen 3.0.",
+      },
+      {
+        heading: "Technical approach",
+        body: [
+          "Built the project as an npm-workspaces monorepo with three independent units: a TV app (a React SPA packaged as a Tizen .wgt), a companion app (a React SPA running in the phone's browser, used for entering the API key and as the chat keyboard), and a relay (a small, stateless Node.js ws server).",
+          "Designed the data flow so the TV app calls api.anthropic.com directly from the browser and streams the response, while the relay only performs blind, room-based forwarding between TV and phone — it only reads the room and role from the join message and never sees the API key or chat content.",
+          "Implemented pairing via an 8-character session token that the TV generates and displays as a QR code; the phone opens the companion URL, both join the same room on the relay, and the relay emits peer_joined once both are present. The room is limited to two clients, messages are capped at 5 MB (for base64 images), and kept alive with a 30-second ping.",
+          "Defined a UTF-8 JSON-based WebSocket protocol with clear message types in both directions — including api_key, chat_message, image_message, and input_preview from phone to TV, and context, key_accepted, key_rejected, and message_queued from TV to phone.",
+          "Handled streaming via ReadableStream where available, with automatic fallback to a plain, non-streaming JSON request on M47, and a hard 60-second timeout. The TV app's state is consolidated into a single useReducer store, and conversations are persisted to localStorage.",
+        ],
+      },
+      {
+        heading: "My role",
+        body: "clautv-ai was developed as a personal solo project, where I owned the entire solution: architecture, data flow, WebSocket protocol, implementation of all three packages, the compatibility work against the old Tizen browser, and setting up the build and deploy flow.",
+      },
+      {
+        heading: "Features",
+        body: [
+          "QR pairing between TV and phone via a one-time session token and room-based relay.",
+          "The phone as a remote keyboard, including a live preview where every keystroke updates the input field on the TV.",
+          "BYOK — the user enters their own Claude API key on the phone; no accounts.",
+          "Streamed responses directly from Claude, with fallback to non-streaming on older browsers.",
+          "Image messages, where base64-encoded images are sent from the phone and analyzed by Claude.",
+          "Model picker, letting the user switch between available Claude models.",
+          "Conversation history stored locally, where a new chat creates an entry and old conversations can be reloaded.",
+          "System prompt presets to steer Claude's behavior.",
+          "Robust error handling, so an invalid key shows an error message instead of crashing the app.",
+        ],
+      },
+      {
+        heading: "Technologies & methods",
+        body: "React, Vite, and an npm-workspaces monorepo, a Node.js ws server as relay, WebSocket with a custom JSON protocol, the Claude API called directly from the browser (anthropic-dangerous-direct-browser-access), ReadableStream streaming with feature detection, localStorage persistence, and QR-based pairing. For the old Tizen platform, used @vitejs/plugin-legacy (chrome >= 47) plus terser and core-js polyfills. Deployment is planned with the relay on Render.com and the companion on Vercel, while the TV app is packaged as a .wgt and sideloaded. The workflow was structured in phases, from project cleanup and local end-to-end testing to deploying the relay and companion, the production build, and finally Tizen packaging.",
+      },
+      {
+        heading: "Challenges",
+        body: "The biggest challenge was Chromium M47 compatibility in the TV app. The code had to be written in ES5 style — var and function expressions, Object.assign instead of object spread, and no optional chaining or nullish coalescing — while transpilation and polyfills were left to plugin-legacy and core-js. CSS had to stick to Flexbox without CSS Grid and without CSS custom properties, with hardcoded colors and sizes. DOM APIs that core-js doesn't polyfill (e.g. AbortController and ReadableStream) couldn't be assumed present and had to be feature-detected and guarded — which is exactly why the streaming fallback exists. Another, more subtle challenge was in the toolchain: the VS Code Tizen extension builds the first folder in the workspace and requires config.xml at its root, so the workspace order had to be kept fixed, or \"Build Signed Package\" would silently do nothing. Finally, Render's free tier gives the relay a cold start after inactivity, which the first WebSocket connection has to tolerate.",
+      },
+      {
+        heading: "Testing",
+        body: "The solution was verified through a structured local end-to-end test of the full TV ↔ relay ↔ phone flow on the same WiFi network: pairing via QR, submitting and accepting the API key, sending a chat message and receiving Claude's response, live preview on keystrokes, attaching and analyzing an image, switching models, conversation history, and the error state for an invalid key. The production build was smoke-tested via Vite preview to confirm the QR code encodes the correct companion URL. One outstanding test point is validation on a physical Tizen 3.0 device (a 2017 TV), since the core flow has so far only been tested on a modern Chromium browser; this is a high priority, since it's the only way to confirm the legacy-transpiled bundle actually runs on M47.",
+      },
+      {
+        heading: "Outcome",
+        body: "The result is a working, deployable AI chat solution for Samsung Tizen TVs: a monorepo with three independent units, a privacy-preserving relay that never sees the key or content, and a complete pairing and chat flow powered by the Claude API. The solution demonstrates the full path from QR pairing and BYOK key entry to streamed responses, image analysis, model switching, and local conversation history — all running on a deliberately constrained, older web platform.",
+      },
+      {
+        heading: "What it demonstrates",
+        body: "End-to-end product development on a challenging, constrained platform, with a focus on legacy browser engineering (ES5/Chromium M47), monorepo architecture, real-time WebSocket communication, and privacy-conscious design where no server gets access to the user's key or data. The project shows the ability to turn a concrete idea into a working solution, where architecture, technical platform constraints, and real user flows were all considered from the start.",
       },
     ],
   },
