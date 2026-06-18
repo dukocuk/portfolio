@@ -99,8 +99,8 @@ const da: Project[] = [
     ],
   },
   {
-    id: "clautv-ai",
-    title: "clautv-ai — AI-chat på Samsung Tizen-tv drevet af Claude API",
+    id: "tvchat-ai",
+    title: "TVChat AI — AI-chat på Samsung Tizen-tv drevet af Claude API",
     type: "Personligt projekt · Full-Stack · WebSocket · BYOK",
     icon: "fullstack",
     summary:
@@ -142,7 +142,7 @@ const da: Project[] = [
       },
       {
         heading: "Min rolle",
-        body: "clautv-ai er udviklet som et personligt soloprojekt, hvor jeg stod for hele løsningen: arkitektur, dataflow, WebSocket-protokol, implementering af alle tre pakker, kompatibilitetsarbejdet mod den gamle Tizen-browser samt opsætning af build- og deploy-flowet.",
+        body: "TVChat AI er udviklet som et personligt soloprojekt, hvor jeg stod for hele løsningen: arkitektur, dataflow, WebSocket-protokol, implementering af alle tre pakker, kompatibilitetsarbejdet mod den gamle Tizen-browser samt opsætning af build- og deploy-flowet.",
       },
       {
         heading: "Funktioner",
@@ -683,8 +683,8 @@ const en: Project[] = [
     ],
   },
   {
-    id: "clautv-ai",
-    title: "clautv-ai — AI Chat on Samsung Tizen TVs Powered by the Claude API",
+    id: "tvchat-ai",
+    title: "TVChat AI — AI Chat on Samsung Tizen TVs Powered by the Claude API",
     type: "Personal Project · Full-Stack · WebSocket · BYOK",
     icon: "fullstack",
     summary:
@@ -726,7 +726,7 @@ const en: Project[] = [
       },
       {
         heading: "My role",
-        body: "clautv-ai was developed as a personal solo project, where I owned the entire solution: architecture, data flow, WebSocket protocol, implementation of all three packages, the compatibility work against the old Tizen browser, and setting up the build and deploy flow.",
+        body: "TVChat AI was developed as a personal solo project, where I owned the entire solution: architecture, data flow, WebSocket protocol, implementation of all three packages, the compatibility work against the old Tizen browser, and setting up the build and deploy flow.",
       },
       {
         heading: "Features",
