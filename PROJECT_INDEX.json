@@ -1,0 +1,74 @@
+{
+  "project": "portfolio",
+  "generated": "2026-05-27",
+  "description": "Single-page React portfolio site for Duran Köse",
+  "stack": {
+    "framework": "react@^19.2",
+    "build": "vite@^8.0",
+    "language": "typescript@~6.0",
+    "styling": "tailwindcss@^3.4",
+    "animation": "framer-motion@^12.40"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "entryPoints": {
+    "boot": "src/main.tsx",
+    "layout": "src/App.tsx"
+  },
+  "structure": {
+    "components": {
+      "path": "src/components/",
+      "sections": [
+        "Navbar", "Hero", "About", "Snapshot", "Projects", "ProjectCard",
+        "Skills", "Timeline", "Education", "Services", "Testimonials",
+        "Philosophy", "Contact", "Footer", "Section"
+      ],
+      "ui": {
+        "path": "src/components/ui/",
+        "primitives": [
+          "Button", "Card", "Tag", "Stat", "Reveal", "Stagger",
+          "ThemeToggle", "BackToTop", "ScrollProgress", "GradientMesh", "ProjectVisual"
+        ]
+      }
+    },
+    "data": {
+      "path": "src/data/",
+      "files": {
+        "profile.ts": ["profile", "navItems"],
+        "about.ts": ["about", "snapshots", "Snapshot", "philosophy"],
+        "projects.ts": ["projects", "Project", "CaseSection", "ProjectIcon"],
+        "experience.ts": ["experience", "Experience"],
+        "education.ts": ["education", "Education"],
+        "skills.ts": ["skillGroups", "SkillGroup", "languages", "Language"],
+        "services.ts": ["services", "Service"],
+        "testimonials.ts": ["testimonials", "Testimonial"]
+      }
+    },
+    "hooks": {
+      "path": "src/hooks/",
+      "files": ["useTheme.ts", "useScrollSpy.ts"]
+    },
+    "lib": {
+      "path": "src/lib/",
+      "files": ["motion.ts"]
+    },
+    "assets": ["src/assets/hero.png", "src/assets/vite.svg", "public/favicon.svg"]
+  },
+  "config": {
+    "vite": "vite.config.ts",
+    "typescript": ["tsconfig.json", "tsconfig.app.json", "tsconfig.node.json"],
+    "eslint": "eslint.config.js",
+    "css": ["tailwind v3.4", "postcss", "autoprefixer"]
+  },
+  "tests": { "present": false },
+  "notes": [
+    "Content is data-driven: edit src/data/* to change site copy.",
+    "No social links / no CV download by design.",
+    "navItems in profile.ts is the source of truth for navbar + scroll-spy.",
+    "Separate sibling project ../vild-pluk/vild-pluk-api (Express + Apollo GraphQL) not indexed here."
+  ]
+}

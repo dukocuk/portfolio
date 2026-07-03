@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="dk-accent" x1="6" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <!-- Rounded square in the site's teal -> cyan accent gradient -->
+  <rect width="64" height="64" rx="14" fill="url(#dk-accent)"/>
+  <!-- "DK" monogram in the deep-slate base colour for strong contrast on any tab -->
+  <text x="32" y="34" fill="#090D12"
+        font-family="'Space Grotesk', 'Segoe UI', system-ui, -apple-system, Roboto, sans-serif"
+        font-size="30" font-weight="700" letter-spacing="-1.5"
+        text-anchor="middle" dominant-baseline="central">DK</text>
+</svg>
