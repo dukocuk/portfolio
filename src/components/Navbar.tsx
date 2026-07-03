@@ -11,8 +11,14 @@ import { uiStrings } from '../i18n/ui';
 
 const sectionIds = navItems.map((n) => n.id);
 
+// Also observe the Philosophy section for scroll-spy even though it's intentionally
+// not a nav item (see navItems). When it's in view the active pill goes neutral
+// instead of staying stuck on Testimonials. Array order is irrelevant to the
+// IntersectionObserver; only element [0] seeds the initial active state ('home').
+const scrollSpyIds = [...sectionIds, 'philosophy'];
+
 export function Navbar() {
-  const activeId = useScrollSpy(sectionIds);
+  const activeId = useScrollSpy(scrollSpyIds);
   const [open, setOpen] = useState(false);
   const { lang } = useLanguage();
   const ui = uiStrings[lang];
