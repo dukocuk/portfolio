@@ -5,9 +5,9 @@
 
 import type { Lang } from '../i18n/config';
 
-export type About = { paragraphs: string[] };
-export type Snapshot = { label: string; detail: string };
-export type Philosophy = { intro: string; points: { title: string; body: string }[] };
+type About = { paragraphs: string[] };
+type Snapshot = { label: string; detail: string };
+type Philosophy = { intro: string; points: { title: string; body: string }[] };
 
 export const aboutContent: Record<Lang, About> = {
   da: {

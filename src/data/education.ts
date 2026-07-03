@@ -4,7 +4,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Education = {
+type Education = {
   period: string;
   degree: string;
   org: string;

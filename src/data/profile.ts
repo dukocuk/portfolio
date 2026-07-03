@@ -8,7 +8,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Profile = {
+type Profile = {
   name: string;
   title: string;
   headline: string;

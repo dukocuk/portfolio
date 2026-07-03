@@ -5,7 +5,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type PopupContent = { title: string; body: string; cta: string };
+type PopupContent = { title: string; body: string; cta: string };
 
 export const firstVisitContent: Record<Lang, PopupContent> = {
   da: {

@@ -4,7 +4,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Service = { title: string; body: string };
+type Service = { title: string; body: string };
 
 export const servicesContent: Record<Lang, Service[]> = {
   da: [

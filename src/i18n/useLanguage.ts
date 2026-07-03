@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react';
 import type { Lang } from './config';
 
-export type LanguageContextValue = {
+type LanguageContextValue = {
   lang: Lang;
   setLang: (lang: Lang) => void;
   toggleLang: () => void;

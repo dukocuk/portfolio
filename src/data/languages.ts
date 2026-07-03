@@ -5,7 +5,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Language = { name: string; level: string };
+type Language = { name: string; level: string };
 
 export const languagesContent: Record<Lang, Language[]> = {
   da: [

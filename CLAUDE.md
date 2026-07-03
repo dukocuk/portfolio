@@ -23,6 +23,6 @@ Single-page Vite + React 19 + TypeScript SPA — no router. `src/App.tsx` compos
 
 Reusable UI primitives live in `src/components/ui/` (Button, Card, Tag, Reveal/Stagger for Framer Motion scroll animation, ImageGallery/Lightbox for case-study screenshots) — check there before adding new ones.
 
-**Theme** (dark/light) is CSS-variable based: tokens in `src/index.css`, flipped via a `.light` class on `<html>`, managed by `src/hooks/useTheme.ts`, persisted to `localStorage`. An inline script in `index.html` applies the stored theme/language before paint to avoid a flash of the wrong theme.
+**Theme** is dark-only and CSS-variable based: design tokens live in `src/index.css` as space-separated RGB channels so Tailwind's `rgb(var(--token) / <alpha-value>)` works. There is no light mode and no theme toggle. An inline script in `index.html` applies only the saved language (`localStorage` key `lang`) to `<html lang>` before paint, so the crawler-visible language matches the chosen one without a flash.
 
 **Deployment**: GitHub Actions (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages on every push to `main`. `vite.config.ts` sets `base: '/portfolio/'` to match the GitHub Pages subpath.

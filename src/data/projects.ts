@@ -8,7 +8,7 @@
 import type { Lang } from "../i18n/config";
 import { getCaseStudyImages } from "../lib/caseStudyImages";
 
-export type CaseSection = { heading: string; body: string | string[] };
+type CaseSection = { heading: string; body: string | string[] };
 
 export type ProjectIcon = "vision" | "security" | "fullstack" | "mobile";
 

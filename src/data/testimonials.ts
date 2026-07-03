@@ -5,7 +5,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Testimonial = { quote: string; author: string };
+type Testimonial = { quote: string; author: string };
 
 export const testimonialsContent: Record<Lang, Testimonial[]> = {
   da: [

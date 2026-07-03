@@ -6,7 +6,7 @@
 
 import type { Lang } from './config';
 
-export type UIStrings = {
+type UIStrings = {
   nav: Record<string, string>;
   hero: { viewProjects: string; contactMe: string };
   sections: {

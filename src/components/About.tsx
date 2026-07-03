@@ -1,5 +1,5 @@
 import { aboutContent } from '../data/about';
-import { languagesContent } from '../data/skills';
+import { languagesContent } from '../data/languages';
 import { Section } from './Section';
 import { useLanguage } from '../i18n/useLanguage';
 import { uiStrings } from '../i18n/ui';

@@ -1,7 +1,7 @@
 // Button style tokens, kept outside Button.tsx so non-anchor triggers
 // (e.g. BookingButton) can share them without breaking fast refresh.
 export type ButtonVariant = 'primary' | 'outline' | 'ghost';
-export type ButtonSize = 'md' | 'sm';
+type ButtonSize = 'md' | 'sm';
 
 const base =
   'inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold transition duration-200 hover:-translate-y-0.5 active:translate-y-0 focus-visible:ring-2 focus-visible:ring-accent';

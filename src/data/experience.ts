@@ -5,7 +5,7 @@
 
 import type { Lang } from '../i18n/config';
 
-export type Experience = {
+type Experience = {
   period: string;
   role: string;
   org: string;
