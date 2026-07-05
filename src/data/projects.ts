@@ -5,7 +5,7 @@
 // title / type / summary / images / sections are translated.
 // ============================================================
 
-import type { Lang } from "../i18n/config";
+import type { Localized } from "./types";
 import { getCaseStudyImages } from "../lib/caseStudyImages";
 
 type CaseSection = { heading: string; body: string | string[] };
@@ -635,7 +635,7 @@ const da: Project[] = [
       ]
     },
     {
-      heading: "Hvad projektet viser",
+      heading: "Hvad det demonstrerer",
       body: "UX-research og produktinnovation inden for læringsteknologi til børn. Projektet viser, hvordan feltobservationer og interviewindsigter kan omsættes til en prototype, der bedre forbinder legende interaktion med læringsmål."
     }
   ]
@@ -1271,7 +1271,7 @@ const en: Project[] = [
 // Descriptive alt text per case-study image, keyed by project id, in the
 // folder's filename order (numeric: image2 before image10). Missing entries
 // fall back to the generic "Screenshot N from …" string below.
-const imageAlts: Record<Lang, Record<string, string[]>> = {
+const imageAlts: Localized<Record<string, string[]>> = {
   da: {
     "vild-pluk": [
       "Kortvisning i Vild Pluk med klynger af sankesteder markeret på et Danmarkskort og et filter med 26 typer i sæson.",
@@ -1373,4 +1373,27 @@ for (const p of en)
     (n) => imageAlts.en[p.id]?.[n - 1] ?? `Screenshot ${n} from ${p.title}`,
   );
 
-export const projectsContent: Record<Lang, Project[]> = { da, en };
+// Case-study sections are hand-authored per language, so da/en can silently
+// drift out of parity (a project gaining a section in one language only).
+// Warn in dev when a project's section counts differ or the id lists don't line
+// up — cheap guard, since section headings can't be enforced at compile time.
+if (import.meta.env.DEV) {
+  const byIdEn = new Map(en.map((p) => [p.id, p]));
+  for (const dp of da) {
+    const ep = byIdEn.get(dp.id);
+    if (!ep) {
+      console.warn(`[projects] "${dp.id}" exists in da but not en.`);
+    } else if (dp.sections.length !== ep.sections.length) {
+      console.warn(
+        `[projects] "${dp.id}" has ${dp.sections.length} da sections but ${ep.sections.length} en sections.`,
+      );
+    }
+  }
+  for (const ep of en) {
+    if (!da.some((dp) => dp.id === ep.id)) {
+      console.warn(`[projects] "${ep.id}" exists in en but not da.`);
+    }
+  }
+}
+
+export const projectsContent: Localized<Project[]> = { da, en };

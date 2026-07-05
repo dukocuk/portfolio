@@ -2,11 +2,9 @@
 // SERVICES — what I can help with. Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized, TitleBody } from './types';
 
-type Service = { title: string; body: string };
-
-export const servicesContent: Record<Lang, Service[]> = {
+export const servicesContent: Localized<TitleBody[]> = {
   da: [
     {
       title: 'Full-Stack-softwareudvikling',

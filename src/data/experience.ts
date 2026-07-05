@@ -3,7 +3,7 @@
 // Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type Experience = {
   period: string;
@@ -14,7 +14,7 @@ type Experience = {
   highlights: string[];
 };
 
-export const experienceContent: Record<Lang, Experience[]> = {
+export const experienceContent: Localized<Experience[]> = {
   da: [
     {
       period: '2025 – 2026',

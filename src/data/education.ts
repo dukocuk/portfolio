@@ -2,7 +2,7 @@
 // EDUCATION. Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type Education = {
   period: string;
@@ -12,7 +12,7 @@ type Education = {
   highlight: string;
 };
 
-export const educationContent: Record<Lang, Education[]> = {
+export const educationContent: Localized<Education[]> = {
   da: [
     {
       period: '2020 – 2023',

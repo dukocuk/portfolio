@@ -3,11 +3,11 @@
 // Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type Language = { name: string; level: string };
 
-export const languagesContent: Record<Lang, Language[]> = {
+export const languagesContent: Localized<Language[]> = {
   da: [
     { name: 'Dansk', level: 'Modersmål' },
     { name: 'Tyrkisk', level: 'Modersmål' },

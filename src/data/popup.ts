@@ -3,11 +3,11 @@
 // rest of the site is reachable. Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type PopupContent = { title: string; body: string; cta: string };
 
-export const firstVisitContent: Record<Lang, PopupContent> = {
+export const firstVisitContent: Localized<PopupContent> = {
   da: {
     title: 'Før du kontakter mig',
     body: 'Tak, fordi du kigger forbi. Hvis du overvejer mig til en stilling, vil jeg bede dig om at bruge et par minutter på at gennemgå denne portfolio først. Den bør give dig et klart billede af mit arbejde, og om det er et match. Jeg vil desuden venligst bede om, at du kun inviterer mig til en samtale, hvis du reelt er åben over for muligheden for at ansætte mig. Det er med til at bruge begges tid bedst muligt.',

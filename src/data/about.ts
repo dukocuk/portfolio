@@ -3,13 +3,13 @@
 // Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized, TitleBody } from './types';
 
 type About = { paragraphs: string[] };
 type Snapshot = { label: string; detail: string };
-type Philosophy = { intro: string; points: { title: string; body: string }[] };
+type Philosophy = { intro: string; points: TitleBody[] };
 
-export const aboutContent: Record<Lang, About> = {
+export const aboutContent: Localized<About> = {
   da: {
     paragraphs: [
       'Jeg er softwareingeniør uddannet i Software Technology på Danmarks Tekniske Universitet (DTU), med konsulent- og udviklingserfaring inden for enterprise-systemer, full-stack-webudvikling og cross-platform mobilapplikationer. Mit arbejde ligger dér, hvor forretningskrav møder teknisk implementering — jeg oversætter, hvad et system skal kunne, til software, der er stabil, sikker og vedligeholdelsesvenlig.',
@@ -24,7 +24,7 @@ export const aboutContent: Record<Lang, About> = {
   },
 };
 
-export const snapshotsContent: Record<Lang, Snapshot[]> = {
+export const snapshotsContent: Localized<Snapshot[]> = {
   da: [
     { label: 'MSc i Software Technology, DTU', detail: 'Ingeniørmæssigt fundament på kandidatniveau med speciale i computer vision / anomalidetektion.' },
     { label: 'Full-stack-udvikling', detail: 'Frontend- og backend-levering med REST-API’er, datahåndtering og skalerbar arkitektur.' },
@@ -41,7 +41,7 @@ export const snapshotsContent: Record<Lang, Snapshot[]> = {
   ],
 };
 
-export const philosophyContent: Record<Lang, Philosophy> = {
+export const philosophyContent: Localized<Philosophy> = {
   da: {
     intro: 'Sådan griber jeg ingeniørarbejde an:',
     points: [

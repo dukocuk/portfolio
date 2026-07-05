@@ -3,11 +3,11 @@
 // translated for readability; author attributions stay verbatim.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type Testimonial = { quote: string; author: string };
 
-export const testimonialsContent: Record<Lang, Testimonial[]> = {
+export const testimonialsContent: Localized<Testimonial[]> = {
   da: [
     {
       quote:

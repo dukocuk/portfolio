@@ -6,7 +6,7 @@
 // Localized: Danish (default) + English.
 // ============================================================
 
-import type { Lang } from '../i18n/config';
+import type { Localized } from './types';
 
 type Profile = {
   name: string;
@@ -17,7 +17,7 @@ type Profile = {
   tagline: string;
 };
 
-export const profileContent: Record<Lang, Profile> = {
+export const profileContent: Localized<Profile> = {
   da: {
     name: 'Duran Köse',
     title: 'MSc Software Technology · Softwareingeniør · Full-Stack-udvikler',
@@ -45,7 +45,7 @@ export const profileContent: Record<Lang, Profile> = {
 // side) and an online/Teams event (no buffer). Each has its interface language
 // fixed on the Cal.com side (da/en), so the popup always matches the site
 // language. The booker picks in-person vs online via the BookingButton chooser.
-export const calLinks: Record<Lang, { inPerson: string; online: string }> = {
+export const calLinks: Localized<{ inPerson: string; online: string }> = {
   da: { inPerson: 'duran-kose-zuak8f/samtale', online: 'duran-kose-zuak8f/samtale-online' },
   en: { inPerson: 'duran-kose-zuak8f/interview', online: 'duran-kose-zuak8f/interview-online' },
 };
