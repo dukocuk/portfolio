@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { createPortal } from 'react-dom';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { useEffect, useState, type ReactNode } from 'react';
 import { getCalApi } from '@calcom/embed-react';
 import { calLinks } from '../../data/profile';
 import { useLanguage } from '../../i18n/useLanguage';
 import { uiStrings } from '../../i18n/ui';
-import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
+import { Modal } from './Modal';
 
 // Cal.com popup trigger. Nothing Cal-related loads with the page: the embed
 // script is only fetched the first time the chooser is opened (while the
@@ -121,115 +119,45 @@ type BookingChooserProps = {
 };
 
 function BookingChooser({ open, onClose, lang }: BookingChooserProps) {
-  const reduced = useReducedMotion();
   const copy = uiStrings[lang].booking;
   const links = calLinks[lang];
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-
-  // Escape to close + focus trap while open.
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        onClose();
-        return;
-      }
-      if (e.key !== 'Tab') return;
-      const root = dialogRef.current;
-      if (!root) return;
-      const focusables = root.querySelectorAll<HTMLElement>(
-        'button, [href], [tabindex]:not([tabindex="-1"])',
-      );
-      if (focusables.length === 0) return;
-      const first = focusables[0];
-      const last = focusables[focusables.length - 1];
-      const active = document.activeElement as HTMLElement | null;
-      if (e.shiftKey && active === first) {
-        e.preventDefault();
-        last.focus();
-      } else if (!e.shiftKey && active === last) {
-        e.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose]);
-
-  useBodyScrollLock(open);
-
-  // Focus the first option while open.
-  useEffect(() => {
-    if (!open) return;
-    const t = window.setTimeout(
-      () => dialogRef.current?.querySelector('button')?.focus(),
-      0,
-    );
-    return () => window.clearTimeout(t);
-  }, [open]);
-
-  if (typeof document === 'undefined') return null;
 
   const optionClass =
     'flex flex-col rounded-xl border border-border bg-surface-2 p-4 text-left transition-colors ' +
     'hover:border-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent';
 
-  return createPortal(
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="booking-chooser-title"
-          aria-describedby="booking-chooser-subtitle"
-          initial={reduced ? false : { opacity: 0 }}
-          animate={reduced ? {} : { opacity: 1 }}
-          exit={reduced ? {} : { opacity: 0 }}
-          transition={{ duration: 0.2 }}
-          onClick={(e) => {
-            // Close only when the backdrop itself is clicked — never on clicks
-            // inside the card (which must reach Cal's document-level listener).
-            if (e.target === e.currentTarget) onClose();
-          }}
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur"
-        >
-          <motion.div
-            initial={reduced ? false : { opacity: 0, y: 12, scale: 0.98 }}
-            animate={reduced ? {} : { opacity: 1, y: 0, scale: 1 }}
-            exit={reduced ? {} : { opacity: 0, y: 12, scale: 0.98 }}
-            transition={{ duration: 0.2 }}
-            className="w-full max-w-md rounded-2xl border border-border bg-surface p-6 shadow-2xl sm:p-8"
-          >
-            <h2 id="booking-chooser-title" className="text-xl font-semibold text-text sm:text-2xl">
-              {copy.heading}
-            </h2>
-            <p id="booking-chooser-subtitle" className="mt-2 text-sm leading-relaxed text-muted">
-              {copy.subheading}
-            </p>
+  return (
+    <Modal
+      open={open}
+      onClose={onClose}
+      labelledBy="booking-chooser-title"
+      describedBy="booking-chooser-subtitle"
+    >
+      <h2 id="booking-chooser-title" className="text-xl font-semibold text-text sm:text-2xl">
+        {copy.heading}
+      </h2>
+      <p id="booking-chooser-subtitle" className="mt-2 text-sm leading-relaxed text-muted">
+        {copy.subheading}
+      </p>
 
-            <div className="mt-6 grid gap-3">
-              <CalTrigger
-                link={links.inPerson}
-                className={optionClass}
-                onClick={() => window.setTimeout(onClose, 0)}
-              >
-                <span className="text-sm font-semibold text-text">{copy.inPerson}</span>
-                <span className="mt-1 text-xs leading-relaxed text-muted">{copy.inPersonHint}</span>
-              </CalTrigger>
-              <CalTrigger
-                link={links.online}
-                className={optionClass}
-                onClick={() => window.setTimeout(onClose, 0)}
-              >
-                <span className="text-sm font-semibold text-text">{copy.online}</span>
-                <span className="mt-1 text-xs leading-relaxed text-muted">{copy.onlineHint}</span>
-              </CalTrigger>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>,
-    document.body,
+      <div className="mt-6 grid gap-3">
+        <CalTrigger
+          link={links.inPerson}
+          className={optionClass}
+          onClick={() => window.setTimeout(onClose, 0)}
+        >
+          <span className="text-sm font-semibold text-text">{copy.inPerson}</span>
+          <span className="mt-1 text-xs leading-relaxed text-muted">{copy.inPersonHint}</span>
+        </CalTrigger>
+        <CalTrigger
+          link={links.online}
+          className={optionClass}
+          onClick={() => window.setTimeout(onClose, 0)}
+        >
+          <span className="text-sm font-semibold text-text">{copy.online}</span>
+          <span className="mt-1 text-xs leading-relaxed text-muted">{copy.onlineHint}</span>
+        </CalTrigger>
+      </div>
+    </Modal>
   );
 }

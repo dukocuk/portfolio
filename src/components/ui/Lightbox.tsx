@@ -5,7 +5,7 @@ import type { ProjectImage } from '../../data/projects';
 import { useLanguage } from '../../i18n/useLanguage';
 import { uiStrings } from '../../i18n/ui';
 import { prefetchImage } from '../../lib/prefetchImage';
-import { useBodyScrollLock } from '../../hooks/useBodyScrollLock';
+import { useModalA11y } from '../../hooks/useModalA11y';
 
 type Props = {
   images: ProjectImage[];
@@ -20,8 +20,7 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
   const reduced = useReducedMotion();
   const [index, setIndex] = useState(initialIndex);
   const [wasOpen, setWasOpen] = useState(open);
-  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
-  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
   // Reset to the requested index whenever the lightbox transitions from closed
   // to open, so reopening always lands on the thumbnail that was clicked.
@@ -34,53 +33,21 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
   const goPrev = useCallback(() => setIndex((i) => (i - 1 + total) % total), [total]);
   const goNext = useCallback(() => setIndex((i) => (i + 1) % total), [total]);
 
-  useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        onClose();
-      } else if (e.key === 'ArrowLeft' && total > 1) {
+  // Arrow-key navigation layered on top of the shared modal a11y behaviour
+  // (focus trap, Escape-to-close, scroll lock, background inert, focus restore).
+  const onArrowKeys = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft' && total > 1) {
         e.preventDefault();
         goPrev();
       } else if (e.key === 'ArrowRight' && total > 1) {
         e.preventDefault();
         goNext();
-      } else if (e.key === 'Tab') {
-        // Simple focus trap: keep focus inside the dialog.
-        const root = dialogRef.current;
-        if (!root) return;
-        const focusables = root.querySelectorAll<HTMLElement>(
-          'button, [href], [tabindex]:not([tabindex="-1"])',
-        );
-        if (focusables.length === 0) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        const active = document.activeElement as HTMLElement | null;
-        if (e.shiftKey && active === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && active === last) {
-          e.preventDefault();
-          first.focus();
-        }
       }
-    };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [open, onClose, goPrev, goNext, total]);
-
-  useBodyScrollLock(open);
-
-  useEffect(() => {
-    if (!open) return;
-    const previouslyFocused = document.activeElement as HTMLElement | null;
-    const t = window.setTimeout(() => closeButtonRef.current?.focus(), 0);
-    return () => {
-      window.clearTimeout(t);
-      previouslyFocused?.focus?.();
-    };
-  }, [open]);
+    },
+    [total, goPrev, goNext],
+  );
+  useModalA11y(dialogRef, { open, onClose, restoreFocus: true, onKeyDown: onArrowKeys });
 
   useEffect(() => {
     if (!open || total <= 1) return;
@@ -110,7 +77,6 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
           }}
         >
           <button
-            ref={closeButtonRef}
             type="button"
             onClick={onClose}
             aria-label={ui.close}
