@@ -1,18 +1,15 @@
-import { useState } from "react";
 import { profileContent, gpgKey, tox } from "../data/profile";
 import { Section } from "./Section";
 import { Card } from "./ui/Card";
 import { useLanguage } from "../i18n/useLanguage";
 import { uiStrings } from "../i18n/ui";
+import { useCopyToClipboard } from "../hooks/useCopyToClipboard";
 import { BookingButton } from "./ui/BookingButton";
 
 // Per request: contact is email-only — no form and no social links.
 // The GPG public key below is offered alongside the email for encrypted
 // contact — not a form, not a social link.
 export function Contact() {
-  const [copied, setCopied] = useState(false);
-  const [fingerprintCopied, setFingerprintCopied] = useState(false);
-  const [toxCopied, setToxCopied] = useState(false);
   const { lang } = useLanguage();
   const profile = profileContent[lang];
   const ui = uiStrings[lang];
@@ -20,35 +17,9 @@ export function Contact() {
   const gpgKeyHref = `${import.meta.env.BASE_URL}${gpgKey.fileName}`;
   const toxQrHref = `${import.meta.env.BASE_URL}${tox.qrFileName}`;
 
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(profile.email);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable — the mailto link still works */
-    }
-  };
-
-  const copyFingerprint = async () => {
-    try {
-      await navigator.clipboard.writeText(gpgKey.fingerprint);
-      setFingerprintCopied(true);
-      setTimeout(() => setFingerprintCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable — the download link still works */
-    }
-  };
-
-  const copyTox = async () => {
-    try {
-      await navigator.clipboard.writeText(tox.id);
-      setToxCopied(true);
-      setTimeout(() => setToxCopied(false), 2000);
-    } catch {
-      /* clipboard unavailable — the QR code still works */
-    }
-  };
+  const email = useCopyToClipboard();
+  const fingerprint = useCopyToClipboard();
+  const toxId = useCopyToClipboard();
 
   return (
     <Section
@@ -72,10 +43,10 @@ export function Contact() {
             </a>
             <button
               type="button"
-              onClick={copyEmail}
+              onClick={() => email.copy(profile.email)}
               className="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-text"
             >
-              {copied ? c.copied : c.copy}
+              {email.copied ? c.copied : c.copy}
             </button>
           </div>
 
@@ -96,10 +67,10 @@ export function Contact() {
               </code>
               <button
                 type="button"
-                onClick={copyFingerprint}
+                onClick={() => fingerprint.copy(gpgKey.fingerprint)}
                 className="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-text"
               >
-                {fingerprintCopied ? c.gpgFingerprintCopied : c.gpgCopyFingerprint}
+                {fingerprint.copied ? c.gpgFingerprintCopied : c.gpgCopyFingerprint}
               </button>
               <a
                 href={gpgKeyHref}
@@ -124,10 +95,10 @@ export function Contact() {
               </code>
               <button
                 type="button"
-                onClick={copyTox}
+                onClick={() => toxId.copy(tox.id)}
                 className="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-text"
               >
-                {toxCopied ? c.toxCopied : c.toxCopy}
+                {toxId.copied ? c.toxCopied : c.toxCopy}
               </button>
             </div>
             <div className="mt-3 w-40 max-w-full rounded-md bg-white p-2">
