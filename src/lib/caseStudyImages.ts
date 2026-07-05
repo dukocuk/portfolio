@@ -41,10 +41,19 @@ for (const bucket of byId.values()) {
   bucket.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true }));
 }
 
+const warnedEmpty = new Set<string>();
+
 export function getCaseStudyImages(
   id: string,
   alt: (n: number) => string,
 ): ProjectImage[] {
   const bucket = byId.get(id) ?? [];
+  if (import.meta.env.DEV && bucket.length === 0 && !warnedEmpty.has(id)) {
+    warnedEmpty.add(id);
+    console.warn(
+      `[caseStudyImages] No images found for project "${id}". ` +
+        `Expected files under src/assets/case-studies/${id}/ — check the folder name matches the project id.`,
+    );
+  }
   return bucket.map(({ src, thumb }, i) => ({ src, thumb, alt: alt(i + 1) }));
 }

@@ -3,7 +3,6 @@ import type { Lang } from './config';
 
 type LanguageContextValue = {
   lang: Lang;
-  setLang: (lang: Lang) => void;
   toggleLang: () => void;
 };
 

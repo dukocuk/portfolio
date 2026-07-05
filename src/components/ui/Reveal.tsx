@@ -8,13 +8,11 @@ type RevealProps = {
   className?: string;
   /** Render as a different element while keeping motion (e.g. 'ul', 'li'). */
   as?: 'div' | 'ul' | 'li' | 'ol' | 'section' | 'span';
-  /** Used by staggerContainer parents; children should set their own item variants. */
-  stagger?: boolean;
 };
 
 // Scroll-reveal wrapper. Collapses to a plain, fully-visible element when the
 // user prefers reduced motion, so nothing stays hidden and no motion plays.
-export function Reveal({ children, variants = fadeUp, className = '', as = 'div', stagger = false }: RevealProps) {
+export function Reveal({ children, variants = fadeUp, className = '', as = 'div' }: RevealProps) {
   const reduced = useReducedMotion();
   const MotionTag = motion[as];
 
@@ -30,7 +28,6 @@ export function Reveal({ children, variants = fadeUp, className = '', as = 'div'
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
-      {...(stagger ? {} : {})}
     >
       {children}
     </MotionTag>
