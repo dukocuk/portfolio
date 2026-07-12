@@ -31,6 +31,77 @@ export type Project = {
 
 const da: Project[] = [
   {
+    id: "notecast",
+    title: "NoteCast — lokal AI-notetagning fra browserens lyd",
+    type: "Personligt projekt · Browser Extension · Lokal AI · Privacy-First",
+    icon: "vision",
+    summary:
+      "En privacy-first Chrome/Brave-extension, der fanger en fanes lyd, transskriberer den lokalt med Whisper og genererer strukturerede noter live med en lokal Ollama-LLM — alt kører på egen maskine, intet sendes til skyen.",
+    tech: [
+      "JavaScript",
+      "Chrome Extensions (Manifest V3)",
+      "Whisper",
+      "transformers.js",
+      "onnxruntime-web",
+      "WebGPU / WASM",
+      "Ollama",
+      "esbuild",
+      "Vitest",
+      "Playwright",
+      "GitHub Actions",
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "Vil man tage noter fra en video, en podcast eller et webinar i browseren, er valget i dag mellem at skrive manuelt med — og miste fokus — eller at sende lyden til en cloud-tjeneste med abonnement, API-nøgler og alt det, der følger med at give sit indhold fra sig. Browserens indbyggede Web Speech API er upålidelig på fanelyd, og Manifest V3 gør opgaven ekstra svær: en service worker kan hverken holde en MediaStream eller køre tung ML-inferens. Der manglede et værktøj, hvor transskription og opsummering sker helt lokalt, uden at et eneste lydsample forlader maskinen.",
+      },
+      {
+        heading: "Mål",
+        body: "Byg en browser-extension, der fanger en fanes lyd, transskriberer den on-device og løbende genererer strukturerede noter (resumé, nøglepunkter, action items) — uden cloud, uden API-nøgler og uden at afbryde afspilningen.",
+      },
+      {
+        heading: "Teknisk tilgang",
+        body: [
+          "Arkitekterede løsningen omkring MV3's kontekst-splittelse: et offscreen-dokument — den eneste MV3-kontekst, der både kan holde en MediaStream og køre WASM/WebGPU — står for lydfangst og Whisper-inferens, mens service workeren er det ene nav, der ejer sessionen og router alle beskeder.",
+          "Byggede en lydpipeline med AudioWorklet, streaming-resampling til 16 kHz mono og rå PCM-vinduer (20 s med 1 s overlap) i stedet for MediaRecorder — hvis containerformat gør senere chunks udekodbare — og re-router samtidig lyden til højttalerne, så fanen ikke mutes.",
+          "Kørte Whisper lokalt via @huggingface/transformers / onnxruntime-web med WebGPU og automatisk WASM-fallback; ni valgbare modeller fra Tiny til Large v3-turbo.",
+          "Designede en inkrementel notes-pipeline mod Ollamas /api/chat: debounce, delta-beregning med cursor, annullering af forældede LLM-kald og en afsluttende konsolideringsrunde — så lange transskripter aldrig sprænger LLM'ens kontekstvindue.",
+          "Implementerede en tre-urs tidsmodel (capture-, væg- og video-ur), der mapper hvert transskriptsegment til det rigtige tidspunkt i en YouTube-video som klikbare deep-links — inklusive automatisk sessions-split, når fanen navigerer til en ny video midt i optagelsen, uden at lydfangsten afbrydes.",
+          "Abstraherede transskription og notegenerering bag pluggable provider-fabrikker, så lokale og cloud-backends kan byttes uden at røre pipelinen.",
+        ],
+      },
+      {
+        heading: "Min rolle",
+        body: "Eneudvikler — designede og byggede det hele: arkitekturen, lydpipelinen, ML-integrationen, UI'et, test-suiten, CI/CD og klargøringen til Chrome Web Store.",
+      },
+      {
+        heading: "Funktioner",
+        body: [
+          "Live transskript og strukturerede noter, der opdateres, mens man ser med; regenerér, redigér segmenter og eksportér som Markdown eller tekst.",
+          "YouTube-integration: hvert transskriptsegment er et klikbart tidslink; sessioner splittes automatisk ved videoskift.",
+          "Historik-arkiv over afsluttede sessioner, tastaturgenvej til start/stop, systemnotifikationer ved fejl, og indbygget fejldiagnose, der genkender Ollamas CORS-afvisning og viser den præcise rettekommando med ét-kliks kopiering.",
+          "Valg af Whisper-model og sprog direkte i popup'en; indstillingsside med forbindelsestest til egen Ollama-host, lokal eller på en VPS.",
+        ],
+      },
+      {
+        heading: "Teknologier & metoder",
+        body: "Ren JavaScript (ES-moduler), Chrome Extensions Manifest V3 (service worker, offscreen document, content scripts), @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E i rigtig Chromium, GitHub Actions-CI og en release-pipeline, hvor et v*-tag bygger en testet, store-klar zip.",
+      },
+      {
+        heading: "Udfordringer",
+        body: "At få realtids-ML til at leve inden for MV3's begrænsninger — kontekster, der ikke må det, man skal bruge, en CSP, der forbyder CDN-hostet WASM, og en service worker, der kan dræbes efter 30 sekunders inaktivitet. Dertil at synkronisere tre uafhængige ure til præcise videotidslinks, at holde noterne friske uden at sprænge LLM'ens kontekstvindue, og at presse de store Whisper-modeller under WebGPU's 128 MiB storage-buffer-grænse med eksplicitte kvantiseringsformater.",
+      },
+      {
+        heading: "Resultat",
+        body: "En fuldt fungerende, testet extension (v0.2.0) med unit-, integrations-, smoke- og E2E-tests i CI, pakket og klargjort til Chrome Web Store med store-listing, permission-begrundelser og privatlivspolitik.",
+      },
+      {
+        heading: "Hvad det demonstrerer",
+        body: "End-to-end solo-levering af et lokalt AI-produkt — realtids-lydbehandling, on-device ML-inferens, LLM-orkestrering og en krævende browser-platform — leveret som ét sammenhængende, testet og release-klart system.",
+      },
+    ],
+  },
+  {
     id: "vild-pluk",
     title: "Vild Pluk — kort over vilde frugter til sankning i Danmark",
     type: "Personligt projekt · Full-Stack · Mobil · GraphQL",
@@ -644,6 +715,77 @@ const da: Project[] = [
 ];
 
 const en: Project[] = [
+  {
+    id: "notecast",
+    title: "NoteCast — Local AI Note-Taking from Your Browser's Audio",
+    type: "Personal Project · Browser Extension · Local AI · Privacy-First",
+    icon: "vision",
+    summary:
+      "A privacy-first Chrome/Brave extension that captures a tab's audio, transcribes it locally with Whisper, and generates structured notes live with a local Ollama LLM — everything runs on your own machine, nothing is sent to the cloud.",
+    tech: [
+      "JavaScript",
+      "Chrome Extensions (Manifest V3)",
+      "Whisper",
+      "transformers.js",
+      "onnxruntime-web",
+      "WebGPU / WASM",
+      "Ollama",
+      "esbuild",
+      "Vitest",
+      "Playwright",
+      "GitHub Actions",
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "If you want to take notes from a video, a podcast, or a webinar in the browser, today's choice is between typing along manually — and losing focus — or sending the audio to a cloud service with subscriptions, API keys, and everything that comes with handing over your content. The browser's built-in Web Speech API is unreliable on tab audio, and Manifest V3 makes the task extra hard: a service worker can neither hold a MediaStream nor run heavy ML inference. What was missing was a tool where transcription and summarization happen entirely locally, without a single audio sample leaving the machine.",
+      },
+      {
+        heading: "Goal",
+        body: "Build a browser extension that captures a tab's audio, transcribes it on-device, and continuously generates structured notes (summary, key points, action items) — no cloud, no API keys, and no interrupting playback.",
+      },
+      {
+        heading: "Technical approach",
+        body: [
+          "Architected the solution around MV3's context split: an offscreen document — the only MV3 context that can both hold a MediaStream and run WASM/WebGPU — handles audio capture and Whisper inference, while the service worker is the single hub that owns the session and routes all messages.",
+          "Built an audio pipeline with AudioWorklet, streaming resampling to 16 kHz mono, and raw PCM windows (20 s with 1 s overlap) instead of MediaRecorder — whose container format makes later chunks undecodable — while re-routing the audio to the speakers so the tab isn't muted.",
+          "Ran Whisper locally via @huggingface/transformers / onnxruntime-web with WebGPU and automatic WASM fallback; nine selectable models from Tiny to Large v3-turbo.",
+          "Designed an incremental notes pipeline against Ollama's /api/chat: debouncing, delta computation with a cursor, cancellation of stale LLM calls, and a final consolidation pass — so long transcripts never blow the LLM's context window.",
+          "Implemented a three-clock time model (capture, wall, and video clocks) that maps each transcript segment to the right moment in a YouTube video as clickable deep links — including automatic session splitting when the tab navigates to a new video mid-recording, without interrupting audio capture.",
+          "Abstracted transcription and note generation behind pluggable provider factories, so local and cloud backends can be swapped without touching the pipeline.",
+        ],
+      },
+      {
+        heading: "My role",
+        body: "Sole developer — designed and built all of it: the architecture, the audio pipeline, the ML integration, the UI, the test suite, CI/CD, and the Chrome Web Store preparation.",
+      },
+      {
+        heading: "Features",
+        body: [
+          "Live transcript and structured notes that update as you watch; regenerate, edit segments, and export as Markdown or text.",
+          "YouTube integration: every transcript segment is a clickable timestamp link; sessions split automatically when the video changes.",
+          "History archive of completed sessions, a keyboard shortcut for start/stop, system notifications on errors, and built-in error diagnostics that recognize Ollama's CORS rejection and show the exact fix command with one-click copy.",
+          "Whisper model and language selection right in the popup; a settings page with a connection test for your own Ollama host, local or on a VPS.",
+        ],
+      },
+      {
+        heading: "Technologies & methods",
+        body: "Plain JavaScript (ES modules), Chrome Extensions Manifest V3 (service worker, offscreen document, content scripts), @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E in real Chromium, GitHub Actions CI, and a release pipeline where a v* tag builds a tested, store-ready zip.",
+      },
+      {
+        heading: "Challenges",
+        body: "Making real-time ML live within MV3's constraints — contexts that aren't allowed to do what you need, a CSP that forbids CDN-hosted WASM, and a service worker that can be killed after 30 seconds of inactivity. On top of that, synchronizing three independent clocks for precise video timestamp links, keeping the notes fresh without blowing the LLM's context window, and squeezing the large Whisper models under WebGPU's 128 MiB storage-buffer limit with explicit quantization formats.",
+      },
+      {
+        heading: "Outcome",
+        body: "A fully working, tested extension (v0.2.0) with unit, integration, smoke, and E2E tests in CI, packaged and prepared for the Chrome Web Store with a store listing, permission justifications, and a privacy policy.",
+      },
+      {
+        heading: "What it demonstrates",
+        body: "End-to-end solo delivery of a local AI product — real-time audio processing, on-device ML inference, LLM orchestration, and a demanding browser platform — shipped as one cohesive, tested, release-ready system.",
+      },
+    ],
+  },
   {
     id: "vild-pluk",
     title: "Vild Pluk — Wild Fruit Foraging Map for Denmark",
@@ -1273,6 +1415,10 @@ const en: Project[] = [
 // fall back to the generic "Screenshot N from …" string below.
 const imageAlts: Localized<Record<string, string[]>> = {
   da: {
+    notecast: [
+      "Popup-visning i NoteCast med live transskript og noter (resumé, nøglepunkter og action items), der opdateres, mens videoen afspilles.",
+      "Transskript af en YouTube-video, hvor hver linje er et klikbart tidslink, der hopper til det præcise øjeblik i videoen.",
+    ],
     "vild-pluk": [
       "Kortvisning i Vild Pluk med klynger af sankesteder markeret på et Danmarkskort og et filter med 26 typer i sæson.",
       "Detaljeside for et blåbær-spot med sæson, verificeringsstatus og knapper til at bekræfte stedet eller vise rute.",
@@ -1317,6 +1463,10 @@ const imageAlts: Localized<Record<string, string[]>> = {
     ],
   },
   en: {
+    notecast: [
+      "Popup view in NoteCast with a live transcript and notes (summary, key points, and action items) updating while the video plays.",
+      "Transcript of a YouTube video where every line is a clickable timestamp link that jumps to the exact moment in the video.",
+    ],
     "vild-pluk": [
       "Map view in Vild Pluk with clustered foraging spots across a map of Denmark and a filter showing 26 types in season.",
       "Detail page for a blueberry spot with season, verification status, and buttons to confirm the spot or get directions.",
