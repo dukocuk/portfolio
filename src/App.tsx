@@ -11,7 +11,6 @@ import { Philosophy } from './components/Philosophy';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { BackToTop } from './components/ui/BackToTop';
-import { FirstVisitModal } from './components/ui/FirstVisitModal';
 import { useLanguage } from './i18n/useLanguage';
 import { uiStrings } from './i18n/ui';
 
@@ -44,7 +43,6 @@ function App() {
 
       <Footer />
       <BackToTop />
-      <FirstVisitModal />
     </>
   );
 }
