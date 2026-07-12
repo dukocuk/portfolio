@@ -20,7 +20,8 @@ src/
 ├── index.css           Tailwind layers + dark-only CSS-variable design tokens
 ├── components/         One component per site section (+ ProjectCard, Section)
 │   └── ui/             Reusable primitives (Button, Card, Tag, Reveal, Stagger,
-│                       ImageGallery, Lightbox, BookingButton, LanguageToggle, …)
+│                       ImageGallery, Lightbox, BookingButton, LanguageToggle,
+│                       ScrollProgress, GradientMesh, ProjectVisual, …)
 ├── data/               Bilingual site content — edit here, not the JSX
 ├── i18n/               config, LanguageContext, useLanguage, ui.ts (chrome strings)
 ├── hooks/              useScrollSpy, useBodyScrollLock
@@ -44,7 +45,7 @@ Static browser SPA — no CLI, API, or tests.
 | Area | Path | Purpose |
 |------|------|---------|
 | Sections | `src/components/*.tsx` | One component per site section; read copy from `data/` + `i18n/ui.ts` |
-| UI primitives | `src/components/ui/` | Button, Card, Tag, Reveal/Stagger, ImageGallery/Lightbox, BookingButton (lazy Cal.com), etc. |
+| UI primitives | `src/components/ui/` | Button, Card, Tag, Reveal/Stagger, ImageGallery/Lightbox, BookingButton (lazy Cal.com), ScrollProgress (top scroll bar), GradientMesh (hero backdrop), ProjectVisual (exports `ProjectHeader` — card header strip), etc. |
 | Content | `src/data/*.ts` | Bilingual `Record<Lang, …>`, `da` default: profile, about, projects, experience, education, services, testimonials, languages, popup |
 | Images | `src/lib/caseStudyImages.ts` | Auto-discovers case-study images via `import.meta.glob` + `vite-imagetools` (1600px full / 480px thumb WebP, numeric sort) |
 | i18n | `src/i18n/` | `config` (LANGS, DEFAULT_LANG, isLang), `LanguageContext`/`useLanguage`, `ui.ts` chrome strings |
