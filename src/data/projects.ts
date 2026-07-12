@@ -1,8 +1,9 @@
 // ============================================================
 // FEATURED PROJECTS / CASE STUDIES. Localized: Danish (default) + English.
-// No code/repo/demo links per request.
+// No code/repo/demo links per request; a published product may carry a
+// store link via the optional `link` field.
 // id / icon / tech are neutral and identical across locales;
-// title / type / summary / images / sections are translated.
+// title / type / summary / images / sections / link are translated.
 // ============================================================
 
 import type { Localized } from "./types";
@@ -26,6 +27,9 @@ export type Project = {
   // the first image renders as a 16:9 hero. For all imaged cards, the full
   // set appears as a thumbnail strip inside the expanded case-study panel.
   images?: ProjectImage[];
+  // Optional outbound product link (e.g. a store listing). Label is localized
+  // per locale entry; href is identical across locales.
+  link?: { href: string; label: string };
   sections: CaseSection[];
 };
 
@@ -50,6 +54,10 @@ const da: Project[] = [
       "Playwright",
       "GitHub Actions",
     ],
+    link: {
+      href: "https://chromewebstore.google.com/detail/inmabjpgpdocdedjbdiiphkjgjanmech",
+      label: "Hent i Chrome Web Store",
+    },
     sections: [
       {
         heading: "Problem",
@@ -72,7 +80,7 @@ const da: Project[] = [
       },
       {
         heading: "Min rolle",
-        body: "Eneudvikler — designede og byggede det hele: arkitekturen, lydpipelinen, ML-integrationen, UI'et, test-suiten, CI/CD og klargøringen til Chrome Web Store.",
+        body: "Eneudvikler — designede og byggede det hele: arkitekturen, lydpipelinen, ML-integrationen, UI'et, test-suiten, CI/CD og udgivelsen i Chrome Web Store.",
       },
       {
         heading: "Funktioner",
@@ -93,7 +101,7 @@ const da: Project[] = [
       },
       {
         heading: "Resultat",
-        body: "En fuldt fungerende, testet extension (v0.2.0) med unit-, integrations-, smoke- og E2E-tests i CI, pakket og klargjort til Chrome Web Store med store-listing, permission-begrundelser og privatlivspolitik.",
+        body: "En fuldt fungerende, testet extension med unit-, integrations-, smoke- og E2E-tests i CI — udgivet i Chrome Web Store med store-listing, permission-begrundelser og privatlivspolitik.",
       },
       {
         heading: "Hvad det demonstrerer",
@@ -735,6 +743,10 @@ const en: Project[] = [
       "Playwright",
       "GitHub Actions",
     ],
+    link: {
+      href: "https://chromewebstore.google.com/detail/inmabjpgpdocdedjbdiiphkjgjanmech",
+      label: "Get it on the Chrome Web Store",
+    },
     sections: [
       {
         heading: "Problem",
@@ -757,7 +769,7 @@ const en: Project[] = [
       },
       {
         heading: "My role",
-        body: "Sole developer — designed and built all of it: the architecture, the audio pipeline, the ML integration, the UI, the test suite, CI/CD, and the Chrome Web Store preparation.",
+        body: "Sole developer — designed and built all of it: the architecture, the audio pipeline, the ML integration, the UI, the test suite, CI/CD, and the Chrome Web Store release.",
       },
       {
         heading: "Features",
@@ -778,7 +790,7 @@ const en: Project[] = [
       },
       {
         heading: "Outcome",
-        body: "A fully working, tested extension (v0.2.0) with unit, integration, smoke, and E2E tests in CI, packaged and prepared for the Chrome Web Store with a store listing, permission justifications, and a privacy policy.",
+        body: "A fully working, tested extension with unit, integration, smoke, and E2E tests in CI — published on the Chrome Web Store with a store listing, permission justifications, and a privacy policy.",
       },
       {
         heading: "What it demonstrates",
