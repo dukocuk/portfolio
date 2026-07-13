@@ -1,7 +1,7 @@
 // ============================================================
 // CORE PROFILE — edit your headline / positioning / contact here.
 // Per request: no social links, no CV download anywhere on the site
-// (the GPG public key and Tox ID below are deliberate, narrow exceptions
+// (the GPG public key below are deliberate, narrow exceptions
 // for secure contact — not CVs or social links).
 // Localized: Danish (default) + English.
 // ============================================================
@@ -55,13 +55,6 @@ export const calLinks: Localized<{ inPerson: string; online: string }> = {
 export const gpgKey = {
   fingerprint: '1AF3 8DAB B66E 33DA 8FE2  D989 CC63 B9EB 1913 6814',
   fileName: 'duran-kose-gpg-public-key.asc',
-};
-
-// Tox ID for encrypted peer-to-peer chat. QR image lives in public/
-// (served via import.meta.env.BASE_URL), same pattern as the GPG key file.
-export const tox = {
-  id: '4D8A85A96BF24F0FBA0FFB6B6EDB36D1C23306B4754D961BECF399F02EAD563B97BD5CB514FC',
-  qrFileName: 'tox-id-qr.png',
 };
 
 // Navigation order is the single source of truth for the navbar + scroll-spy.

@@ -41,7 +41,7 @@ src/
 │   ├── Services.tsx          "What I can help with" grid
 │   ├── Testimonials.tsx      Quotes from colleagues/employers
 │   ├── Philosophy.tsx        Work-philosophy points (not a nav item)
-│   ├── Contact.tsx           Email-only contact + GPG key + Tox ID + booking
+│   ├── Contact.tsx           Email-only contact + GPG key + booking
 │   ├── Footer.tsx            Footer, no social links
 │   ├── Section.tsx           Shared <section> landmark w/ eyebrow/title/reveal header
 │   └── ui/                   Reusable presentational primitives (see COMPONENTS.md)
@@ -62,7 +62,7 @@ src/
 │       └── FirstVisitModal.tsx Once-per-browser blocking notice
 │
 ├── data/                     Data-driven, bilingual site content (edit here — see DATA-MODEL.md)
-│   ├── profile.ts            Core profile, calLinks, gpgKey, tox, navItems
+│   ├── profile.ts            Core profile, calLinks, gpgKey, navItems
 │   ├── about.ts              About paragraphs, snapshots, philosophy
 │   ├── projects.ts           Case studies + Project/ProjectImage/ProjectIcon types
 │   ├── experience.ts         Experience timeline entries

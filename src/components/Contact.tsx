@@ -1,4 +1,4 @@
-import { profileContent, gpgKey, tox } from "../data/profile";
+import { profileContent, gpgKey} from "../data/profile";
 import { Section } from "./Section";
 import { Card } from "./ui/Card";
 import { useLanguage } from "../i18n/useLanguage";
@@ -15,11 +15,9 @@ export function Contact() {
   const ui = uiStrings[lang];
   const c = ui.contact;
   const gpgKeyHref = `${import.meta.env.BASE_URL}${gpgKey.fileName}`;
-  const toxQrHref = `${import.meta.env.BASE_URL}${tox.qrFileName}`;
 
   const email = useCopyToClipboard();
   const fingerprint = useCopyToClipboard();
-  const toxId = useCopyToClipboard();
 
   return (
     <Section
@@ -79,36 +77,6 @@ export function Contact() {
               >
                 {c.gpgDownload}
               </a>
-            </div>
-          </div>
-
-          <div className="mt-5 border-t border-border pt-5">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted">
-              {c.toxLabel}
-            </p>
-            <p className="mt-1 max-w-md text-sm leading-relaxed text-muted">
-              {c.toxHelper}
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <code className="max-w-full break-all rounded-md border border-border bg-surface-2 px-2.5 py-1 font-mono text-xs text-text">
-                {tox.id}
-              </code>
-              <button
-                type="button"
-                onClick={() => toxId.copy(tox.id)}
-                className="rounded-md border border-border px-2.5 py-1 text-xs font-medium text-muted transition-colors hover:text-text"
-              >
-                {toxId.copied ? c.toxCopied : c.toxCopy}
-              </button>
-            </div>
-            <div className="mt-3 w-40 max-w-full rounded-md bg-white p-2">
-              <img
-                src={toxQrHref}
-                alt={c.toxQrAlt}
-                width={144}
-                height={144}
-                className="h-auto w-full"
-              />
             </div>
           </div>
         </Card>

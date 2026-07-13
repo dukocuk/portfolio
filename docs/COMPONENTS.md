@@ -25,7 +25,7 @@ and reads its copy from `src/data/` + `src/i18n/ui.ts`.
 | `Services` | "What I can help with" grid. |
 | `Testimonials` | Reference quotes. |
 | `Philosophy` | Work-philosophy points — intentionally **not** a nav item. |
-| `Contact` | Email-only contact (no form), GPG key download + fingerprint copy, Tox ID + QR, and the booking CTA. |
+| `Contact` | Email-only contact (no form), GPG key download + fingerprint copy, and the booking CTA. |
 | `Footer` | Footer; no social links. |
 | `Section` | Shared wrapper: semantic `<section>` landmark with accessible heading and a reveal-on-scroll header. Props: `{ id, eyebrow, title, intro, index, children, className }`. |
 

@@ -44,11 +44,6 @@ type UIStrings = {
     gpgDownload: string;
     gpgCopyFingerprint: string;
     gpgFingerprintCopied: string;
-    toxLabel: string;
-    toxHelper: string;
-    toxCopy: string;
-    toxCopied: string;
-    toxQrAlt: string;
   };
   booking: {
     heading: string;
@@ -127,11 +122,6 @@ export const uiStrings: Record<Lang, UIStrings> = {
       gpgDownload: 'Download offentlig nøgle',
       gpgCopyFingerprint: 'Kopiér fingerprint',
       gpgFingerprintCopied: 'Fingerprint kopieret',
-      toxLabel: 'Tox',
-      toxHelper: 'Foretrækker du krypteret peer-to-peer-chat? Tilføj mig på Tox.',
-      toxCopy: 'Kopiér Tox-ID',
-      toxCopied: 'Tox-ID kopieret',
-      toxQrAlt: 'QR-kode med Duran Köses Tox-ID',
     },
     booking: {
       heading: 'Hvordan skal vi mødes?',
@@ -218,11 +208,6 @@ export const uiStrings: Record<Lang, UIStrings> = {
       gpgDownload: 'Download public key',
       gpgCopyFingerprint: 'Copy fingerprint',
       gpgFingerprintCopied: 'Fingerprint copied',
-      toxLabel: 'Tox',
-      toxHelper: 'Prefer encrypted peer-to-peer chat? Add me on Tox.',
-      toxCopy: 'Copy Tox ID',
-      toxCopied: 'Tox ID copied',
-      toxQrAlt: "QR code for Duran Köse's Tox ID",
     },
     booking: {
       heading: 'How should we meet?',

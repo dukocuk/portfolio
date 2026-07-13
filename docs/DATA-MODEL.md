@@ -30,11 +30,10 @@ Exports several things beyond the profile text:
 - `profileContent: Record<Lang, Profile>` — `{ name, title, headline, positioning, email, tagline }`. In the Danish `headline`, the last two words render with a gradient accent.
 - `calLinks: Record<Lang, { inPerson; online }>` — Cal.com booking slugs (the part after `cal.com/`). Two event types per language: in-person (2h travel buffer each side) and online/Teams (no buffer).
 - `gpgKey: { fingerprint, fileName }` — GPG public key metadata (file served from `public/`).
-- `tox: { id, qrFileName }` — Tox ID for encrypted P2P chat + its QR image name.
 - `navItems` — ordered `{ id }[]`; the **single source of truth** for the navbar + scroll-spy. IDs are stable scroll anchors; visible labels are localized in `src/i18n/ui.ts`.
 
 > Deliberate constraint: no social links and no CV download anywhere. The GPG key
-> and Tox ID are narrow, intentional exceptions for secure contact.
+> is narrow, intentional exceptions for secure contact.
 
 ### `about.ts` — about, snapshot, philosophy
 Three exports:
