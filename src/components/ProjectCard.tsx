@@ -22,7 +22,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
   const showHero = featured && hasImages;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-black/20">
+    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-black/20">
       {showHero ? (
         <button
           type="button"
@@ -57,7 +57,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
           ))}
         </div>
 
-        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-5">
           <button
             type="button"
             onClick={() => setOpen((o) => !o)}

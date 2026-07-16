@@ -19,7 +19,7 @@ export function Projects() {
     >
       <StaggerGroup className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {projects.map((p) => (
-          <StaggerItem key={p.id}>
+          <StaggerItem key={p.id} className="h-full">
             <ProjectCard project={p} />
           </StaggerItem>
         ))}
