@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useId, useState, type Ref } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import type { Project } from '../data/projects';
 import { Tag } from './ui/Tag';
@@ -9,8 +9,22 @@ import { useLanguage } from '../i18n/useLanguage';
 import { uiStrings } from '../i18n/ui';
 import { prefetchImage } from '../lib/prefetchImage';
 
-export function ProjectCard({ project, featured = false }: { project: Project; featured?: boolean }) {
-  const [open, setOpen] = useState(false);
+// `open` and `minHeight` are controlled by <Projects>, which pins each grid row to a shared height.
+export function ProjectCard({
+  project,
+  open,
+  onToggle,
+  minHeight,
+  ref,
+  featured = false,
+}: {
+  project: Project;
+  open: boolean;
+  onToggle: () => void;
+  minHeight?: number;
+  ref?: Ref<HTMLElement>;
+  featured?: boolean;
+}) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const reduced = useReducedMotion();
   const panelId = useId();
@@ -22,7 +36,11 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
   const showHero = featured && hasImages;
 
   return (
-    <article className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-black/20">
+    <article
+      ref={ref}
+      style={{ minHeight }}
+      className="group flex flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:border-accent/50 hover:shadow-xl hover:shadow-black/20"
+    >
       {showHero ? (
         <button
           type="button"
@@ -60,7 +78,7 @@ export function ProjectCard({ project, featured = false }: { project: Project; f
         <div className="mt-auto flex flex-wrap items-center gap-x-5 gap-y-2 pt-5">
           <button
             type="button"
-            onClick={() => setOpen((o) => !o)}
+            onClick={onToggle}
             aria-expanded={open}
             aria-controls={panelId}
             className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:opacity-80"

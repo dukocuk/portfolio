@@ -19,7 +19,7 @@ and reads its copy from `src/data/` + `src/i18n/ui.ts`.
 | `About` | About paragraphs + spoken languages. |
 | `Snapshot` | "Professional snapshot" label/detail grid. |
 | `Projects` | Case-study grid; maps `projectsContent[lang]` to `ProjectCard` (first card featured). |
-| `ProjectCard` | One case study; header strip + summary + tech tags, expands into `sections` and an image gallery. Signature: `ProjectCard({ project, featured })`. |
+| `ProjectCard` | One case study; header strip + summary + tech tags, expands into `sections` and an image gallery. Signature: `ProjectCard({ project, open, onToggle, minHeight, ref, featured })` — expansion and height are controlled by `Projects`, which measures each grid row's tallest collapsed card (`useEqualRowHeights`) and pins every card in that row to it, so expanding one card never resizes its neighbour. |
 | `Timeline` | Experience timeline (`id="experience"`). |
 | `Education` | Academic history. |
 | `Services` | "What I can help with" grid. |
