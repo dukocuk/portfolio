@@ -4,6 +4,8 @@ type Options = {
   count: number;
   columns: number;
   // Elements can only be measured at their natural height, so skip while any of them is expanded.
+  // The caller must also keep this on until any collapse animation has settled — a mid-collapse
+  // element still reports its expanded height.
   freeze: boolean;
   // Change to force a re-measure (e.g. when the copy changes).
   resetKey?: unknown;

@@ -10,10 +10,13 @@ import { uiStrings } from '../i18n/ui';
 import { prefetchImage } from '../lib/prefetchImage';
 
 // `open` and `minHeight` are controlled by <Projects>, which pins each grid row to a shared height.
+// `onCollapsed` fires once the panel has finished animating shut — until then the card still measures
+// at its expanded height.
 export function ProjectCard({
   project,
   open,
   onToggle,
+  onCollapsed,
   minHeight,
   ref,
   featured = false,
@@ -21,6 +24,7 @@ export function ProjectCard({
   project: Project;
   open: boolean;
   onToggle: () => void;
+  onCollapsed?: () => void;
   minHeight?: number;
   ref?: Ref<HTMLElement>;
   featured?: boolean;
@@ -111,7 +115,7 @@ export function ProjectCard({
           )}
         </div>
 
-        <AnimatePresence initial={false}>
+        <AnimatePresence initial={false} onExitComplete={onCollapsed}>
           {open && (
             <motion.div
               id={panelId}
