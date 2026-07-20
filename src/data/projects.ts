@@ -723,16 +723,17 @@ const da: Project[] = [
 ];
 
 const en: Project[] = [
-  {
+{
     id: "notecast",
     title: "NoteCast — Local AI Note-Taking from Your Browser's Audio",
     type: "Personal Project · Browser Extension · Local AI · Privacy-First",
     icon: "vision",
     summary:
-      "A privacy-first Chrome/Brave extension that captures a tab's audio, transcribes it locally with Whisper, and generates structured notes live with a local Ollama LLM — everything runs on your own machine, nothing is sent to the cloud.",
+      "A privacy-first extension for Chrome, Brave, Edge, and Firefox that transcribes a tab's audio — or an audio file from your disk — locally with Whisper, and generates structured notes live with a local Ollama LLM. Your audio never leaves your machine.",
     tech: [
       "JavaScript",
-      "Chrome Extensions (Manifest V3)",
+      "Browser Extensions (Manifest V3)",
+      "WebExtensions",
       "Whisper",
       "transformers.js",
       "onnxruntime-web",
@@ -750,21 +751,21 @@ const en: Project[] = [
     sections: [
       {
         heading: "Problem",
-        body: "If you want to take notes from a video, a podcast, or a webinar in the browser, today's choice is between typing along manually — and losing focus — or sending the audio to a cloud service with subscriptions, API keys, and everything that comes with handing over your content. The browser's built-in Web Speech API is unreliable on tab audio, and Manifest V3 makes the task extra hard: a service worker can neither hold a MediaStream nor run heavy ML inference. What was missing was a tool where transcription and summarization happen entirely locally, without a single audio sample leaving the machine.",
+        body: "If you want to take notes from a video, a podcast, or a webinar in the browser, today's choice is between typing along manually — and losing focus — or sending the audio to a cloud service with subscriptions, API keys, and everything that comes with handing over your content. The browser's built-in Web Speech API is unreliable on tab audio, and Manifest V3 makes the task extra hard: a service worker can neither hold a MediaStream nor run heavy ML inference. What was missing was a tool where transcription and summarization happen entirely on the user's own hardware, without a single audio sample leaving the machine.",
       },
       {
         heading: "Goal",
-        body: "Build a browser extension that captures a tab's audio, transcribes it on-device, and continuously generates structured notes (summary, key points, action items) — no cloud, no API keys, and no interrupting playback.",
+        body: "Build a browser extension that captures a tab's audio, transcribes it on-device, and continuously generates structured notes (summary, key points, action items) — no third-party cloud, no vendor API keys, and no interrupting playback.",
       },
       {
         heading: "Technical approach",
         body: [
           "Architected the solution around MV3's context split: an offscreen document — the only MV3 context that can both hold a MediaStream and run WASM/WebGPU — handles audio capture and Whisper inference, while the service worker is the single hub that owns the session and routes all messages.",
-          "Built an audio pipeline with AudioWorklet, streaming resampling to 16 kHz mono, and raw PCM windows (20 s with 1 s overlap) instead of MediaRecorder — whose container format makes later chunks undecodable — while re-routing the audio to the speakers so the tab isn't muted.",
-          "Ran Whisper locally via @huggingface/transformers / onnxruntime-web with WebGPU and automatic WASM fallback; nine selectable models from Tiny to Large v3-turbo.",
+          "Built an audio pipeline with AudioWorklet, streaming resampling to 16 kHz mono, and raw PCM windows (30 s with 1 s overlap) instead of MediaRecorder — whose container format makes later chunks undecodable — while re-routing the audio to the speakers so the tab isn't muted.",
+          "Ran Whisper locally via @huggingface/transformers / onnxruntime-web with WebGPU and automatic WASM fallback; seven quality options from Base to Large v3-turbo, multilingual or English-only, each with its own quantization profile.",
           "Designed an incremental notes pipeline against Ollama's /api/chat: debouncing, delta computation with a cursor, cancellation of stale LLM calls, and a final consolidation pass — so long transcripts never blow the LLM's context window.",
-          "Implemented a three-clock time model (capture, wall, and video clocks) that maps each transcript segment to the right moment in a YouTube video as clickable deep links — including automatic session splitting when the tab navigates to a new video mid-recording, without interrupting audio capture.",
-          "Abstracted transcription and note generation behind pluggable provider factories, so local and cloud backends can be swapped without touching the pipeline.",
+          "Implemented a three-clock time model (capture, wall, and video clocks) that maps each transcript segment to the right moment in a YouTube video as clickable deep links — including automatic session splitting when the tab navigates to a new video mid-session, without interrupting audio capture.",
+          "Abstracted transcription and note generation behind pluggable provider factories, so local and remote backends can be swapped without touching the pipeline.",
         ],
       },
       {
@@ -775,14 +776,16 @@ const en: Project[] = [
         heading: "Features",
         body: [
           "Live transcript and structured notes that update as you watch; regenerate, edit segments, and export as Markdown or text.",
+          "Transcribe a file from disk — mp3, wav, m4a, ogg, flac, mp4, webm, or mov — through the exact same on-device pipeline, with a progress bar and time remaining. Nothing is uploaded.",
           "YouTube integration: every transcript segment is a clickable timestamp link; sessions split automatically when the video changes.",
-          "History archive of completed sessions, a keyboard shortcut for start/stop, system notifications on errors, and built-in error diagnostics that recognize Ollama's CORS rejection and show the exact fix command with one-click copy.",
-          "Whisper model and language selection right in the popup; a settings page with a connection test for your own Ollama host, local or on a VPS.",
+          "Speaks your language: 28 interface languages with right-to-left layout, 28 transcription languages with auto-detect, and notes written in whichever language you pick.",
+          "Session history, pause and resume mid-session, a pop-out panel in its own window, a keyboard shortcut, system notifications on errors, and built-in diagnostics that recognize Ollama's CORS rejection and show the exact fix command with one-click copy.",
+          "Whisper quality and language selection right in the popup, with download sizes shown up front and one-click removal of cached models; a settings page with a connection test for your own Ollama host, local or on a VPS.",
         ],
       },
       {
         heading: "Technologies & methods",
-        body: "Plain JavaScript (ES modules), Chrome Extensions Manifest V3 (service worker, offscreen document, content scripts), @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E in real Chromium, GitHub Actions CI, and a release pipeline where a v* tag builds a tested, store-ready zip.",
+        body: "Plain JavaScript (ES modules), Manifest V3 (service worker, offscreen document, content scripts) with a second Firefox build target from the same source tree, @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E in real Chromium, GitHub Actions CI, and a release pipeline where a v* tag builds tested, store-ready zips.",
       },
       {
         heading: "Challenges",
@@ -790,7 +793,7 @@ const en: Project[] = [
       },
       {
         heading: "Outcome",
-        body: "A fully working, tested extension with unit, integration, smoke, and E2E tests in CI — published on the Chrome Web Store with a store listing, permission justifications, and a privacy policy.",
+        body: "A fully working, tested extension with unit, integration, smoke, and E2E tests in CI — published on the Chrome Web Store with a store listing, permission justifications, and a privacy policy, plus a separate listing-ready Firefox package produced by the same tagged release.",
       },
       {
         heading: "What it demonstrates",
