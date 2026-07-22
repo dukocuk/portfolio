@@ -729,7 +729,7 @@ const en: Project[] = [
     type: "Personal Project · Browser Extension · Local AI · Privacy-First",
     icon: "vision",
     summary:
-      "A privacy-first extension for Chrome, Brave, Edge, and Firefox that transcribes a tab's audio — or an audio file from your disk — locally with Whisper, and generates structured notes live with a local Ollama LLM. Your audio never leaves your machine.",
+      "A privacy-first extension for Chrome, Brave and Edge that transcribes a tab's audio — or an audio file from your disk — locally with Whisper, and generates structured notes live with a local Ollama LLM. Your audio never leaves your machine.",
     tech: [
       "JavaScript",
       "Browser Extensions (Manifest V3)",
@@ -785,7 +785,7 @@ const en: Project[] = [
       },
       {
         heading: "Technologies & methods",
-        body: "Plain JavaScript (ES modules), Manifest V3 (service worker, offscreen document, content scripts) with a second Firefox build target from the same source tree, @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E in real Chromium, GitHub Actions CI, and a release pipeline where a v* tag builds tested, store-ready zips.",
+        body: "Plain JavaScript (ES modules), Manifest V3 (service worker, offscreen document, content scripts), @huggingface/transformers / onnxruntime-web, WebGPU/WASM, AudioWorklet, Ollama; esbuild, Vitest (unit/integration/smoke), Playwright E2E in real Chromium, GitHub Actions CI, and a release pipeline where a v* tag builds tested, store-ready zips.",
       },
       {
         heading: "Challenges",
@@ -793,7 +793,7 @@ const en: Project[] = [
       },
       {
         heading: "Outcome",
-        body: "A fully working, tested extension with unit, integration, smoke, and E2E tests in CI — published on the Chrome Web Store with a store listing, permission justifications, and a privacy policy, plus a separate listing-ready Firefox package produced by the same tagged release.",
+        body: "A fully working, tested extension with unit, integration, smoke, and E2E tests in CI — published on the Chrome Web Store with a store listing, permission justifications, and a privacy policy.",
       },
       {
         heading: "What it demonstrates",
