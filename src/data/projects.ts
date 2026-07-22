@@ -1431,8 +1431,10 @@ const en: Project[] = [
 const imageAlts: Localized<Record<string, string[]>> = {
   da: {
     notecast: [
-      "Popup-visning i NoteCast med live transskript og noter (resumé, nøglepunkter og action items), der opdateres, mens videoen afspilles.",
-      "Transskript af en YouTube-video, hvor hver linje er et klikbart tidslink, der hopper til det præcise øjeblik i videoen.",
+      "Live-transskription i NoteCast: fanen Transcript fyldes med tidsstemplede linjer, mens en forelæsning transskriberes på GPU'en, med pause- og stopknapper øverst.",
+      "Fanen Notes med AI-genererede noter (resumé, nøglebeslutninger og nøglepunkter) skabt lokalt af en Gemma 3-model efter en session.",
+      "Fanen History med gemte sessioner, hver med dato, varighed og antal segmenter samt mulighed for at slette dem.",
+      "Et færdigt transskript med tidsstemplede segmenter, der kan fjernes enkeltvis og eksporteres som Markdown eller ren tekst.",
     ],
     "vild-pluk": [
       "Kortvisning i Vild Pluk med klynger af sankesteder markeret på et Danmarkskort og et filter med 26 typer i sæson.",
@@ -1479,8 +1481,10 @@ const imageAlts: Localized<Record<string, string[]>> = {
   },
   en: {
     notecast: [
-      "Popup view in NoteCast with a live transcript and notes (summary, key points, and action items) updating while the video plays.",
-      "Transcript of a YouTube video where every line is a clickable timestamp link that jumps to the exact moment in the video.",
+      "Live transcription in NoteCast: the Transcript tab fills with timestamped lines while a lecture is transcribed on the GPU, with pause and stop controls at the top.",
+      "The Notes tab with AI-generated notes (summary, key decisions, and key points) produced locally by a Gemma 3 model after a session.",
+      "The History tab with saved sessions, each showing date, duration, and segment count, with the option to delete them.",
+      "A finished transcript with timestamped segments that can be removed individually and exported as Markdown or plain text.",
     ],
     "vild-pluk": [
       "Map view in Vild Pluk with clustered foraging spots across a map of Denmark and a filter showing 26 types in season.",
