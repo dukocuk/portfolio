@@ -1445,10 +1445,10 @@ const en: Project[] = [
 const imageAlts: Localized<Record<string, string[]>> = {
   da: {
     notecast: [
-      "Live-transskription i NoteCast: fanen Transcript fyldes med tidsstemplede linjer, mens en forelæsning transskriberes på GPU'en, med pause- og stopknapper øverst.",
-      "Fanen Notes med AI-genererede noter (resumé, nøglebeslutninger og nøglepunkter) skabt lokalt af en Gemma 3-model efter en session.",
-      "Fanen History med gemte sessioner, hver med dato, varighed og antal segmenter samt mulighed for at slette dem.",
-      "Et færdigt transskript med tidsstemplede segmenter, der kan fjernes enkeltvis og eksporteres som Markdown eller ren tekst.",
+      "Fanen History i NoteCast før transskription, med valg af model og en liste over tidligere gemte sessioner.",
+      "Fanen Ask under en igangværende transskription, hvor en Gemma 3-model bedes opsummere videoen i tre sætninger.",
+      "Live-transskription i NoteCast: fanen Transcript fyldes med tidsstemplede linjer og taleretiketter for 'Dr. Tony Bates'.",
+      "Fanen Notes, der viser strukturerede punkter om læringsteorier, genereret under transskriptionen.",
     ],
     "vild-pluk": [
       "Kortvisning i Vild Pluk med klynger af sankesteder markeret på et Danmarkskort og et filter med 26 typer i sæson.",
@@ -1495,10 +1495,10 @@ const imageAlts: Localized<Record<string, string[]>> = {
   },
   en: {
     notecast: [
-      "Live transcription in NoteCast: the Transcript tab fills with timestamped lines while a lecture is transcribed on the GPU, with pause and stop controls at the top.",
-      "The Notes tab with AI-generated notes (summary, key decisions, and key points) produced locally by a Gemma 3 model after a session.",
-      "The History tab with saved sessions, each showing date, duration, and segment count, with the option to delete them.",
-      "A finished transcript with timestamped segments that can be removed individually and exported as Markdown or plain text.",
+      "The History tab in NoteCast before transcription, showing model selection and a list of previously saved sessions.",
+      "The Ask tab during an active transcription, asking a Gemma 3 model to summarize the video in three sentences.",
+      "Live transcription in NoteCast: the Transcript tab fills with timestamped lines and speaker labels for 'Dr. Tony Bates'.",
+      "The Notes tab showing structured bullet points about learning theories, generated during the transcription.",
     ],
     "vild-pluk": [
       "Map view in Vild Pluk with clustered foraging spots across a map of Denmark and a filter showing 26 types in season.",
