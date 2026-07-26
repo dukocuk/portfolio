@@ -135,6 +135,13 @@ const da: Project[] = [
       "PostGIS",
       "Prisma",
     ],
+        links: 
+    [
+      {
+    href: "https://vildpluk.dk",
+    label: "Besøg hjemmeside",
+      },
+    ],
     sections: [
       {
         heading: "Problem",
@@ -833,6 +840,13 @@ const en: Project[] = [
       "PostgreSQL",
       "PostGIS",
       "Prisma",
+    ],
+            links: 
+    [
+      {
+    href: "https://vildpluk.dk",
+    label: "Go to website",
+      },
     ],
     sections: [
       {
