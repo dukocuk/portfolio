@@ -61,7 +61,7 @@ const da: Project[] = [
       label: "Hent i Chrome Web Store",
       },
       {
-    href: "https://dukocuk.github.io/notecast-site/",
+    href: "https://notecast.net",
     label: "Besøg hjemmeside",
       },
     ],
@@ -758,7 +758,7 @@ const en: Project[] = [
         label: "Get it on the Chrome Web Store",
       },
       {
-        href: "https://dukocuk.github.io/notecast-site/",
+        href: "https://notecast.net",
         label: "Go to website", 
       }
     ],
