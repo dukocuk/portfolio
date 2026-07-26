@@ -9,7 +9,7 @@ Surface is a browser GUI (Vite + React SPA, no router). Drive it with Playwright
 
 ## Recipe that works
 
-1. `npm run dev` in the background — note the port from the output (5173, or 5174+ if occupied). The app is served under `/portfolio/`, e.g. `http://localhost:5174/portfolio/`.
+1. `npm run dev` in the background — note the port from the output (5173, or 5174+ if occupied). The app is served from the root, e.g. `http://localhost:5174/`.
 2. Playwright is NOT a dependency of this repo. `npm i -D playwright` temporarily (Chromium builds are already cached at `~/AppData/Local/ms-playwright`, so no browser download). **Uninstall it afterwards** (`npm uninstall playwright`) so it doesn't land in the repo diff.
 3. Write the driver script in the scratchpad dir. The scratchpad is outside the repo tree, so a bare `import 'playwright'` fails — resolve via the repo:
    ```js

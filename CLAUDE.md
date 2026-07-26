@@ -2,7 +2,7 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Personal portfolio / case-study site for Duran Köse, deployed at https://dukocuk.github.io/portfolio/.
+Personal portfolio / case-study site for Duran Köse, deployed at https://whoisduran.com/.
 
 ## Commands
 
@@ -25,4 +25,4 @@ Reusable UI primitives live in `src/components/ui/` (Button, Card, Tag, Reveal/S
 
 **Theme** is dark-only and CSS-variable based: design tokens live in `src/index.css` as space-separated RGB channels so Tailwind's `rgb(var(--token) / <alpha-value>)` works. There is no light mode and no theme toggle. An inline script in `index.html` applies only the saved language (`localStorage` key `lang`) to `<html lang>` before paint, so the crawler-visible language matches the chosen one without a flash.
 
-**Deployment**: GitHub Actions (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages on every push to `main`. `vite.config.ts` sets `base: '/portfolio/'` to match the GitHub Pages subpath.
+**Deployment**: GitHub Actions (`.github/workflows/deploy.yml`) runs two independent jobs on every push to `main`. `vps` builds and rsyncs `dist/` into nginx's root (`/var/www/whoisduran/dist`) on the VPS behind Cloudflare — server-side names all follow the domain, not the repo — host, user, port and key come from repository secrets, so the workflow itself holds no connection details. `pages` publishes `gh-pages/`, a redirect stub keeping the old `dukocuk.github.io/portfolio/` URL alive. `vite.config.ts` sets `base: '/'` because the site is served from a domain root; the nginx server block lives at `deploy/nginx.conf` so it can't drift from the build it assumes.

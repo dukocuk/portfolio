@@ -5,7 +5,7 @@ Full-stack engineering with enterprise discipline.
 
 I work across full-stack development, mobile, secure authentication, and system integration — translating complex requirements into maintainable solutions.
 
-**Live site:** https://dukocuk.github.io/portfolio/
+**Live site:** https://whoisduran.com/
 
 **Contact:** duran.kose@protonmail.com
 

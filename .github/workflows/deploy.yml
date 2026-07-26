@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Deploy
 
 on:
   push:
@@ -7,45 +7,93 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: true
 
 jobs:
-  build:
+  # Build the site and rsync it into nginx's root on the VPS.
+  vps:
     runs-on: ubuntu-latest
+    # One deploy at a time; never cancel one mid-rsync, or the root is left
+    # half-written.
+    concurrency:
+      group: deploy-vps
+      cancel-in-progress: false
+    env:
+      # nginx's root on the VPS. Not a secret, and worth having in the diff:
+      # rsync runs with --delete, so this path had better be reviewable.
+      VPS_PATH: /var/www/whoisduran/dist
+      VPS_HOST: ${{ secrets.VPS_HOST }}
+      VPS_USER: ${{ secrets.VPS_USER }}
+      VPS_PORT: ${{ secrets.VPS_PORT || '22' }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm run build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: dist
+      - name: Checkout
+        uses: actions/checkout@v5
 
-  deploy:
-    needs: build
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Build
+        run: npm run build
+
+      # Without this, a missing secret surfaces as a cryptic rsync "@:" parse
+      # error several steps later.
+      - name: Check deploy secrets are set
+        env:
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          for v in VPS_HOST VPS_USER VPS_SSH_KEY; do
+            [ -n "${!v}" ] || { echo "::error::repository secret $v is not set"; exit 1; }
+          done
+
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Trust-on-first-use. To pin the host key instead, store the output of
+          # `ssh-keyscan -p PORT HOST` as a secret and write that here.
+          ssh-keyscan -p "$VPS_PORT" "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Rsync to VPS
+        # The trailing slash on dist/ syncs its *contents* into VPS_PATH. Without
+        # it rsync would nest a dist/ inside the root and --delete would wipe
+        # everything the site is actually served from.
+        #
+        # --chmod pins modes rather than inheriting the runner's: nginx runs as
+        # www-data and 403s on anything it can't read.
+        run: |
+          rsync -az --delete --chmod=D755,F644 \
+            -e "ssh -i ~/.ssh/deploy_key -p $VPS_PORT" \
+            dist/ "$VPS_USER@$VPS_HOST:$VPS_PATH/"
+
+  # Keep the old GitHub Pages URL alive as a redirect to whoisduran.com. This
+  # publishes gh-pages/, not the site itself — the build lives on the VPS now.
+  pages:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    concurrency:
+      group: pages
+      cancel-in-progress: true
     environment:
       name: github-pages
-      url: ${{ steps.deployment1.outputs.page_url || steps.deployment2.outputs.page_url || steps.deployment3.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment1
-        continue-on-error: true
-        uses: actions/deploy-pages@v4
-
-      - id: deployment2
-        if: steps.deployment1.outcome == 'failure'
-        continue-on-error: true
-        uses: actions/deploy-pages@v4
-
-      - id: deployment3
-        if: steps.deployment1.outcome == 'failure' && steps.deployment2.outcome == 'failure'
+      - uses: actions/checkout@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: gh-pages
+      - id: deployment
         uses: actions/deploy-pages@v4

@@ -1,7 +1,7 @@
 # Portfolio — Developer Documentation
 
 Personal portfolio / case-study site for **Duran Köse**, deployed at
-<https://dukocuk.github.io/portfolio/>.
+<https://whoisduran.com/>.
 
 A single-page **React 19 + Vite + TypeScript** SPA. All copy is data-driven and
 bilingual (Danish default, English), all case-study imagery is auto-discovered
@@ -30,7 +30,7 @@ suite** in this repo.
 |------|--------|-------|
 | UI framework | React `^19.2` | `StrictMode`, no router |
 | Language | TypeScript `~6.0` | `tsc -b` typecheck gates the build |
-| Build tool | Vite `^8.0` | `base: '/portfolio/'` for GitHub Pages |
+| Build tool | Vite `^8.0` | `base: '/'` — served from a domain root |
 | Styling | Tailwind CSS `^3.4` + PostCSS/autoprefixer | CSS-variable design tokens, dark-only |
 | Animation | Framer Motion `^12.40` | scroll reveals, staggered lists |
 | Images | `vite-imagetools` `^10` | auto WebP variants via `import.meta.glob` |

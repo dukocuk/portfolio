@@ -1,0 +1,46 @@
+<!doctype html>
+<!--
+  Redirect stub for the site's old address, https://dukocuk.github.io/portfolio/.
+  The portfolio itself now lives on the VPS at https://whoisduran.com/ — this is
+  the only thing the `pages` job in .github/workflows/deploy.yml publishes.
+
+  GitHub Pages can't issue a real 301, so this uses every substitute at once:
+  rel=canonical (what actually transfers ranking to the new host), a meta
+  refresh (which Google treats as a redirect signal), a location.replace() so
+  the stub never lands in the visitor's back-button history, and a plain link
+  for anyone with JS off and an ignored refresh.
+-->
+<html lang="da">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Duran Köse — flyttet til whoisduran.com</title>
+    <link rel="canonical" href="https://whoisduran.com/" />
+    <meta http-equiv="refresh" content="0; url=https://whoisduran.com/" />
+    <meta name="theme-color" content="#090D12" />
+    <script>
+      location.replace('https://whoisduran.com/');
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-content: center;
+        gap: 0.75rem;
+        padding: 2rem;
+        text-align: center;
+        background: #090d12;
+        color: #e6edf3;
+        font: 16px/1.6 system-ui, -apple-system, Segoe UI, sans-serif;
+      }
+      a {
+        color: #7dd3fc;
+      }
+    </style>
+  </head>
+  <body>
+    <p>Denne portfolio er flyttet — <em>this portfolio has moved.</em></p>
+    <p><a href="https://whoisduran.com/">whoisduran.com</a></p>
+  </body>
+</html>

@@ -8,7 +8,7 @@ Annotated layout of the repo. One line per file/folder; deeper detail lives in
 
 ```
 index.html            App shell — SEO/OG meta, JSON-LD, fonts, pre-paint lang script
-vite.config.ts        Vite config — base '/portfolio/', react + imagetools plugins
+vite.config.ts        Vite config — base '/', react + imagetools plugins
 tsconfig.json         TS project references root
 tsconfig.app.json     TS config for the app sources
 package.json          Scripts (dev/build/lint/preview) + dependencies

@@ -79,11 +79,14 @@ wrappers, which collapse to static, fully-visible output under
 ## Build & deploy
 
 - `npm run build` = `tsc -b && vite build` — a typecheck failure fails the build.
-- [`vite.config.ts`](../vite.config.ts) sets `base: '/portfolio/'` to match the
-  GitHub Pages subpath and registers the `react()` and `imagetools()` plugins.
-- CI (`.github/workflows/deploy.yml`) builds and deploys to GitHub Pages on every
-  push to `main`. (The deploy step retries `deploy-pages` a few times due to a
-  known upstream Pages flakiness.)
+- [`vite.config.ts`](../vite.config.ts) sets `base: '/'` — the site is served from
+  the root of whoisduran.com — and registers the `react()` and `imagetools()` plugins.
+- CI (`.github/workflows/deploy.yml`) has two independent jobs on every push to
+  `main`: `vps` builds and rsyncs `dist/` into nginx's root on the VPS, and `pages`
+  publishes [`gh-pages/`](../gh-pages/) — a redirect stub — so the old
+  `dukocuk.github.io/portfolio/` URL keeps working.
+- The nginx server block lives in the repo at [`deploy/nginx.conf`](../deploy/nginx.conf)
+  so it can't drift from the build it assumes.
 - Cal.com booking is lazy — nothing Cal-related loads until the visitor opens the
   booking chooser (see [`BookingButton`](../src/components/ui/BookingButton.tsx)
   in [COMPONENTS.md](./COMPONENTS.md)).
