@@ -14,7 +14,7 @@ export function Contact() {
   const profile = profileContent[lang];
   const ui = uiStrings[lang];
   const c = ui.contact;
-  const gpgKeyHref = `${import.meta.env.BASE_URL}${gpgKey.fileName}`;
+  const gpgKeyHref = `/${gpgKey.fileName}`;
 
   const email = useCopyToClipboard();
   const fingerprint = useCopyToClipboard();

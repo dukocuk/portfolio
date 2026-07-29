@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./index.html', './src/**/*.{ts,tsx}'],
+  content: ['./app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
   theme: {
     container: {
       center: true,
@@ -19,9 +19,11 @@ export default {
         accent: 'rgb(var(--c-accent) / <alpha-value>)',
         'accent-2': 'rgb(var(--c-accent-2) / <alpha-value>)',
       },
+      // The CSS variables are supplied by next/font/google (app/fonts.ts); the
+      // named families behind them are the fallback if that ever changes.
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['var(--font-sans)', 'Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+        display: ['var(--font-display)', 'Space Grotesk', 'Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
         'accent-gradient': 'linear-gradient(135deg, rgb(var(--c-accent)), rgb(var(--c-accent-2)))',

@@ -4,32 +4,33 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
+    "prebuild:images": "node scripts/build-case-images.mjs",
+    "dev": "npm run prebuild:images && next dev",
+    "build": "npm run prebuild:images && next build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "npx --yes serve out"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
     "framer-motion": "^12.40.0",
+    "next": "^16.2.12",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "26.1.2",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.5.0",
     "eslint": "^10.3.0",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.2",
     "globals": "^17.6.0",
     "postcss": "^8.5.15",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.19",
     "typescript": "~6.0.2",
-    "typescript-eslint": "^8.59.2",
-    "vite": "^8.0.12",
-    "vite-imagetools": "^10.0.0"
+    "typescript-eslint": "^8.59.2"
   }
 }

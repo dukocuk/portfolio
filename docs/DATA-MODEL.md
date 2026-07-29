@@ -10,7 +10,7 @@ separate; see [I18N-AND-THEMING.md](./I18N-AND-THEMING.md).
 Every content file is bilingual, keyed by language and typed as
 `Record<Lang, …>` where `Lang` is `'da' | 'en'` from
 [`src/i18n/config.ts`](../src/i18n/config.ts). **Danish (`da`) is the default**
-because the crawler-visible `index.html` is Danish.
+and holds the domain root; English is pre-rendered separately at `/en/`.
 
 ```ts
 export const someContent: Record<Lang, Shape> = {

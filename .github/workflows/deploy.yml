@@ -20,6 +20,8 @@ jobs:
     env:
       # nginx's root on the VPS. Not a secret, and worth having in the diff:
       # rsync runs with --delete, so this path had better be reviewable.
+      # (Named dist/ from the Vite era; it is just nginx's root, and renaming it
+      # would need a coordinated change on the box for no benefit.)
       VPS_PATH: /var/www/whoisduran/dist
       VPS_HOST: ${{ secrets.VPS_HOST }}
       VPS_USER: ${{ secrets.VPS_USER }}
@@ -65,8 +67,8 @@ jobs:
           ssh-keyscan -p "$VPS_PORT" "$VPS_HOST" >> ~/.ssh/known_hosts 2>/dev/null
 
       - name: Rsync to VPS
-        # The trailing slash on dist/ syncs its *contents* into VPS_PATH. Without
-        # it rsync would nest a dist/ inside the root and --delete would wipe
+        # The trailing slash on out/ syncs its *contents* into VPS_PATH. Without
+        # it rsync would nest an out/ inside the root and --delete would wipe
         # everything the site is actually served from.
         #
         # --chmod pins modes rather than inheriting the runner's: nginx runs as
@@ -74,7 +76,7 @@ jobs:
         run: |
           rsync -az --delete --chmod=D755,F644 \
             -e "ssh -i ~/.ssh/deploy_key -p $VPS_PORT" \
-            dist/ "$VPS_USER@$VPS_HOST:$VPS_PATH/"
+            out/ "$VPS_USER@$VPS_HOST:$VPS_PATH/"
 
   # Keep the old GitHub Pages URL alive as a redirect to whoisduran.com. This
   # publishes gh-pages/, not the site itself — the build lives on the VPS now.

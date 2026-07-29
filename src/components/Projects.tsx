@@ -11,13 +11,17 @@ import { uiStrings } from '../i18n/ui';
 const TWO_COLUMN_QUERY = '(min-width: 768px)';
 
 function useColumns() {
-  const [columns, setColumns] = useState(() =>
-    window.matchMedia(TWO_COLUMN_QUERY).matches ? 2 : 1,
-  );
+  // Starts at the grid's mobile-first default instead of reading matchMedia
+  // during render: this page is pre-rendered on the server, where there is no
+  // window. Nothing is pinned until useEqualRowHeights has measured, and that
+  // can't happen before the effect below corrects the count, so the initial
+  // value never reaches the markup.
+  const [columns, setColumns] = useState(1);
 
   useEffect(() => {
     const query = window.matchMedia(TWO_COLUMN_QUERY);
     const update = () => setColumns(query.matches ? 2 : 1);
+    update();
     query.addEventListener('change', update);
     return () => query.removeEventListener('change', update);
   }, []);

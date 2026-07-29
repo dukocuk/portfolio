@@ -1,19 +1,27 @@
 # Architecture
 
-How the SPA is wired together. See also [PROJECT-STRUCTURE.md](./PROJECT-STRUCTURE.md)
+How the site is wired together. See also [PROJECT-STRUCTURE.md](./PROJECT-STRUCTURE.md)
 for the file tree and [COMPONENTS.md](./COMPONENTS.md) for the component catalog.
 
 ## Entry & composition
 
-- [`index.html`](../index.html) is the shell: SEO/Open-Graph/Twitter meta,
-  JSON-LD `Person` structured data, Google Fonts loaded via `<link>` (not CSS
-  `@import`) so the request starts as the HTML parses, and a **pre-paint inline
-  script** that reads `localStorage['lang']` and sets `<html lang>` before React
-  mounts (so the crawler-visible language matches the chosen one without a flash).
-- [`src/main.tsx`](../src/main.tsx) mounts `<App/>` inside `<StrictMode>` and
-  wraps it in `<LanguageProvider>` (see [I18N-AND-THEMING.md](./I18N-AND-THEMING.md)).
-- [`src/App.tsx`](../src/App.tsx) composes every section in fixed order. There is
-  **no router** — the whole site is one scrollable page:
+Next.js App Router, statically exported. `next build` writes `out/` — plain files,
+no Node process at runtime.
+
+- **Two locale routes, two pre-rendered documents.** Danish is at `/`, English at
+  `/en/`. Root layouts own `<html>` and `<html lang>` differs per locale, so there
+  are two of them, in route groups: [`app/(da)/layout.tsx`](../app/\(da\)/layout.tsx)
+  and [`app/(en)/en/layout.tsx`](../app/\(en\)/en/layout.tsx). Each exports its own
+  `metadata` — title, description, canonical, `hreflang` alternates, OG/Twitter —
+  built by [`app/siteMetadata.ts`](../app/siteMetadata.ts). No pre-paint script is
+  needed any more: the server already emits the right language.
+- [`app/RootShell.tsx`](../app/RootShell.tsx) is the shared shell both layouts
+  render: `<html>`/`<body>`, the `next/font` variables, JSON-LD `Person` structured
+  data, `<LanguageProvider>` (see [I18N-AND-THEMING.md](./I18N-AND-THEMING.md)), and
+  a `<div id="root">` wrapper that `useModalA11y` marks `inert` while a modal is open.
+- [`src/components/SiteBody.tsx`](../src/components/SiteBody.tsx) composes every
+  section in fixed order and carries the `'use client'` boundary. Within a locale
+  there is **no router** — it is one scrollable page:
 
   ```
   Navbar
@@ -42,18 +50,25 @@ for the file tree and [COMPONENTS.md](./COMPONENTS.md) for the component catalog
 
 ## Case-study image pipeline (auto-discovery)
 
-Images are **not registered anywhere** — they are discovered from the filesystem
-by [`src/lib/caseStudyImages.ts`](../src/lib/caseStudyImages.ts):
+Images are **not registered anywhere** — they are discovered from the filesystem by
+[`scripts/build-case-images.mjs`](../scripts/build-case-images.mjs), which runs
+before `next dev` and `next build`:
 
-- `import.meta.glob('../assets/case-studies/*/*.{png,jpg,jpeg}', …)` eagerly
-  imports two variants per raster image via `vite-imagetools` query params:
-  a **full** `?w=1600&format=webp&quality=80` and a **thumb**
-  `?w=480&format=webp&quality=75`.
+- It walks `src/assets/case-studies/*/` and encodes two `sharp` variants per raster
+  image into `public/case-studies/`: a **full** 1600px WebP at quality 80 and a
+  **thumb** 480px WebP at quality 75 — the same sizes the `vite-imagetools` query
+  params produced before the Next migration.
+- Filenames carry a content hash, which is what lets nginx cache `/case-studies/`
+  immutably (see [`deploy/nginx.conf`](../deploy/nginx.conf)). Encodes are cached
+  under `node_modules/.cache/`, so an unchanged image is not re-encoded.
 - `.webp/.gif/.svg` files pass through untouched (used as both src and thumb).
 - Files are bucketed by the `{project-id}` folder name and sorted by filename
   with **numeric collation** (so `image10` sorts after `image2`, not `image1`).
-- `getCaseStudyImages(id, alt)` returns `ProjectImage[]` for a project; the
-  data layer calls it to attach `images` to each `Project`
+- The result is written to `src/lib/caseStudyImages.generated.ts`. Both it and
+  `public/case-studies/` are gitignored — they are derived from the sources.
+- [`src/lib/caseStudyImages.ts`](../src/lib/caseStudyImages.ts) reads that manifest
+  and exposes `getCaseStudyImages(id, alt)`, returning `ProjectImage[]` for a
+  project; the data layer calls it to attach `images` to each `Project`
   (see [DATA-MODEL.md](./DATA-MODEL.md)).
 
 **To add screenshots:** drop files into `src/assets/case-studies/{project-id}/`
@@ -63,7 +78,7 @@ where `{project-id}` matches that project's `id` in
 ## Styling & theming
 
 Dark-only, CSS-variable based. Design tokens live in
-[`src/index.css`](../src/index.css) as **space-separated RGB channels** so
+[`app/globals.css`](../app/globals.css) as **space-separated RGB channels** so
 Tailwind's `rgb(var(--token) / <alpha-value>)` composes with opacity. There is no
 light mode and no theme toggle. Details in [I18N-AND-THEMING.md](./I18N-AND-THEMING.md).
 
@@ -78,15 +93,23 @@ wrappers, which collapse to static, fully-visible output under
 
 ## Build & deploy
 
-- `npm run build` = `tsc -b && vite build` — a typecheck failure fails the build.
-- [`vite.config.ts`](../vite.config.ts) sets `base: '/'` — the site is served from
-  the root of whoisduran.com — and registers the `react()` and `imagetools()` plugins.
+- `npm run build` generates the case-study images, then runs `next build`. Next
+  typechecks as part of that, so a type error fails the build.
+- [`next.config.ts`](../next.config.ts) sets `output: 'export'` (static files, no
+  server), `trailingSlash: true` (so each locale is a directory with its own
+  `index.html`, which is what nginx's `try_files $uri $uri/` resolves), and
+  `images: { unoptimized: true }` (the default image optimizer is a server feature
+  and hard-errors under export — the prebuild script covers that job instead).
 - CI (`.github/workflows/deploy.yml`) has two independent jobs on every push to
-  `main`: `vps` builds and rsyncs `dist/` into nginx's root on the VPS, and `pages`
+  `main`: `vps` builds and rsyncs `out/` into nginx's root on the VPS, and `pages`
   publishes [`gh-pages/`](../gh-pages/) — a redirect stub — so the old
   `dukocuk.github.io/portfolio/` URL keeps working.
 - The nginx server block lives in the repo at [`deploy/nginx.conf`](../deploy/nginx.conf)
-  so it can't drift from the build it assumes.
+  so it can't drift from the build it assumes — in particular the immutable cache
+  rules for `/_next/static/` and `/case-studies/`, both content-hashed by the build.
+- `eslint-config-next` is deliberately not installed: its bundled plugins don't
+  support ESLint 10, which this repo is on. `next build` still catches type errors
+  and client/server boundary violations.
 - Cal.com booking is lazy — nothing Cal-related loads until the visitor opens the
   booking chooser (see [`BookingButton`](../src/components/ui/BookingButton.tsx)
   in [COMPONENTS.md](./COMPONENTS.md)).

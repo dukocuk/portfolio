@@ -14,7 +14,7 @@ import { Modal } from './Modal';
 // first opens a small chooser and each choice fires the matching event.
 const CAL_NAMESPACE = 'booking';
 
-// Booker theming — mirrors the site tokens in src/index.css so the popup
+// Booker theming — mirrors the site tokens in app/globals.css so the popup
 // reads as part of the site instead of stock Cal.com.
 const CAL_CSS_VARS: Record<string, string> = {
   'cal-brand': '#14B8A6', // --c-accent

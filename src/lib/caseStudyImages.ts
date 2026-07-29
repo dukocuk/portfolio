@@ -1,45 +1,10 @@
 import type { ProjectImage } from '../data/projects';
+import { caseStudyImageManifest } from './caseStudyImages.generated';
 
-const fullModules = import.meta.glob(
-  '../assets/case-studies/*/*.{png,jpg,jpeg}',
-  { eager: true, query: '?w=1600&format=webp&quality=80&url', import: 'default' },
-) as Record<string, string>;
-
-const thumbModules = import.meta.glob(
-  '../assets/case-studies/*/*.{png,jpg,jpeg}',
-  { eager: true, query: '?w=480&format=webp&quality=75&url', import: 'default' },
-) as Record<string, string>;
-
-const passthroughModules = import.meta.glob(
-  '../assets/case-studies/*/*.{webp,gif,svg}',
-  { eager: true, query: '?url', import: 'default' },
-) as Record<string, string>;
-
-type Entry = { filename: string; src: string; thumb: string };
-const byId = new Map<string, Entry[]>();
-
-function push(path: string, src: string, thumb: string) {
-  const match = path.match(/case-studies\/([^/]+)\/([^/]+)$/);
-  if (!match) return;
-  const [, id, filename] = match;
-  const bucket = byId.get(id) ?? [];
-  bucket.push({ filename, src, thumb });
-  byId.set(id, bucket);
-}
-
-for (const [path, src] of Object.entries(fullModules)) {
-  const thumb = thumbModules[path] ?? src;
-  push(path, src, thumb);
-}
-
-for (const [path, url] of Object.entries(passthroughModules)) {
-  push(path, url, url);
-}
-
-for (const bucket of byId.values()) {
-  // Numeric collation so image10 sorts after image2, not after image1.
-  bucket.sort((a, b) => a.filename.localeCompare(b.filename, undefined, { numeric: true }));
-}
+// The manifest is produced by scripts/build-case-images.mjs, which walks
+// src/assets/case-studies/*/ before every dev run and build. Images are
+// discovered by folder name, so a project's gallery is whatever sits in the
+// folder matching its `id` — there is nothing to register here.
 
 const warnedEmpty = new Set<string>();
 
@@ -47,8 +12,8 @@ export function getCaseStudyImages(
   id: string,
   alt: (n: number) => string,
 ): ProjectImage[] {
-  const bucket = byId.get(id) ?? [];
-  if (import.meta.env.DEV && bucket.length === 0 && !warnedEmpty.has(id)) {
+  const bucket = caseStudyImageManifest[id] ?? [];
+  if (process.env.NODE_ENV !== 'production' && bucket.length === 0 && !warnedEmpty.has(id)) {
     warnedEmpty.add(id);
     console.warn(
       `[caseStudyImages] No images found for project "${id}". ` +
