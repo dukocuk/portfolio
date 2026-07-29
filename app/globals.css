@@ -1,5 +1,6 @@
-/* Fonts are loaded via a <link> in index.html (not @import here) so the
-   request starts as soon as the HTML parses instead of after this CSS. */
+/* Fonts are self-hosted by next/font/google (see app/fonts.ts), which inlines
+   the @font-face rules into the pre-rendered HTML — no third-party request and
+   no render-blocking stylesheet ahead of this one. */
 
 @tailwind base;
 @tailwind components;

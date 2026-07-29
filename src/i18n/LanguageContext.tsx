@@ -1,50 +1,18 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+'use client';
+
+import { useMemo } from 'react';
 import type { ReactNode } from 'react';
-import { DEFAULT_LANG, isLang, STORAGE_KEY, type Lang } from './config';
-import { uiStrings } from './ui';
+import type { Lang } from './config';
 import { LanguageContext } from './useLanguage';
 
-function getInitialLang(): Lang {
-  if (typeof localStorage !== 'undefined') {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (isLang(saved)) return saved;
-    } catch {
-      /* storage unavailable — fall back to default */
-    }
-  }
-  return DEFAULT_LANG;
-}
-
-function setMeta(selector: string, content: string) {
-  const el = document.head.querySelector<HTMLMetaElement>(selector);
-  if (el) el.content = content;
-}
-
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLangState] = useState<Lang>(getInitialLang);
-
-  // Keep the document language, tab title, and key meta tags in sync so the
-  // chosen language is reflected for the browser, screen readers, and bookmarks.
-  useEffect(() => {
-    const { seo } = uiStrings[lang];
-    document.documentElement.lang = lang;
-    document.title = seo.title;
-    setMeta('meta[name="description"]', seo.description);
-    setMeta('meta[property="og:locale"]', seo.ogLocale);
-    try {
-      localStorage.setItem(STORAGE_KEY, lang);
-    } catch {
-      /* storage unavailable — ignore */
-    }
-  }, [lang]);
-
-  const toggleLang = useCallback(
-    () => setLangState((l) => (l === 'da' ? 'en' : 'da')),
-    [],
-  );
-
-  const value = useMemo(() => ({ lang, toggleLang }), [lang, toggleLang]);
-
+// The language is now a property of the route, not client state: each locale is
+// pre-rendered at its own URL with its own <html lang> and metadata, so this
+// provider only carries the layout's value down to the components that read it.
+//
+// Nothing here reads localStorage or mutates <head> any more — the former made
+// the rendered language differ from the crawled one, and the latter is what
+// Next's `metadata` exports do at build time.
+export function LanguageProvider({ lang, children }: { lang: Lang; children: ReactNode }) {
+  const value = useMemo(() => ({ lang }), [lang]);
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 }

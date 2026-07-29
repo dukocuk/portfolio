@@ -1,9 +1,10 @@
+'use client';
+
 import { createContext, useContext } from 'react';
 import type { Lang } from './config';
 
 type LanguageContextValue = {
   lang: Lang;
-  toggleLang: () => void;
 };
 
 export const LanguageContext = createContext<LanguageContextValue | null>(null);

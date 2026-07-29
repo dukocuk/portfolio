@@ -9,7 +9,8 @@ the data layer ([DATA-MODEL.md](./DATA-MODEL.md)); these render it.
 
 ## Section components (`src/components/`)
 
-Composed in order by [`App.tsx`](../src/App.tsx). Each renders one site section
+Composed in order by [`SiteBody.tsx`](../src/components/SiteBody.tsx), which carries
+the `'use client'` boundary for the whole tree. Each renders one site section
 and reads its copy from `src/data/` + `src/i18n/ui.ts`.
 
 | Component | Renders |
@@ -42,7 +43,7 @@ and reads its copy from `src/data/` + `src/i18n/ui.ts`.
 | `ImageGallery` | Thumbnail strip of case-study screenshots; `onOpen` hands off to the lightbox. |
 | `Lightbox` | Full-size viewer with Escape/backdrop-click close and prev/next navigation; locks body scroll while open. |
 | `ProjectVisual` | Exports `ProjectHeader({ icon, type })` — a domain icon chip + category strip for project cards. |
-| `BookingButton` | Public booking CTA. On click opens a "How should we meet?" chooser (in-person vs online). **Lazy:** the Cal.com embed script is only fetched when the chooser opens, and its iframe loads on the choice click. Booker theme mirrors `src/index.css` tokens. |
+| `BookingButton` | Public booking CTA. On click opens a "How should we meet?" chooser (in-person vs online). **Lazy:** the Cal.com embed script is only fetched when the chooser opens, and its iframe loads on the choice click. Booker theme mirrors `app/globals.css` tokens. |
 | `LanguageToggle` | Segmented DA/EN switch; the whole control is one button that toggles language. |
 | `GradientMesh` | Static teal/cyan mesh for the hero background (avoids costly large animated blur layers). |
 | `ScrollProgress` | Thin progress bar pinned to the top of the viewport, tracking page scroll. |

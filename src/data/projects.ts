@@ -1574,7 +1574,7 @@ for (const p of en)
 // drift out of parity (a project gaining a section in one language only).
 // Warn in dev when a project's section counts differ or the id lists don't line
 // up — cheap guard, since section headings can't be enforced at compile time.
-if (import.meta.env.DEV) {
+if (process.env.NODE_ENV !== 'production') {
   const byIdEn = new Map(en.map((p) => [p.id, p]));
   for (const dp of da) {
     const ep = byIdEn.get(dp.id);
