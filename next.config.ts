@@ -13,6 +13,14 @@ const nextConfig: NextConfig = {
   // export. The WebP variants are produced ahead of the build instead — see
   // scripts/build-case-images.mjs.
   images: { unoptimized: true },
+
+  experimental: {
+    // Opts app/global-not-found.tsx in. Both root layouts live in route groups
+    // so <html lang> can differ per locale, which leaves no root layout for a
+    // plain not-found.tsx to render inside — global-not-found owns its own
+    // <html>/<body> and is the supported way to do this.
+    globalNotFound: true,
+  },
 };
 
 export default nextConfig;

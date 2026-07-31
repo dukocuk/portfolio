@@ -27,6 +27,12 @@ and both pages render `src/components/SiteBody.tsx`. `src/i18n/config.ts` (`LANG
 `LANG_META`) is the single source of truth for which locale lives where — the language switch,
 the canonical/`hreflang` tags in `app/siteMetadata.ts`, and `app/sitemap.ts` all read from it.
 
+Having no root layout at `app/` level is also why the 404 is `app/global-not-found.tsx` rather
+than `not-found.tsx` — a `not-found` renders *inside* a root layout and there isn't one to pick.
+`global-not-found` owns its own `<html>`/`<body>` and needs `experimental.globalNotFound` in
+`next.config.ts`. It is bilingual on one page, because a URL that matched no route carries no
+locale to infer. It reaches visitors via nginx's `error_page`, not a route — see Deployment.
+
 The language is a property of the route, not client state. `src/i18n/LanguageContext.tsx` is a
 pass-through provider that hands the layout's `lang` down; `useLanguage()` still works exactly
 as before in every component, so adding a locale-aware component needs no new plumbing. Nothing
@@ -58,6 +64,17 @@ around the app because `useModalA11y` marks it `inert` while a modal is open, an
 to `document.body` outside it. Anything running during pre-render must not touch `window` at
 module or render scope — `useColumns` in `src/components/Projects.tsx` is the worked example.
 
+**What gets pre-rendered is a content decision, not just a rendering one.** The case-study panel
+in `ProjectCard` is *always mounted* and collapsed with `animate={{ height: 0 }}` + `inert`, not
+gated behind `{open && …}`. Mounting it on click kept ~92% of the project copy out of the HTML
+entirely — the site's longest-form writing, on a site migrated for SEO. Same pattern as Navbar's
+mobile menu; `initial={false}` is what makes Framer emit the collapsed styles during pre-render.
+
+The `ImageGallery` inside that panel is the deliberate exception and stays `{open && …}`.
+`loading="lazy"` does not defer images inside a height-0 clipped parent — they keep their natural
+layout position, so Chrome fetched 16 of 18 thumbs anyway, 11 of them before the grid was even
+scrolled into view. Images add only alt text to what a crawler reads. Don't "fix" the asymmetry.
+
 Reusable UI primitives live in `src/components/ui/` (Button, Card, Tag, Reveal/Stagger for
 Framer Motion scroll animation, ImageGallery/Lightbox for case-study screenshots) — check there
 before adding new ones.
@@ -79,4 +96,11 @@ Cloudflare; host, user, port and key come from repository secrets, so the workfl
 no connection details. `pages` publishes `gh-pages/`, a redirect stub keeping the old
 `dukocuk.github.io/portfolio/` URL alive. The nginx server block lives at `deploy/nginx.conf` so
 it can't drift from the build it assumes — in particular its immutable cache rules for
-`/_next/static/` and `/case-studies/`, both of which are content-hashed.
+`/_next/static/` and `/case-studies/`, both of which are content-hashed, and
+`error_page 404 /404.html`, which is the only thing that makes the exported 404 page reachable.
+Unknown paths 404; there is deliberately no SPA-style fallback to `/index.html`, since both
+routes are real files and nothing needs a client router to boot first.
+
+The config in this repo is **not** applied automatically — it has to be installed on the VPS by
+hand (`nginx -t && systemctl reload nginx`; the file's own header has the procedure and the
+caveat that a reload also applies pending config for the other sites on that box).

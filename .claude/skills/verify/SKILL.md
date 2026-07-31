@@ -13,9 +13,11 @@ two locale routes). Drive it with Playwright headless Chromium.
 1. `npm run dev` in the background — note the port from the output (3000, or 3001+ if occupied).
    There are two pages to check, not one: `http://localhost:3000/` (Danish) and
    `http://localhost:3000/en/` (English). A change to a shared component affects both.
-2. Playwright is NOT a dependency of this repo. `npm i -D playwright` temporarily (Chromium
-   builds are already cached at `~/AppData/Local/ms-playwright`, so no browser download).
+2. Playwright is NOT a dependency of this repo. `npm i -D playwright` temporarily.
    **Uninstall it afterwards** (`npm uninstall playwright`) so it doesn't land in the repo diff.
+   Chromium builds are cached at `~/AppData/Local/ms-playwright`, but the cached revision only
+   works if it matches the playwright version npm just resolved — if `launch()` complains the
+   executable is missing, `npx playwright install chromium-headless-shell` and carry on.
 3. Write the driver script in the scratchpad dir. The scratchpad is outside the repo tree, so a
    bare `import 'playwright'` fails — resolve via the repo:
    ```js
@@ -35,11 +37,45 @@ image pipeline, also check the real build: `npm run build`, then `npm run previe
 and re-run the script against that port. To check what a crawler sees, read the built file
 directly — `out/index.html` and `out/en/index.html` — rather than the hydrated DOM.
 
+### …and for routing, not even that is enough
+
+`npm run preview` is `npx serve out`, which **does not behave like production**. Given a path
+that is not a file, `serve` returns 404; nginx runs `try_files`. That difference is not academic:
+it hid the open question about the language switch through the whole Vite→Next migration, because
+the failure mode only exists on one of the two servers.
+
+For anything touching routing or 404s, serve `out/` with a ~15-line static server in the
+scratchpad that mirrors `deploy/nginx.conf` instead:
+
+- exact file → serve it
+- directory → redirect to the trailing-slash form, then `<path>/index.html`
+- neither → **`404.html` with status 404** (this is what nginx does now:
+  `try_files $uri $uri/ =404` plus `error_page 404 /404.html`)
+- `/_next/static/` and `/case-studies/` → file or 404, never the fallback
+
+Make the last rule a flag if you need to compare against the pre-2026-07 behaviour, which fell
+back to `/index.html` with a 200.
+
+Settled by that harness, so you don't have to re-derive it: clicking the language switch makes
+the client router fetch `/index.txt` or `/en/index.txt` — **real files the export writes**, 200
+under any server — and then hard-load the document, because the two locales have different root
+layouts. The `__next.*.__PAGE__.txt` names in the `LanguageToggle` comment are requested *only*
+by prefetch, which is why `prefetch={false}` is set there. The switch is not fragile.
+
 ## Gotchas / useful selectors
 
 - Wait for `document.fonts.ready` and ~1s after scrolling a section into view — Framer Motion
   reveal animations and the row-height measure pass (`useEqualRowHeights`) need to settle before
   reading `offsetHeight`.
+- **Counting image requests at page load proves nothing.** The projects grid is below the fold,
+  so nothing there loads until you scroll to it regardless of what you changed. Scroll each card
+  into view first, settle, *then* count. Related and counter-intuitive: `loading="lazy"` does
+  **not** defer an image inside a `height: 0; overflow: hidden` parent — it keeps its natural
+  layout position and gets fetched anyway. Any change that mounts hidden content needs this
+  check; that is why `ImageGallery` is still gated on `open` while the prose around it is not.
+- The Cal.com assertion fetches `app.cal.com` over the real network inside a ~2.5s budget, so it
+  fails intermittently on a slow link. Re-run before believing it — a single red there is not a
+  regression, and it is the only check in the suite that depends on the outside world.
 - Project cards: `#projects article`; their expand toggles: `#projects article button[aria-expanded]`.
   Pinned row heights are inline `style.minHeight` on the `<article>`.
 - Case-study screenshots render only inside an expanded panel — there are no `<img>` tags on a
