@@ -7,6 +7,7 @@
 // ============================================================
 
 import type { Localized } from "./types";
+import type { Lang } from "../i18n/config";
 import { getCaseStudyImages } from "../lib/caseStudyImages";
 
 type CaseSection = { heading: string; body: string | string[] };
@@ -1594,3 +1595,12 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export const projectsContent: Localized<Project[]> = { da, en };
+
+// Single source of truth for the set of project routes (generateStaticParams,
+// sitemap). da and en are checked above to share the same ids in the same
+// order, so da's order is as good as either's.
+export const projectIds: string[] = da.map((p) => p.id);
+
+export function findProject(lang: Lang, id: string): Project | undefined {
+  return projectsContent[lang].find((p) => p.id === id);
+}

@@ -13,12 +13,12 @@ import { uiStrings } from '../../i18n/ui';
 // `__next.!KGRhKQ.txt`. Navigation works regardless (it falls back to a document
 // load), but leaving prefetch on fires two 404s on every page view. With exactly
 // two routes there is nothing to gain by prefetching anyway.
-export function LanguageToggle() {
+export function LanguageToggle({ altHref }: { altHref?: string } = {}) {
   const { lang } = useLanguage();
   const target = otherLang(lang);
   return (
     <Link
-      href={LANG_PATHS[target]}
+      href={altHref ?? LANG_PATHS[target]}
       prefetch={false}
       hrefLang={LANG_META[target].htmlLang}
       aria-label={uiStrings[lang].aria.switchLanguage}

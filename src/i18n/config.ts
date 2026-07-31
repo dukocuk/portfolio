@@ -24,3 +24,13 @@ export const LANG_META: Record<Lang, { htmlLang: string; ogLocale: string }> = {
 };
 
 export const otherLang = (lang: Lang): Lang => (lang === 'da' ? 'en' : 'da');
+
+// Same idea as LANG_PATHS, one level down: where a single project's dedicated
+// case-study page lives per locale. 'projekter' matches the existing Danish
+// nav label (uiStrings.da.nav.projects); 'projects' is the English form.
+export const PROJECT_BASE_PATH: Record<Lang, string> = {
+  da: '/projekter/',
+  en: '/en/projects/',
+};
+
+export const projectPath = (lang: Lang, id: string): string => `${PROJECT_BASE_PATH[lang]}${id}/`;

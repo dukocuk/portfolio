@@ -92,3 +92,15 @@ by prefetch, which is why `prefetch={false}` is set there. The switch is not fra
 - Two-column card grid starts at 768px; below that `useEqualRowHeights` must pin nothing (empty
   `style.minHeight`). `useColumns` starts at 1 and corrects in an effect, so give it a tick.
 - Case-study panels animate open/closed over ~300ms — wait ≥600ms after a toggle before measuring.
+- **`hreflang` renders camelCase in the exported HTML** (`<link rel="alternate" hrefLang="en" ...>`),
+  because that's the JSX prop name and Next doesn't lowercase it. A case-sensitive
+  `grep -o '<link[^>]*hreflang[^>]*>'` against a built file finds nothing and looks like the tag
+  is missing. Use `grep -i`, or match on `hrefLang` directly.
+- **Most components under `src/components/` don't carry their own `'use client'`** and call
+  `useLanguage()`/hooks anyway — this works today only because they're always reached through
+  `SiteBody`'s (or another already-client ancestor's) boundary first, and once you're inside a
+  client subtree, further imports don't need to re-declare the directive. Render one of them
+  directly from a genuine Server Component (a new route's page/layout, not something nested under
+  `SiteBody`) and the build fails at prerender: "Attempted to call useLanguage() from the server."
+  Check whether the file actually has `'use client'` before assuming it's reusable from a new
+  server-rooted tree — don't infer it from the file working fine today.
