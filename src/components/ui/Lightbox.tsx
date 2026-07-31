@@ -80,7 +80,7 @@ export function Lightbox({ images, initialIndex, open, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label={ui.close}
-            className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface/80 text-text shadow-lg ring-1 ring-border transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            className="absolute right-4 top-4 z-10 inline-flex h-10 w-10 items-center justify-center rounded-full bg-surface/80 text-text shadow-lg ring-1 ring-border transition-colors hover:bg-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:h-12 sm:w-12"
           >
             <svg
               width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
