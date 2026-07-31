@@ -64,6 +64,17 @@ around the app because `useModalA11y` marks it `inert` while a modal is open, an
 to `document.body` outside it. Anything running during pre-render must not touch `window` at
 module or render scope — `useColumns` in `src/components/Projects.tsx` is the worked example.
 
+**What gets pre-rendered is a content decision, not just a rendering one.** The case-study panel
+in `ProjectCard` is *always mounted* and collapsed with `animate={{ height: 0 }}` + `inert`, not
+gated behind `{open && …}`. Mounting it on click kept ~92% of the project copy out of the HTML
+entirely — the site's longest-form writing, on a site migrated for SEO. Same pattern as Navbar's
+mobile menu; `initial={false}` is what makes Framer emit the collapsed styles during pre-render.
+
+The `ImageGallery` inside that panel is the deliberate exception and stays `{open && …}`.
+`loading="lazy"` does not defer images inside a height-0 clipped parent — they keep their natural
+layout position, so Chrome fetched 16 of 18 thumbs anyway, 11 of them before the grid was even
+scrolled into view. Images add only alt text to what a crawler reads. Don't "fix" the asymmetry.
+
 Reusable UI primitives live in `src/components/ui/` (Button, Card, Tag, Reveal/Stagger for
 Framer Motion scroll animation, ImageGallery/Lightbox for case-study screenshots) — check there
 before adding new ones.

@@ -1,5 +1,5 @@
 import { useId, useState, type Ref } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import type { Project } from '../data/projects';
 import { Tag } from './ui/Tag';
 import { ProjectHeader } from './ui/ProjectVisual';
@@ -116,42 +116,54 @@ export function ProjectCard({
           ))}
         </div>
 
-        <AnimatePresence initial={false} onExitComplete={onCollapsed}>
-          {open && (
-            <motion.div
-              id={panelId}
-              initial={reduced ? false : { height: 0, opacity: 0 }}
-              animate={reduced ? {} : { height: 'auto', opacity: 1 }}
-              exit={reduced ? {} : { height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div className="mt-5 space-y-4 border-t border-border pt-5">
-                {hasImages && (
-                  <ImageGallery images={images} onOpen={(i) => setLightboxIndex(i)} />
-                )}
-                <dl className="space-y-4">
-                  {project.sections.map((s, i) => (
-                    <div key={i}>
-                      <dt className="text-sm font-semibold text-text">{s.heading}</dt>
-                      <dd className="mt-1 text-sm leading-relaxed text-muted">
-                        {Array.isArray(s.body) ? (
-                          <ul className="list-disc space-y-1 pl-5">
-                            {s.body.map((item, i) => (
-                              <li key={i}>{item}</li>
-                            ))}
-                          </ul>
-                        ) : (
-                          s.body
-                        )}
-                      </dd>
-                    </div>
-                  ))}
-                </dl>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Always mounted, never unmounted — same shape as Navbar's mobile menu. The case-study
+            prose is the longest-form writing on the site, and mounting it on click meant it was
+            absent from the pre-rendered HTML: ~92% of the project copy no crawler ever saw.
+            `initial={false}` makes Framer resolve its server-rendered styles from `animate`,
+            which is the collapsed state at pre-render, so the content ships inside a height-0
+            box rather than not shipping at all. `inert` keeps it out of the tab order and the
+            a11y tree while collapsed — and it also makes the toggle's `aria-controls` point at
+            an element that actually exists, which it did not before. */}
+        <motion.div
+          id={panelId}
+          initial={false}
+          animate={open ? { height: 'auto', opacity: 1 } : { height: 0, opacity: 0 }}
+          transition={{ duration: reduced ? 0 : 0.3, ease: [0.22, 1, 0.36, 1] }}
+          onAnimationComplete={() => {
+            if (!open) onCollapsed?.();
+          }}
+          inert={!open}
+          className="overflow-hidden"
+        >
+          <div className="mt-5 space-y-4 border-t border-border pt-5">
+            {/* The gallery stays mounted-on-open, unlike the prose above it. `loading="lazy"`
+                does not save you inside a height-0 clipped parent: the thumbs keep their natural
+                layout position, so Chrome fetched 16 of the 18 anyway — 11 before the grid was
+                even scrolled to. Images contribute only their alt text to what a crawler reads,
+                which is not worth 16 WebP requests nobody asked for. */}
+            {open && hasImages && (
+              <ImageGallery images={images} onOpen={(i) => setLightboxIndex(i)} />
+            )}
+            <dl className="space-y-4">
+              {project.sections.map((s, i) => (
+                <div key={i}>
+                  <dt className="text-sm font-semibold text-text">{s.heading}</dt>
+                  <dd className="mt-1 text-sm leading-relaxed text-muted">
+                    {Array.isArray(s.body) ? (
+                      <ul className="list-disc space-y-1 pl-5">
+                        {s.body.map((item, i) => (
+                          <li key={i}>{item}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      s.body
+                    )}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </motion.div>
       </div>
 
       {hasImages && (
