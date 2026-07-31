@@ -67,6 +67,15 @@ by prefetch, which is why `prefetch={false}` is set there. The switch is not fra
 - Wait for `document.fonts.ready` and ~1s after scrolling a section into view — Framer Motion
   reveal animations and the row-height measure pass (`useEqualRowHeights`) need to settle before
   reading `offsetHeight`.
+- **Counting image requests at page load proves nothing.** The projects grid is below the fold,
+  so nothing there loads until you scroll to it regardless of what you changed. Scroll each card
+  into view first, settle, *then* count. Related and counter-intuitive: `loading="lazy"` does
+  **not** defer an image inside a `height: 0; overflow: hidden` parent — it keeps its natural
+  layout position and gets fetched anyway. Any change that mounts hidden content needs this
+  check; that is why `ImageGallery` is still gated on `open` while the prose around it is not.
+- The Cal.com assertion fetches `app.cal.com` over the real network inside a ~2.5s budget, so it
+  fails intermittently on a slow link. Re-run before believing it — a single red there is not a
+  regression, and it is the only check in the suite that depends on the outside world.
 - Project cards: `#projects article`; their expand toggles: `#projects article button[aria-expanded]`.
   Pinned row heights are inline `style.minHeight` on the `<article>`.
 - Case-study screenshots render only inside an expanded panel — there are no `<img>` tags on a
