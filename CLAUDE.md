@@ -27,6 +27,12 @@ and both pages render `src/components/SiteBody.tsx`. `src/i18n/config.ts` (`LANG
 `LANG_META`) is the single source of truth for which locale lives where — the language switch,
 the canonical/`hreflang` tags in `app/siteMetadata.ts`, and `app/sitemap.ts` all read from it.
 
+Having no root layout at `app/` level is also why the 404 is `app/global-not-found.tsx` rather
+than `not-found.tsx` — a `not-found` renders *inside* a root layout and there isn't one to pick.
+`global-not-found` owns its own `<html>`/`<body>` and needs `experimental.globalNotFound` in
+`next.config.ts`. It is bilingual on one page, because a URL that matched no route carries no
+locale to infer. It reaches visitors via nginx's `error_page`, not a route — see Deployment.
+
 The language is a property of the route, not client state. `src/i18n/LanguageContext.tsx` is a
 pass-through provider that hands the layout's `lang` down; `useLanguage()` still works exactly
 as before in every component, so adding a locale-aware component needs no new plumbing. Nothing
@@ -79,4 +85,11 @@ Cloudflare; host, user, port and key come from repository secrets, so the workfl
 no connection details. `pages` publishes `gh-pages/`, a redirect stub keeping the old
 `dukocuk.github.io/portfolio/` URL alive. The nginx server block lives at `deploy/nginx.conf` so
 it can't drift from the build it assumes — in particular its immutable cache rules for
-`/_next/static/` and `/case-studies/`, both of which are content-hashed.
+`/_next/static/` and `/case-studies/`, both of which are content-hashed, and
+`error_page 404 /404.html`, which is the only thing that makes the exported 404 page reachable.
+Unknown paths 404; there is deliberately no SPA-style fallback to `/index.html`, since both
+routes are real files and nothing needs a client router to boot first.
+
+The config in this repo is **not** applied automatically — it has to be installed on the VPS by
+hand (`nginx -t && systemctl reload nginx`; the file's own header has the procedure and the
+caveat that a reload also applies pending config for the other sites on that box).
