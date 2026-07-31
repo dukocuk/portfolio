@@ -3,11 +3,12 @@ import { motion, useReducedMotion } from 'framer-motion';
 import type { Project } from '../data/projects';
 import { Tag } from './ui/Tag';
 import { ProjectHeader } from './ui/ProjectVisual';
-import { ImageGallery } from './ui/ImageGallery';
+import { CaseStudyContent } from './CaseStudyContent';
 import { Lightbox } from './ui/Lightbox';
 import { useLanguage } from '../i18n/useLanguage';
 import { uiStrings } from '../i18n/ui';
 import { prefetchImage } from '../lib/prefetchImage';
+import { projectPath } from '../i18n/config';
 
 // `open` and `minHeight` are controlled by <Projects>, which pins each grid row to a shared height.
 // `onCollapsed` fires once the panel has finished animating shut — until then the card still measures
@@ -29,7 +30,10 @@ export function ProjectCard({
   ref?: Ref<HTMLElement>;
   featured?: boolean;
 }) {
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  // Only for the hero-image button below (`showHero`, currently unused by any
+  // caller — Projects.tsx never passes `featured`). The panel's own gallery
+  // lightbox is self-contained inside CaseStudyContent, a separate instance.
+  const [heroOpen, setHeroOpen] = useState(false);
   const reduced = useReducedMotion();
   const panelId = useId();
   const { lang } = useLanguage();
@@ -48,7 +52,7 @@ export function ProjectCard({
       {showHero ? (
         <button
           type="button"
-          onClick={() => setLightboxIndex(0)}
+          onClick={() => setHeroOpen(true)}
           onPointerEnter={() => prefetchImage(images[0].src)}
           onFocus={() => prefetchImage(images[0].src)}
           onTouchStart={() => prefetchImage(images[0].src)}
@@ -96,6 +100,18 @@ export function ProjectCard({
               <path d="m6 9 6 6 6-6" />
             </svg>
           </button>
+          {/* Plain <a>, not next/link: this is one of nine identical links added to every
+              homepage view. next/link's default prefetch would request an RSC payload filename
+              the static export never writes for a route-group boundary (see the prefetch={false}
+              comment on LanguageToggle) — nine bogus 404s per page load for zero benefit, since
+              nothing here needs a client-side transition. This is also the internal link that
+              makes /projekter/<id>/ actually crawl-discoverable from the homepage HTML. */}
+          <a
+            href={projectPath(lang, project.id)}
+            className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:opacity-80"
+          >
+            {ui.permalink}
+          </a>
           {project.links && project.links.length > 0 && project.links.map((l, idx) => (
             <a
               key={idx}
@@ -136,42 +152,22 @@ export function ProjectCard({
           className="overflow-hidden"
         >
           <div className="mt-5 space-y-4 border-t border-border pt-5">
-            {/* The gallery stays mounted-on-open, unlike the prose above it. `loading="lazy"`
-                does not save you inside a height-0 clipped parent: the thumbs keep their natural
-                layout position, so Chrome fetched 16 of the 18 anyway — 11 before the grid was
-                even scrolled to. Images contribute only their alt text to what a crawler reads,
-                which is not worth 16 WebP requests nobody asked for. */}
-            {open && hasImages && (
-              <ImageGallery images={images} onOpen={(i) => setLightboxIndex(i)} />
-            )}
-            <dl className="space-y-4">
-              {project.sections.map((s, i) => (
-                <div key={i}>
-                  <dt className="text-sm font-semibold text-text">{s.heading}</dt>
-                  <dd className="mt-1 text-sm leading-relaxed text-muted">
-                    {Array.isArray(s.body) ? (
-                      <ul className="list-disc space-y-1 pl-5">
-                        {s.body.map((item, i) => (
-                          <li key={i}>{item}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      s.body
-                    )}
-                  </dd>
-                </div>
-              ))}
-            </dl>
+            {/* The gallery stays mounted-on-open, unlike the prose above it (`mountGallery`).
+                `loading="lazy"` does not save you inside a height-0 clipped parent: the thumbs
+                keep their natural layout position, so Chrome fetched 16 of the 18 anyway — 11
+                before the grid was even scrolled to. Images contribute only their alt text to
+                what a crawler reads, which is not worth 16 WebP requests nobody asked for. */}
+            <CaseStudyContent project={project} mountGallery={open} />
           </div>
         </motion.div>
       </div>
 
-      {hasImages && (
+      {showHero && (
         <Lightbox
           images={images}
-          initialIndex={lightboxIndex ?? 0}
-          open={lightboxIndex !== null}
-          onClose={() => setLightboxIndex(null)}
+          initialIndex={0}
+          open={heroOpen}
+          onClose={() => setHeroOpen(false)}
         />
       )}
     </article>

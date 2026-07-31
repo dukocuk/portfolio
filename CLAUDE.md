@@ -27,6 +27,15 @@ and both pages render `src/components/SiteBody.tsx`. `src/i18n/config.ts` (`LANG
 `LANG_META`) is the single source of truth for which locale lives where — the language switch,
 the canonical/`hreflang` tags in `app/siteMetadata.ts`, and `app/sitemap.ts` all read from it.
 
+Each of the two root layouts also nests one dynamic segment — `app/(da)/projekter/[slug]/` and
+`app/(en)/en/projects/[slug]/` — giving every project its own pre-rendered case-study page
+(`generateStaticParams` over `projectIds` from `src/data/projects.ts`). That's 9 projects × 2
+locales = 18 more URLs, 20 total with the two homepages, all in `app/sitemap.ts`. Same
+single-source-of-truth pattern one level down: `PROJECT_BASE_PATH`/`projectPath()` in
+`src/i18n/config.ts`, read by `app/siteMetadata.ts`'s `buildProjectMetadata()` and by the
+permalink on each homepage card. The homepage's card panel still expands in place exactly as
+before — these pages are additive, reached via that permalink, not a replacement for it.
+
 Having no root layout at `app/` level is also why the 404 is `app/global-not-found.tsx` rather
 than `not-found.tsx` — a `not-found` renders *inside* a root layout and there isn't one to pick.
 `global-not-found` owns its own `<html>`/`<body>` and needs `experimental.globalNotFound` in
@@ -58,6 +67,16 @@ component — every section reads the language from context and animates on scro
 deliberate for now: the SEO win comes from pre-rendering, which happens regardless. Pushing the
 boundary down (server components selecting `projectsContent[lang]` and passing it as props, so
 only one locale's data reaches the browser) is the open follow-up.
+
+`src/components/CaseStudyPage.tsx` (the case-study route above) is the one exception — a genuine
+Server Component root, not just something rendered inside `SiteBody`'s boundary. That matters
+because most components under `src/components/` (`Footer`, `ImageGallery`, `Lightbox`, `Navbar`,
+…) don't carry their own `'use client'` and call `useLanguage()`/hooks anyway — it works today
+only because they're always reached through `SiteBody`'s boundary first. Render one directly from
+a real Server Component and it fails at prerender ("Attempted to call useLanguage() from the
+server") until that file gets its own `'use client'` — `Footer` needed exactly this fix to be
+reusable from `CaseStudyPage`. Check this before reusing any existing component from a new
+server-rooted tree; don't assume the directive is there.
 
 Two things depend on the DOM shape rather than on React: `RootShell` renders a `<div id="root">`
 around the app because `useModalA11y` marks it `inert` while a modal is open, and modals portal
@@ -98,8 +117,16 @@ no connection details. `pages` publishes `gh-pages/`, a redirect stub keeping th
 it can't drift from the build it assumes — in particular its immutable cache rules for
 `/_next/static/` and `/case-studies/`, both of which are content-hashed, and
 `error_page 404 /404.html`, which is the only thing that makes the exported 404 page reachable.
-Unknown paths 404; there is deliberately no SPA-style fallback to `/index.html`, since both
-routes are real files and nothing needs a client router to boot first.
+Unknown paths 404; there is deliberately no SPA-style fallback to `/index.html`, since every one
+of the 20 routes is a real file and nothing needs a client router to boot first.
+
+The two dynamic-segment parents — `/projekter/` and `/en/projects/` — are themselves real
+directories in the export (they hold one subdirectory per project) but carry no `index.html` of
+their own. `try_files $uri $uri/ =404` doesn't 404 that: `$uri/` resolves to an existing
+directory, which is enough for try_files to hand off to `index index.html`, which finds nothing —
+nginx's stock 403, not the branded 404, since the `=404` catch-all never gets a turn once a
+directory is found. `deploy/nginx.conf` has two explicit `location = ` redirects for those exact
+bare paths (to `/#projects` / `/en/#projects`) to route around it.
 
 The config in this repo is **not** applied automatically — it has to be installed on the VPS by
 hand (`nginx -t && systemctl reload nginx`; the file's own header has the procedure and the

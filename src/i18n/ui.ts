@@ -21,7 +21,8 @@ type UIStrings = {
     contact: { eyebrow: string; title: string };
   };
   about: { languagesLabel: string };
-  projectCard: { read: string; hide: string };
+  projectCard: { read: string; hide: string; permalink: string };
+  caseStudyPage: { backToProjects: string };
   lightbox: {
     open: string;
     close: string;
@@ -98,7 +99,12 @@ export const uiStrings: Record<Lang, UIStrings> = {
       contact: { eyebrow: 'Kontakt', title: 'Lad os bygge pålidelige softwareløsninger.' },
     },
     about: { languagesLabel: 'Sprog —' },
-    projectCard: { read: 'Læs case-studie', hide: 'Skjul case-studie' },
+    projectCard: {
+      read: 'Læs case-studie',
+      hide: 'Skjul case-studie',
+      permalink: 'Case-studie på egen side ↗',
+    },
+    caseStudyPage: { backToProjects: '← Alle projekter' },
     lightbox: {
       open: 'Åbn billede i fuld størrelse',
       close: 'Luk',
@@ -184,7 +190,12 @@ export const uiStrings: Record<Lang, UIStrings> = {
       contact: { eyebrow: 'Contact', title: "Let's build reliable software solutions." },
     },
     about: { languagesLabel: 'Languages —' },
-    projectCard: { read: 'Read case study', hide: 'Hide case study' },
+    projectCard: {
+      read: 'Read case study',
+      hide: 'Hide case study',
+      permalink: 'Case study on its own page ↗',
+    },
+    caseStudyPage: { backToProjects: '← All projects' },
     lightbox: {
       open: 'Open image at full size',
       close: 'Close',
