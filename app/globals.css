@@ -23,6 +23,7 @@
   html {
     scroll-behavior: smooth;
     scroll-padding-top: 5rem; /* offset for sticky navbar on anchor jumps */
+    overflow-x: hidden;
   }
   body {
     @apply bg-base text-text font-sans antialiased overflow-x-hidden;
