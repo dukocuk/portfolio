@@ -104,7 +104,7 @@ export const uiStrings: Record<Lang, UIStrings> = {
       hide: 'Skjul case-studie',
       permalink: 'Case-studie på egen side ↗',
     },
-    caseStudyPage: { backToProjects: '← Alle projekter' },
+    caseStudyPage: { backToProjects: 'Alle projekter' },
     lightbox: {
       open: 'Åbn billede i fuld størrelse',
       close: 'Luk',
@@ -195,7 +195,7 @@ export const uiStrings: Record<Lang, UIStrings> = {
       hide: 'Hide case study',
       permalink: 'Case study on its own page ↗',
     },
-    caseStudyPage: { backToProjects: '← All projects' },
+    caseStudyPage: { backToProjects: 'All projects' },
     lightbox: {
       open: 'Open image at full size',
       close: 'Close',

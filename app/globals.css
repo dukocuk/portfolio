@@ -25,7 +25,7 @@
     scroll-padding-top: 5rem; /* offset for sticky navbar on anchor jumps */
   }
   body {
-    @apply bg-base text-text font-sans antialiased;
+    @apply bg-base text-text font-sans antialiased overflow-x-hidden;
   }
   /* Visible focus for keyboard users */
   :focus-visible {
