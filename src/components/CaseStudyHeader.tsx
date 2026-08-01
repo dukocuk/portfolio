@@ -22,9 +22,15 @@ export function CaseStudyHeader({ projectId }: { projectId: string }) {
         <div className="flex items-center gap-4">
           <a
             href={`${LANG_PATHS[lang]}#projects`}
+            aria-label={ui.caseStudyPage.backToProjects}
             className="text-sm font-medium text-muted transition-colors hover:text-accent"
           >
-            {ui.caseStudyPage.backToProjects}
+            {/* Text label hidden below sm: — logo + label + LanguageToggle
+                don't all fit on one line on narrow phones, and with no
+                overflow-x containment elsewhere in this route that turned
+                the whole page horizontally scrollable. */}
+            <span aria-hidden="true">←</span>{' '}
+            <span className="hidden sm:inline">{ui.caseStudyPage.backToProjects}</span>
           </a>
           <LanguageToggle altHref={projectPath(otherLang(lang), projectId)} />
         </div>
