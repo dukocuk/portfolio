@@ -24,7 +24,7 @@ export function ImageGallery({ images, onOpen }: Props) {
           if (isOverlayTile) prefetchImage(images[2]?.src);
         };
         return (
-          <li key={image.src} className="shrink-0">
+          <li key={image.src} className="w-[calc(50%-0.375rem)] shrink-0 sm:w-auto">
             <button
               type="button"
               onClick={() => onOpen(i)}
@@ -32,7 +32,7 @@ export function ImageGallery({ images, onOpen }: Props) {
               onFocus={warm}
               onTouchStart={warm}
               aria-label={label}
-              className="group relative block aspect-[16/9] h-24 overflow-hidden rounded-lg border border-border bg-surface-2 transition-all hover:border-accent/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:h-28"
+              className="group relative block aspect-[16/9] w-full overflow-hidden rounded-lg border border-border bg-surface-2 transition-all hover:border-accent/60 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:h-28 sm:w-auto"
             >
               <img
                 src={image.thumb}
