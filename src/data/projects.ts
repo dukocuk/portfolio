@@ -733,8 +733,81 @@ const da: Project[] = [
         body: "UX-research og produktinnovation inden for læringsteknologi til børn. Projektet viser, hvordan feltobservationer og interviewindsigter kan omsættes til en prototype, der bedre forbinder legende interaktion med læringsmål."
       }
     ]
-  }
-
+  },
+  {
+    id: "kenanesenboga",
+    title: "kenanesenboga.com — en selvopdaterende hjemmeside for en gadedyrs-YouTuber",
+    type: "Personligt projekt · Content-site · Statisk Next.js · Automatiseret Deploy",
+    icon: "fullstack",
+    summary:
+      "Et tosproget (tyrkisk/engelsk), statisk Next.js-site for en YouTuber, der fodrer og passer gadekatte og -hunde i Tyrkiet. Siden opdaterer sig selv fra hans offentlige YouTube-feed to gange dagligt — ingen server, ingen database, ingen analytics og intet tredjepartskald, før en besøgende selv trykker play.",
+    tech: [
+      "TypeScript",
+      "Next.js (App Router, static export)",
+      "React 19",
+      "Tailwind CSS",
+      "sharp",
+      "GitHub Actions",
+      "nginx",
+      "rsync",
+      "Cloudflare",
+    ],
+    links: [
+      {
+        href: "https://kenanesenboga.com",
+        label: "Besøg hjemmeside",
+      },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "En YouTuber, der poster næsten dagligt, skal ikke være afhængig af, at en udvikler manuelt opdaterer hans hjemmeside, hver gang han uploader. Samtidig server YouTube selv sine thumbnails paddet til liggende format — for en lodret Short bliver maxresdefault.jpg videoen centreret på en formørket udsnitsversion af sig selv, sort bjælke-territorium i et 9:16-kort — så en naiv visning af \"det YouTube leverer\" ville se forkert ud på hver eneste video. Der manglede et site, der kunne holde sig selv ajour uden en database eller et CMS, og som stadig viste skarpe, korrekt beskårne thumbnails og et solidt, tosproget SEO-fundament.",
+      },
+      {
+        heading: "Mål",
+        body: "Byg et statisk, tosproget (tyrkisk/engelsk) site, der henter sit eget indhold fra kanalens offentlige data, beskærer thumbnails korrekt til lodret format, håndhæver SEO-krav i CI, og deployer sig selv til en delt VPS uden manuel indgriben — og som fejler synligt frem for at publicere forældet indhold.",
+      },
+      {
+        heading: "Teknisk tilgang",
+        body: [
+          "Byggede en prebuild-hentning mod kanalens offentlige RSS-feed — ingen API-nøgle, ingen quota, ingen secret i CI — der skriver et JSON-datalag med de 15 seneste videoer (titler, visninger, likes) plus lokale WebP-thumbnails; deploy-workflowet kører på en cron to gange dagligt, hvilket er hele opdateringsmekanismen.",
+          "Gjorde det genererede output (videos.generated.json, public/videos/) bevidst gitignored og feedet til en hård build-dependency i stedet for en fallback: en cron-kørsel sker på en throwaway-runner, så hvis outputtet var committet, ville prebuild genskrive det inde i den runner, builden ville konsumere det, men intet ville nogensinde blive committet tilbage — repoets egen kopi ville drifte permanent stale efter første cron-run. I stedet fejler builden synligt, hvis YouTube ikke kan nås, og det allerede deployede site bliver ved med at køre — bedre end stille at publicere et forældet snapshot.",
+          "Byggede en beskæringspipeline til lodrette Shorts: forsøg først oardefault.jpg (den eneste ubeskårne variant YouTube server, mangler for nogle uploads), og ellers tag den største paddede kandidat og crop den tilbage til det aspect ratio, frame0.jpg altid rapporterer korrekt — det gør en paddet 1280×720-ramme til en ren ~400×720 lodret thumbnail, langt skarpere end YouTubes egen 268×480 frame0. Filnavne hashes fra kildebytes, så et uændret billede ikke rsync'es igen.",
+          "Byggede en SEO-gate (check:seo), der kører i CI og fejler deployet, hvis en side har under 250 ord reel tekst, mere end én <h1>, et ikke-unikt title eller en description uden for 120–160 tegn, eller ikke er linket fra sit eget sprogs forside — inklusive en ordregex, der forstår tyrkiske bogstaver (den oprindelige ASCII-only-version talte ord som güç og çöp som nul), og en link-graf-tjek der er per-locale.",
+          "Satte en deploy-pipeline op til en delt Hetzner-VPS: GitHub Actions bygger, kører SEO-gaten og rsync'er til nginx via en rrsync-begrænset deploy-bruger; navigerede en SSH-hardened boks' AllowUsers-fælde (direktivet akkumulerer ikke på tværs af linjer, og skal redigeres in-place, ikke tilføjes), og et Cloudflare origin-certifikat-setup — uden at forstyrre de tre andre sites på samme box.",
+        ],
+      },
+      {
+        heading: "Min rolle",
+        body: "Eneudvikler — designede og byggede det hele: arkitekturen, hente- og billedpipelinen, indholdslag og i18n, SEO-gaten, CI/CD og VPS-deployet.",
+      },
+      {
+        heading: "Funktioner",
+        body: [
+          "Tosproget site (tyrkisk på /, engelsk på /en/) med korrekt hreflang-parring og per-side metadata.",
+          "Automatisk opdaterede videosektioner med titler, visningstal og likes fra kanalens 15 seneste uploads.",
+          "Skarpe, korrekt beskårne thumbnails til lodrette Shorts i stedet for YouTubes paddede standardbilleder.",
+          "Genererede OG-delebilleder og favikonsæt via et script, der håndterer tyrkiske tegn korrekt på tværs af web- og systemfont-subsets.",
+        ],
+      },
+      {
+        heading: "Teknologier & metoder",
+        body: "TypeScript, Next.js (App Router, statisk export), React 19, Tailwind CSS, sharp (Pango-tekstrendering til OG-billeder), oxlint, rene Node-build-scripts, GitHub Actions CI/CD med cron-trigger, rsync/rrsync, nginx, Cloudflare.",
+      },
+      {
+        heading: "Udfordringer",
+        body: "At holde et statisk site friskt uden en server eller database — kun et offentligt RSS-feed og en cron — og at gøre det på en måde, hvor en fejlet hentning aldrig kan resultere i et stille forældet site. At beskære YouTubes paddede lodrette thumbnails korrekt, når den ubeskårne kilde mangler for nogle uploads. At bygge en SEO-gate, der reelt forstår tyrkisk tekst og en tosproget link-graf. Og at deploye sikkert til en SSH-hærdet, delt VPS med en AllowUsers-konfiguration, hvis fejltilstande er stille nok til at låse en selv ude.",
+      },
+      {
+        heading: "Resultat",
+        body: "Et fuldt automatiseret, statisk, tosproget site i produktion, der opdaterer sig selv to gange dagligt uden menneskelig indgriben, med en CI-håndhævet SEO-gate og en deploy-pipeline, der aldrig kan publicere en stale eller halvfærdig build.",
+      },
+      {
+        heading: "Hvad det demonstrerer",
+        body: "Design af selvvedligeholdende systemer uden database eller CMS — datahentning fra en offentlig kilde, en bevidst \"fejl-frem-for-stale-data\"-strategi, billedbehandling skræddersyet til et specifikt content-format, tosproget SEO-håndhævelse i CI, og en sikker deploy-pipeline til en delt VPS — løst solo, ende til ende.",
+      },
+    ],
+  },
 ];
 
 const en: Project[] = [
@@ -1451,7 +1524,81 @@ const en: Project[] = [
         body: "UX research and product innovation for children's educational technology — turning field observations and interview insights into a prototype that better aligns playful interaction with learning goals."
       }
     ]
-  }
+  },
+  {
+    id: "kenanesenboga",
+    title: "kenanesenboga.com — A Self-Updating Website for a Street-Animal YouTuber",
+    type: "Personal Project · Content Site · Static Next.js · Automated Deploy",
+    icon: "fullstack",
+    summary:
+      "A bilingual (Turkish/English), static Next.js site for a YouTuber who feeds and cares for street cats and dogs in Türkiye. The site updates itself from his public YouTube feed twice a day — no server, no database, no analytics, and no third-party request until a visitor actually presses play.",
+    tech: [
+      "TypeScript",
+      "Next.js (App Router, static export)",
+      "React 19",
+      "Tailwind CSS",
+      "sharp",
+      "GitHub Actions",
+      "nginx",
+      "rsync",
+      "Cloudflare",
+    ],
+    links: [
+      {
+        href: "https://kenanesenboga.com",
+        label: "Visit website",
+      },
+    ],
+    sections: [
+      {
+        heading: "Problem",
+        body: "A YouTuber who posts almost daily shouldn't have to depend on a developer manually updating his website every time he uploads. At the same time, YouTube itself serves thumbnails padded to landscape — for a vertical Short, maxresdefault.jpg is the video centered on a darkened blow-up of itself, black-bar territory in a 9:16 card — so naively displaying \"whatever YouTube provides\" would look wrong on every single video. What was missing was a site that could keep itself current without a database or a CMS, while still showing sharp, correctly cropped thumbnails and a solid bilingual SEO foundation.",
+      },
+      {
+        heading: "Goal",
+        body: "Build a static, bilingual (Turkish/English) site that fetches its own content from the channel's public data, crops thumbnails correctly to portrait, enforces SEO requirements in CI, and deploys itself to a shared VPS without manual intervention — failing loudly rather than ever publishing stale content.",
+      },
+      {
+        heading: "Technical approach",
+        body: [
+          "Built a prebuild fetch against the channel's public RSS feed — no API key, no quota, no secret in CI — that writes a JSON data layer with the 15 most recent videos (titles, views, likes) plus local WebP thumbnails; the deploy workflow runs on a twice-daily cron, which is the entire update mechanism.",
+          "Made the generated output (videos.generated.json, public/videos/) deliberately gitignored and turned the feed into a hard build dependency instead of a fallback: a cron run happens on a throwaway runner, so if the output were committed, prebuild would rewrite it inside that runner, the build would consume it, but nothing would ever get committed back — the repo's own copy would drift permanently stale after the first cron run. Instead, the build fails loudly if YouTube can't be reached, and the already-deployed site keeps serving — strictly better than silently publishing a stale snapshot.",
+          "Built a cropping pipeline for vertical Shorts: try oardefault.jpg first (the only unpadded variant YouTube serves, absent for some uploads), otherwise take the largest padded candidate and crop it back to the aspect ratio frame0.jpg always reports correctly — turning a padded 1280×720 frame into a clean ~400×720 vertical thumbnail, far sharper than YouTube's own 268×480 frame0. Filenames are hashed from the source bytes, so an unchanged image isn't re-synced.",
+          "Built an SEO gate (check:seo) that runs in CI and fails the deploy if a page has fewer than 250 words of real text, more than one <h1>, a non-unique title, or a description outside 120–160 characters, or isn't linked from its own locale's home page — including a word regex that understands Turkish letters (the original ASCII-only version counted words like güç and çöp as zero), and a link-graph check that's per-locale.",
+          "Set up a deploy pipeline to a shared Hetzner VPS: GitHub Actions builds, runs the SEO gate, and rsyncs to nginx through an rrsync-restricted deploy user; navigated an SSH-hardened box's AllowUsers trap (the directive doesn't accumulate across lines, and has to be edited in place, not appended to), and a Cloudflare origin-certificate setup — without disturbing the three other sites on the same box.",
+        ],
+      },
+      {
+        heading: "My role",
+        body: "Sole developer — designed and built all of it: the architecture, the fetch and image pipeline, the content layer and i18n, the SEO gate, CI/CD, and the VPS deploy.",
+      },
+      {
+        heading: "Features",
+        body: [
+          "Bilingual site (Turkish at /, English at /en/) with correct hreflang pairing and per-page metadata.",
+          "Automatically updated video sections with titles, view counts, and likes from the channel's 15 most recent uploads.",
+          "Sharp, correctly cropped thumbnails for vertical Shorts instead of YouTube's padded defaults.",
+          "Generated OG share images and favicon sets via a script that handles Turkish characters correctly across web and system font subsets.",
+        ],
+      },
+      {
+        heading: "Technologies & methods",
+        body: "TypeScript, Next.js (App Router, static export), React 19, Tailwind CSS, sharp (Pango text rendering for OG images), oxlint, plain Node build scripts, GitHub Actions CI/CD with a cron trigger, rsync/rrsync, nginx, Cloudflare.",
+      },
+      {
+        heading: "Challenges",
+        body: "Keeping a static site fresh without a server or a database — just a public RSS feed and a cron — in a way where a failed fetch can never result in a silently stale site. Cropping YouTube's padded vertical thumbnails correctly when the unpadded source is missing for some uploads. Building an SEO gate that actually understands Turkish text and a bilingual link graph. And deploying safely to an SSH-hardened, shared VPS with an AllowUsers configuration whose failure modes are quiet enough to lock you out.",
+      },
+      {
+        heading: "Outcome",
+        body: "A fully automated, static, bilingual site in production that updates itself twice a day with no human involvement, backed by a CI-enforced SEO gate and a deploy pipeline that can never publish a stale or half-finished build.",
+      },
+      {
+        heading: "What it demonstrates",
+        body: "Designing self-maintaining systems without a database or CMS — fetching from a public data source, a deliberate fail-over-stale-data strategy, image processing tailored to a specific content format, bilingual SEO enforcement in CI, and a secure deploy pipeline to a shared VPS — solved solo, end to end.",
+      },
+    ],
+  },
 ];
 
 // Descriptive alt text per case-study image, keyed by project id, in the
